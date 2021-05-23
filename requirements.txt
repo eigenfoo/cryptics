@@ -1,0 +1,7 @@
+beautifulsoup4
+ipdb
+jupyter
+lxml
+nb_black
+pandas
+requests
