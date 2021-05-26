@@ -18,12 +18,12 @@ help:
 .PHONY: conda
 conda:  # Set up a conda environment for development.
 	@printf "Creating conda environment...\n"
-	${CONDA} create --yes --name env-cryptic-crawl python=3.6
-	${CONDA} activate env-cryptic-crawl
+	${CONDA} create --yes --name env-cryptic-info python=3.6
+	${CONDA} activate env-cryptic-info
 	${PIP} install -U pip
 	${PIP} install -r requirements.txt
 	${CONDA} deactivate
-	@printf "\n\nConda environment created! \033[1;34mRun \`conda activate env-cryptic-crawl\` to activate it.\033[0m\n\n\n"
+	@printf "\n\nConda environment created! \033[1;34mRun \`conda activate env-cryptic-info\` to activate it.\033[0m\n\n\n"
 
 .PHONY: venv
 venv:  # Set up a Python virtual environment for development.
@@ -39,30 +39,30 @@ venv:  # Set up a Python virtual environment for development.
 .PHONY: blackstyle
 blackstyle:
 	@printf "Checking code style with black...\n"
-	black --check --diff cryptic_crawl/
+	black --check --diff cryptic_info/
 	@printf "\033[1;34mBlack passes!\033[0m\n\n"
 
 .PHONY: pylintstyle
 pylintstyle:
 	@printf "Checking code style with pylint...\n"
-	pylint cryptic_crawl/
+	pylint cryptic_info/
 	@printf "\033[1;34mPylint passes!\033[0m\n\n"
 
 .PHONY: pydocstyle
 pydocstyle:
 	@printf "Checking documentation with pydocstyle...\n"
-	pydocstyle --convention=numpy --match='(?!parallel_sampling).*\.py' cryptic_crawl/
+	pydocstyle --convention=numpy --match='(?!parallel_sampling).*\.py' cryptic_info/
 	@printf "\033[1;34mPydocstyle passes!\033[0m\n\n"
 
 .PHONY: mypytypes
 mypytypes:
 	@printf "Checking code type signatures with mypy...\n"
-	python -m mypy --ignore-missing-imports cryptic_crawl/
+	python -m mypy --ignore-missing-imports cryptic_info/
 	@printf "\033[1;34mMypy passes!\033[0m\n\n"
 
 .PHONY: black
 black:  # Format code in-place using black.
-	black cryptic_crawl/
+	black cryptic_info/
 
 .PHONY: lint
 lint: blackstyle pylintstyle pydocstyle mypytypes  # Lint code using black, pylint, pydocstyle and mypy.
@@ -72,8 +72,8 @@ check: lint test  # Both lint and test code. Runs `make lint` followed by `make 
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -rf dist/ site/ cryptic_crawl.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
-	find cryptic_crawl/ -type d -name "__pycache__" -exec rm -rf {} +
-	find cryptic_crawl/ -type d -name "__pycache__" -delete
-	find cryptic_crawl/ -type f -name "*.pyc" -delete
+	rm -rf dist/ site/ cryptic_info.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
+	find cryptic_info/ -type d -name "__pycache__" -exec rm -rf {} +
+	find cryptic_info/ -type d -name "__pycache__" -delete
+	find cryptic_info/ -type f -name "*.pyc" -delete
 	${MAKE} -C docs/ clean

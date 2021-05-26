@@ -53,7 +53,12 @@ def _is_parsable_table_type_1(table):
             ),
             # The second column (except for the ACROSS and DOWN rows) is all uppercase
             # This is what we expect to be the answers
-            all([s.lower() in ["across", "down"] or s.isupper() for s in table[1].dropna()]),
+            all(
+                [
+                    s.lower() in ["across", "down"] or s.isupper()
+                    for s in table[1].dropna()
+                ]
+            ),
             # The third column (except for the ACROSS and DOWN rows) has around half of its
             # rows ending in enumerations, give or take 4
             # FIXME: some enumerations can be (10, hyph.) or (12, two wds.)
