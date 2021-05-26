@@ -3,5 +3,6 @@ ipdb
 jupyter
 lxml
 nb_black
+numpy
 pandas
 requests
