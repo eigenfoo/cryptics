@@ -6,3 +6,4 @@ nb_black
 numpy
 pandas
 requests
+-e .
