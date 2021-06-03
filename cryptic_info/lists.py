@@ -174,3 +174,82 @@ def parse_list_type_2(response):
             i += 1
 
     return pd.DataFrame(data)
+
+
+def is_parsable_list_type_3(response):
+    soup = bs4.BeautifulSoup(response.text, "html.parser")
+    entry_content = soup.find("div", "entry-content")
+    return (
+        32 * 2 - 10
+        <= len(
+            [
+                paragraph
+                for paragraph in entry_content.find_all("p")
+                if paragraph.find_all("span")
+            ]
+        )
+        <= 32 * 2 + 10
+    )
+
+
+def parse_list_type_3(response):
+    soup = bs4.BeautifulSoup(response.text, "html.parser")
+    entry_content = soup.find("div", "entry-content")
+    paragraphs = entry_content.find_all("p")
+
+    (across_index,) = np.where(
+        [paragraph.text.strip().lower() == "across" for paragraph in paragraphs]
+    )[0]
+    (down_index,) = np.where(
+        [paragraph.text.strip().lower() == "down" for paragraph in paragraphs]
+    )[0]
+
+    i = 1
+    data = defaultdict(list)
+
+    while i < len(paragraphs) - 3:
+        if any([x in [across_index, down_index] for x in [i, i + 1, i + 2]]):
+            i += 1
+            continue
+
+        clue_number = None
+        clue = None
+        definition = None
+        answer = None
+        annotation = None
+
+        p_1 = paragraphs[i]
+        p_2 = paragraphs[i + 1]
+
+        try:
+            clue_number = re.match(r"^[0-9]+\.?\s*", p_1.text.strip()).group()
+            match = re.match(clue_number, p_1.text)
+            clue = p_1.text[match.end() :].strip()
+            definition = "/".join(
+                [
+                    tag.text
+                    for tag in p_1.find_all(
+                        "span", attrs={"style": "text-decoration: underline"}
+                    )
+                ]
+            )
+            answer, *annotation = p_2.text.split(":")
+            answer = answer.strip()
+            annotation = " ".join(annotation)
+            clue_number = clue_number.strip(". ") + (
+                "a" if across_index < i < down_index else "d"
+            )
+
+            if all([re.match("[0-9]+(a|d)", clue_number), answer.isupper()]):
+                data["ClueNumber"].append(clue_number)
+                data["Clue"].append(clue)
+                data["Definition"].append(definition)
+                data["Answer"].append(answer)
+                data["Annotation"].append(annotation)
+                i += 2
+            else:
+                i += 1
+        except:
+            i += 1
+
+    return pd.DataFrame(data)

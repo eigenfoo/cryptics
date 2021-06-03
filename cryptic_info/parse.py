@@ -11,6 +11,8 @@ from cryptic_info.lists import (
     parse_list_type_1,
     is_parsable_list_type_2,
     parse_list_type_2,
+    is_parsable_list_type_3,
+    parse_list_type_3,
 )
 from cryptic_info.utils import extract_puzzle_url
 
@@ -42,6 +44,7 @@ def try_parse(response, source_url):
         (is_parsable_table_type_2, parse_table_type_2),
         (is_parsable_list_type_1, parse_list_type_1),
         (is_parsable_list_type_2, parse_list_type_2),
+        (is_parsable_list_type_3, parse_list_type_3),
     ]
 
     for is_parsable_func, parse_func in parsers:
