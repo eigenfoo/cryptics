@@ -112,7 +112,7 @@ def _parse_table_type_1(table, soup):
     clues_and_annotations = table[2].drop([across_index, down_index])
     clues = clues_and_annotations[::2].tolist()
     annotations = clues_and_annotations[1::2].tolist()
-    definitions = extract_definitions(soup, clues)
+    definitions = extract_definitions(soup, clues, table_type=1)
 
     out = pd.DataFrame(
         data=np.transpose(np.array([clue_numbers, answers, clues, annotations])),
@@ -207,6 +207,13 @@ def _parse_table_type_2(table, soup):
     ).rename(columns={0: "Clue", 1: "Annotation"})
 
     table = pd.concat([table, clues_and_annotations], axis=1)
+    table = table.drop(columns=["ClueAndAnnotation"])
+
+    # Add definitions
+    definitions = extract_definitions(soup, table["Clue"], table_type=2)
+    if definitions is not None:
+        table["Definition"] = definitions
+
     return table
 
 
@@ -219,14 +226,17 @@ def separate_clue_and_annotation(s):
     return clue, annotation
 
 
-def extract_definitions(soup, clues):
-    raw_definitions = [
-        tag.text
-        for tag in soup.find_all(
-            "span",
-            attrs={"style": (lambda s: "underline" in s if s is not None else False)},
-        )
-    ]
+def extract_definitions(soup, clues, table_type):
+    if table_type == 1:
+        raw_definitions = [
+            tag.text
+            for tag in soup.find_all(
+                "span",
+                attrs={"style": (lambda s: ("underline" in s or "u" in s) if s is not None else False)},
+            )
+        ]
+    elif table_type == 2:
+        raw_definitions = [tag.text for tag in soup.find_all("u")]
 
     definitions = []
     i = 0
