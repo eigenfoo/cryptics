@@ -49,7 +49,7 @@ while metadata["unindexed_urls"]:
     print("Wrote metadata")
 
     print("Sleeping...")
-    sleep_time = random.uniform(20, 40)
-    # time.sleep(sleep_time)
+    sleep_time = 20  # random.uniform(20, 40)
+    time.sleep(sleep_time)
     print(f"Slept for {sleep_time:.2f}s")
     print(78 * "=")
