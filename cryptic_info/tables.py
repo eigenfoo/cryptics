@@ -281,3 +281,86 @@ def extract_definitions(soup, clues, table_type):
         return definitions
     else:
         return None
+
+
+def is_parsable_table_type_3(response):
+    tables = pd.read_html(response.text)
+    for table in tables:
+        try:
+            if _is_parsable_table_type_3(table):
+                return True
+        except:
+            pass
+    return False
+
+
+def _is_parsable_table_type_3(table):
+    return all(
+        [
+            # The index looks like ['Across', 'Across.1', 'Across.2', ...]
+            all(["across" in column.lower() for column in table.columns]),
+            # There is a row that says 'Down' in all cells
+            (table.astype(str).applymap(str.lower) == "down").all(axis=1).any(),
+            # The first column (except for the 'Across', 'Down' and 'Clue No' rows)
+            # is all numeric. This is what we expect to be the clue numbers
+            all(
+                [
+                    s.lower() in ["across", "down", "clue no"]
+                    or any([c.isdigit() for c in s])
+                    for s in table.iloc[:, 0].dropna()
+                ]
+            ),
+            # The second column (except for the 'Across', 'Down' and 'Solution' rows)
+            # is all uppercase. This is what we expect to be the answers
+            all(
+                [
+                    s.lower() in ["across", "down", "solution"] or s.isupper()
+                    for s in table.iloc[:, 1].dropna()
+                ]
+            ),
+            # The third column (except for the 'Across', 'Down' and 'Clue' rows) all end
+            # in enumerations, give or take 5. This is what we expect to be the clues
+            np.abs(
+                sum(
+                    [
+                        s.lower() in ["across", "down", "clue"]
+                        or bool(re.findall("\([0-9,\- ]+(?:[\w\.]+)?\)$", s))
+                        for s in table.iloc[:, 2].dropna()
+                    ]
+                )
+                - table.shape[0]
+            )
+            <= 5,
+        ]
+    )
+
+
+def parse_table_type_3(response):
+    tables = pd.read_html(response.text)
+    for table in tables:
+        if _is_parsable_table_type_3(table):
+            return _parse_table_type_3(table)
+
+
+def _parse_table_type_3(table):
+    # The column names are ['Across', 'Across.1', 'Across.2', ...]
+    # Make them just another row, for simplicity
+    table = table.T.reset_index().T.reset_index(drop=True)
+
+    # Drop the first (i.e. the 'Across') row and the 'Down' row,
+    # and the rows that follow them, which are the column names
+    (down_index,) = np.where(table[0].str.lower() == "down")[0]
+    table = table.drop([0, 1, down_index, down_index + 1])
+
+    table = table.iloc[:, :4]  # Drop extraneous columns
+
+    table.columns = ["ClueNumber", "Answer", "Clue", "DefinitionAndAnnotation"]
+    table["ClueNumber"] = table["ClueNumber"].str.lower()
+    table["Definition"] = table["DefinitionAndAnnotation"].apply(
+        lambda s: "/".join(s.split(" / ")[:-1])
+    )
+    table["Annotation"] = table["DefinitionAndAnnotation"].apply(
+        lambda s: s.split(" / ")[-1]
+    )
+    table = table.drop(columns=["DefinitionAndAnnotation"])
+    return table

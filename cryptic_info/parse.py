@@ -5,6 +5,8 @@ from cryptic_info.tables import (
     parse_table_type_1,
     is_parsable_table_type_2,
     parse_table_type_2,
+    is_parsable_table_type_3,
+    parse_table_type_3,
 )
 from cryptic_info.lists import (
     is_parsable_list_type_1,
@@ -42,6 +44,7 @@ def try_parse(response, source_url):
     parsers = [
         (is_parsable_table_type_1, parse_table_type_1),
         (is_parsable_table_type_2, parse_table_type_2),
+        (is_parsable_table_type_3, parse_table_type_3),
         (is_parsable_list_type_1, parse_list_type_1),
         (is_parsable_list_type_2, parse_list_type_2),
         (is_parsable_list_type_3, parse_list_type_3),
