@@ -200,6 +200,14 @@ def _parse_table_type_2(table, soup):
     # Drop rows that are entirely "Across" and "Down"
     table = table.drop([across_index, down_index]).reset_index(drop=True)
 
+    def separate_clue_and_annotation(s):
+        match = re.search("\([0-9,\- ]+(?:[\w\.]+)?\)", s)
+        if match is None:
+            print(s)
+        clue = s[: match.end()].strip()
+        annotation = s[match.end() :].strip()
+        return clue, annotation
+
     # Separate clue and annotation
     clues_and_annotations = pd.DataFrame(
         table["ClueAndAnnotation"].apply(separate_clue_and_annotation).tolist()
@@ -214,15 +222,6 @@ def _parse_table_type_2(table, soup):
         table["Definition"] = definitions
 
     return table
-
-
-def separate_clue_and_annotation(s):
-    match = re.search("\([0-9,\- ]+(?:[\w\.]+)?\)", s)
-    if match is None:
-        print(s)
-    clue = s[: match.end()].strip()
-    annotation = s[match.end() :].strip()
-    return clue, annotation
 
 
 def extract_definitions(soup, clues, table_type):
@@ -244,7 +243,7 @@ def extract_definitions(soup, clues, table_type):
                 },
             )
         ]
-    elif table_type == 2:
+    elif table_type == 2 or table_type == 4:
         raw_definitions = [tag.text for tag in soup.find_all("u")]
 
     definitions = []
@@ -363,4 +362,92 @@ def _parse_table_type_3(table):
         lambda s: s.split(" / ")[-1]
     )
     table = table.drop(columns=["DefinitionAndAnnotation"])
+    return table
+
+
+def is_parsable_table_type_4(response):
+    tables = pd.read_html(response.text)
+    for table in tables:
+        try:
+            if _is_parsable_table_type_4(table):
+                return True
+        except:
+            pass
+    return False
+
+
+def _is_parsable_table_type_4(table):
+    return all(
+        [
+            # The first row is ["No", "Clue", "Wordplay", "Entry"]
+            all(["No", "Clue", "Wordplay", "Entry"] == table.iloc[0]),
+            # The first column contains 'Across' and 'Down'
+            all([any(x == table[0].str.lower()) for x in ["across", "down"]]),
+            # The first column (except for the 'Across', 'Down' and 'No' rows)
+            # is all numeric. This is what we expect to be the clue numbers
+            all(
+                [
+                    s.lower() in ["across", "down", "no"]
+                    or any([c.isdigit() for c in s])
+                    for s in table.iloc[:, 0].dropna()
+                ]
+            ),
+            # The second column (except for the 'Across', 'Down' and 'Clue' rows) all end
+            # in enumerations, give or take 5. This is what we expect to be the clues
+            np.abs(
+                sum(
+                    [
+                        s.lower() in ["across", "down", "clue"]
+                        or bool(re.findall("\([0-9,\- ]+(?:[\w\.]+)?\)$", s))
+                        for s in table.iloc[:, 1].dropna()
+                    ]
+                )
+                - table.shape[0]
+            )
+            <= 5,
+        ]
+    )
+
+
+def parse_table_type_4(response):
+    tables = pd.read_html(response.text)
+    soup = bs4.BeautifulSoup(response.text, "lxml")
+    for table in tables:
+        if _is_parsable_table_type_4(table):
+            return _parse_table_type_4(table, soup)
+
+
+def _parse_table_type_4(table, soup):
+    # Append clue directions to clue numbers
+    (down_index,) = np.where(table[0].str.lower() == "down")[0]
+    table.iloc[2:down_index, 0] += "a"
+    table.iloc[down_index + 1 :, 0] += "d"
+
+    # Drop the first row and the 'Across' and 'Down' rows
+    table = table.drop([0, 1, down_index]).reset_index(drop=True)
+    table = table.iloc[:, :4]  # Drop extraneous columns
+    table.columns = ["ClueNumber", "Clue", "Annotation", "AnswerWithExplanation"]
+
+    def separate_definition_and_explanation(s):
+        match = re.search("^[A-Z'\- ]+", s.strip())
+        definition = s[: match.end()].strip()
+        explanation = s[match.end() :].strip()
+        return definition, explanation
+
+    definitions_and_explanations = pd.DataFrame(
+        table["AnswerWithExplanation"]
+        .apply(separate_definition_and_explanation)
+        .tolist(),
+        columns=["Answer", "Explanation"],
+    )
+
+    # Append the explanation of the answer to the annotation
+    table = pd.concat([table, definitions_and_explanations], axis=1)
+    table["Annotation"] = table["Annotation"] + " " + table["Explanation"]
+    table = table.drop(columns=["AnswerWithExplanation", "Explanation"])
+
+    definitions = extract_definitions(soup, table["Clue"], table_type=4)
+    if definitions is not None:
+        table["Definition"] = definitions
+
     return table
