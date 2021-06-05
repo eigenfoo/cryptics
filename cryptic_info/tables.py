@@ -61,13 +61,12 @@ def _is_parsable_table_type_1(table):
             ),
             # The third column (except for the ACROSS and DOWN rows) has around half of its
             # rows ending in enumerations, give or take 4
-            # FIXME: some enumerations can be (10, hyph.) or (12, two wds.)
             np.abs(
                 (
                     sum(
                         [
                             s.lower() in ["across", "down"]
-                            or bool(re.findall("\([0-9,\- ]+\)$", s))
+                            or bool(re.findall("\([0-9,\- ]+(?:[\w\.]+)?\)$", s))
                             for s in table[2].dropna()
                         ]
                     )
@@ -165,12 +164,12 @@ def _is_parsable_table_type_2(table):
             # The second column (except for the ACROSS and DOWN rows) is all uppercase
             # This is what we expect to be the answers
             all([s.lower() in ["across", "down"] or s.isupper() for s in table[1]]),
-            # The third column (except for the ACROSS and DOWN rows) has contains an
-            # enumeration, which is flanked by clue and annotation
+            # The third column (except for the ACROSS and DOWN rows) contains
+            # an enumeration, which is flanked by clue and annotation
             all(
                 [
                     s.lower() in ["across", "down"]
-                    or bool(re.findall(".+\([0-9,\- ]+\).+", s))
+                    or bool(re.findall(".+\([0-9,\- ]+(?:[\w\.]+)?\).+", s))
                     for s in table[2]
                 ]
             ),
@@ -218,7 +217,7 @@ def _parse_table_type_2(table, soup):
 
 
 def separate_clue_and_annotation(s):
-    match = re.search("\([0-9,\- ]+\)", s)
+    match = re.search("\([0-9,\- ]+(?:[\w\.]+)?\)", s)
     if match is None:
         print(s)
     clue = s[: match.end()].strip()
@@ -232,7 +231,17 @@ def extract_definitions(soup, clues, table_type):
             tag.text
             for tag in soup.find_all(
                 "span",
-                attrs={"style": (lambda s: ("underline" in s or "u" in s) if s is not None else False)},
+                attrs={
+                    "style": (lambda s: "underline" in s if s is not None else False)
+                },
+            )
+            + soup.find_all(
+                "span",
+                attrs={
+                    "class": (
+                        lambda s: "fts-definition" in s if s is not None else False
+                    )
+                },
             )
         ]
     elif table_type == 2:
