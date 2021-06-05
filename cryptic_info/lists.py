@@ -104,7 +104,7 @@ def is_parsable_list_type_2(response):
         if not div.find("div") and div.text.strip()
     ]
 
-    return 32 * 3 - 10 <= len(smallest_divs) <= 32 * 3 + 10
+    return 32 * 3 - 20 <= len(smallest_divs) <= 32 * 3 + 20
 
 
 def parse_list_type_2(response):
