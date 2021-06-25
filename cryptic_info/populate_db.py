@@ -8,7 +8,12 @@ import time
 import requests
 import bs4
 
-SITEMAP_URL = "https://www.fifteensquared.net/wp-sitemap.xml"
+
+SITEMAP_URLS = {
+    # "fifteensquared": "https://www.fifteensquared.net/wp-sitemap.xml",
+    # "times_xwd_times": "https://times-xwd-times.livejournal.com/sitemap.xml",
+    "bigdave44": "http://bigdave44.com/sitemap-index-1.xml",
+}
 
 logging.basicConfig(level=logging.INFO)
 headers = {
@@ -17,52 +22,89 @@ headers = {
 }
 
 
-with sqlite3.connect("cryptics.sqlite3") as conn:
-    cursor = conn.cursor()
-    cursor.execute("SELECT url FROM fifteensquared;")
-    known_urls = cursor.fetchall()
-    known_urls = {url[0] for url in known_urls}
+def get_new_urls(site):
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT url FROM {site};")
+        known_urls = cursor.fetchall()
+        known_urls = {url[0] for url in known_urls}
 
-response = requests.get(SITEMAP_URL, headers=headers)
-soup = bs4.BeautifulSoup(response.text, "lxml")
-
-# FIXME: just 10 for now...
-sitemaps = list(
-    reversed(
-        [
-            sitemap.text
-            for sitemap in soup.find_all("sitemap")
-            if re.search(
-                r"https://www.fifteensquared.net/wp-sitemap-posts-post-10.xml",
-                sitemap.text,
+    if site == "fifteensquared":
+        response = requests.get(sitemap_url, headers=headers)
+        soup = bs4.BeautifulSoup(response.text, "lxml")
+        sitemaps = list(
+            reversed(
+                [
+                    sitemap.text
+                    for sitemap in soup.find_all("sitemap")
+                    if re.search(
+                        # Just 7/8/9/10 for now...
+                        r"https://www.fifteensquared.net/wp-sitemap-posts-post-(7|8|9|10).xml",
+                        sitemap.text,
+                    )
+                ]
             )
-        ]
-    )
-)
+        )
+        new_urls = []
+        for sitemap in sitemaps:
+            response = requests.get(sitemap, headers=headers)
+            soup = bs4.BeautifulSoup(response.text, "lxml")
+            urls = {url.text for url in soup.find_all("url")}
+            new_urls.extend(list(urls - known_urls))
 
-new_urls = []
-for sitemap in sitemaps:
-    response = requests.get(sitemap, headers=headers)
-    soup = bs4.BeautifulSoup(response.text, "lxml")
-    urls = {url.text for url in soup.find_all("url")}
-    new_urls.extend(list(urls - known_urls))
+    elif site == "bigdave44":
+        response = requests.get(sitemap_url, headers=headers)
+        soup = bs4.BeautifulSoup(response.text, "lxml")
+        sitemaps = list(
+            reversed(
+                [
+                    sitemap.text
+                    for sitemap in soup.find_all("loc")
+                    if re.search(
+                        # Just 4/5/6 for now...
+                        r"http://bigdave44.com/sitemap-(4|5|6).xml",
+                        sitemap.text,
+                    )
+                ]
+            )
+        )
+        new_urls = []
+        for sitemap in sitemaps:
+            response = requests.get(sitemap, headers=headers)
+            soup = bs4.BeautifulSoup(response.text, "lxml")
+            urls = {url.text for url in soup.find_all("loc")}
+            new_urls.extend(list(urls - known_urls))
 
-logging.info(f"Found {len(new_urls)} new urls.")
+    elif site == "times_xwd_times":
+        sitemap = SITEMAP_URLS[site]
+        response = requests.get(sitemap, headers=headers)
+        soup = bs4.BeautifulSoup(response.text, "lxml")
+        urls = {url.text for url in soup.find_all("loc")}
+        new_urls = list(urls - known_urls)
 
-for i, url in enumerate(new_urls):
-    logging.info(f"{i} / {len(new_urls)}:\t{url}")
-    response = requests.get(url, headers=headers)
+    return new_urls
 
-    try:
-        if response.ok:
-            with sqlite3.connect("cryptics.sqlite3") as conn:
-                cursor = conn.cursor()
-                sql = "INSERT INTO fifteensquared (url, html) VALUES (?, ?)"
-                cursor.execute(sql, (url, response.text))
-                conn.commit()
-        else:
-            logging.error(f"Response not OK for {url}")
-    except:
-        logging.error(f"Error inserting {url}")
 
-    time.sleep(20)
+if __name__ == "__main__":
+    for site, sitemap_url in SITEMAP_URLS.items():
+        new_urls = get_new_urls(site)
+
+        logging.info(f"Found {len(new_urls)} new urls.")
+
+        # Index `new_urls`
+        for i, url in enumerate(new_urls):
+            logging.info(f"{i} / {len(new_urls)}:\t{url}")
+            response = requests.get(url, headers=headers)
+            try:
+                if response.ok:
+                    with sqlite3.connect("cryptics.sqlite3") as conn:
+                        cursor = conn.cursor()
+                        sql = f"INSERT INTO {site} (url, html) VALUES (?, ?)"
+                        cursor.execute(sql, (url, response.text))
+                        conn.commit()
+                else:
+                    logging.error(f"Response not OK for {url}")
+            except:
+                logging.error(f"Error inserting {url}")
+
+            time.sleep(20)
