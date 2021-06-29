@@ -1,6 +1,6 @@
 import sqlite3
 import tqdm
-from cryptic_info.parse import try_parse
+from cryptic_index.parse import try_parse
 
 
 POST = "times_xwd_times"

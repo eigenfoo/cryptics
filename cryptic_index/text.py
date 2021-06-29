@@ -3,7 +3,7 @@ import string
 
 import bs4
 import pandas as pd
-from cryptic_info.tables import extract_definitions
+from cryptic_index.tables import extract_definitions
 
 
 def is_parsable_text_type_1(response):

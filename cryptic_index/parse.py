@@ -1,10 +1,10 @@
 import bs4
 
-from cryptic_info.text import (
+from cryptic_index.text import (
     is_parsable_text_type_1,
     parse_text_type_1,
 )
-from cryptic_info.tables import (
+from cryptic_index.tables import (
     is_parsable_table_type_1,
     parse_table_type_1,
     is_parsable_table_type_2,
@@ -14,7 +14,7 @@ from cryptic_info.tables import (
     is_parsable_table_type_4,
     parse_table_type_4,
 )
-from cryptic_info.lists import (
+from cryptic_index.lists import (
     is_parsable_list_type_1,
     parse_list_type_1,
     is_parsable_list_type_2,
@@ -22,7 +22,7 @@ from cryptic_info.lists import (
     is_parsable_list_type_3,
     parse_list_type_3,
 )
-from cryptic_info.utils import extract_puzzle_name, extract_puzzle_date, extract_puzzle_url
+from cryptic_index.utils import extract_puzzle_name, extract_puzzle_date, extract_puzzle_url
 
 
 def try_to_parse_as(html, is_parsable_func, parse_func):
