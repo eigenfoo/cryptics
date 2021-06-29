@@ -29,7 +29,7 @@ def get_new_urls(site):
         known_urls = cursor.fetchall()
         known_urls = {url[0] for url in known_urls}
 
-    if site == "fifteensquared":
+    if "fifteensquared" in site:
         response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         sitemaps = list(
@@ -52,7 +52,7 @@ def get_new_urls(site):
             urls = {url.text for url in soup.find_all("url")}
             new_urls.extend(list(urls - known_urls))
 
-    elif site == "bigdave44":
+    elif "bigdave44" in site:
         response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         sitemaps = list(
@@ -75,7 +75,7 @@ def get_new_urls(site):
             urls = {url.text for url in soup.find_all("loc")}
             new_urls.extend(list(urls - known_urls))
 
-    elif site == "times_xwd_times":
+    elif "times_xwd_times" in site:
         sitemap = SITEMAP_URLS[site]
         response = requests.get(sitemap, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
