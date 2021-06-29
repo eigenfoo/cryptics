@@ -5,7 +5,6 @@ from cryptic_index.parse import try_parse
 
 POST = "times_xwd_times"
 
-
 with sqlite3.connect("cryptics.sqlite3") as conn:
     cursor = conn.cursor()
     cursor.execute(f"SELECT url FROM raw_{POST} WHERE NOT is_parsed;")
@@ -16,7 +15,7 @@ for url in tqdm.tqdm(urls):
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT html FROM raw_{POST} WHERE url = '{url}';")
-        html, = cursor.fetchone()
+        (html,) = cursor.fetchone()
 
     try:
         data = try_parse(html, url)

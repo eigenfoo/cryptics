@@ -22,7 +22,11 @@ from cryptic_index.lists import (
     is_parsable_list_type_3,
     parse_list_type_3,
 )
-from cryptic_index.utils import extract_puzzle_name, extract_puzzle_date, extract_puzzle_url
+from cryptic_index.utils import (
+    extract_puzzle_name,
+    extract_puzzle_date,
+    extract_puzzle_url,
+)
 
 
 def try_to_parse_as(html, is_parsable_func, parse_func):

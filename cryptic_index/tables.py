@@ -189,7 +189,9 @@ def _parse_table_type_2(table, soup):
     # Cut out any extraneous columns
     table = table.iloc[:, :3]
 
-    table = table.rename(columns={0: "clue_number", 1: "answer", 2: "ClueAndAnnotation"})
+    table = table.rename(
+        columns={0: "clue_number", 1: "answer", 2: "ClueAndAnnotation"}
+    )
 
     # Append "a" to across clue numbers, and "d" to down clue numbers
     (across_index,) = np.where(table["clue_number"].str.lower() == "across")[0]

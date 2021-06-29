@@ -53,7 +53,9 @@ def parse_text_type_1(response):
             clue_number, clue = line_1.split(maxsplit=1)
             match = re.search("^[A-Z ]*", line_2)
             answer = line_2[: match.end()].strip()
-            annotation = line_2[match.end() :].strip(string.whitespace + string.punctuation)
+            annotation = line_2[match.end() :].strip(
+                string.whitespace + string.punctuation
+            )
 
             clue_numbers.append(clue_number.strip(string.punctuation) + clue_direction)
             clues.append(clue)
@@ -64,5 +66,5 @@ def parse_text_type_1(response):
 
     table = pd.DataFrame([clue_numbers, clues, definitions, answers, annotations]).T
     table.columns = ["clue_number", "clue", "definition", "answer", "annotation"]
-    
+
     return table
