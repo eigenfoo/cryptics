@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 
-def is_parsable_list_type_1(response):
+def is_parsable_list_type_1(html):
     """
     Checks that the HTML primarily consists of paragraphs like this:
 
@@ -25,7 +25,7 @@ def is_parsable_list_type_1(response):
      SUN (newspaper) round H (hotel)
     </p>
     """
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+    soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     paragraphs = entry_content.find_all("p")
     return (
@@ -41,8 +41,8 @@ def is_parsable_list_type_1(response):
     )
 
 
-def parse_list_type_1(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def parse_list_type_1(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     paragraphs = entry_content.find_all("p")
 
@@ -84,19 +84,19 @@ def parse_list_type_1(response):
                 re.search(re.escape(answer), paragraph.text).end() :
             ].strip()
 
-            data["ClueNumber"].append(
+            data["clue_number"].append(
                 clue_number.strip()
                 + (clue_direction if clue_number.strip().isnumeric() else "")
             )
-            data["Clue"].append(clue)
-            data["Definition"].append(definition)
-            data["Answer"].append(answer)
-            data["Annotation"].append(annotation)
+            data["clue"].append(clue)
+            data["definition"].append(definition)
+            data["answer"].append(answer)
+            data["annotation"].append(annotation)
     return pd.DataFrame(data)
 
 
-def is_parsable_list_type_2(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def is_parsable_list_type_2(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     smallest_divs = [
         div
@@ -107,8 +107,8 @@ def is_parsable_list_type_2(response):
     return 32 * 3 - 20 <= len(smallest_divs) <= 32 * 3 + 20
 
 
-def parse_list_type_2(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def parse_list_type_2(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     smallest_divs = [
         div
@@ -162,11 +162,11 @@ def parse_list_type_2(response):
             )
 
             if all([re.match("[0-9]+(a|d)", clue_number), answer.isupper()]):
-                data["ClueNumber"].append(clue_number)
-                data["Clue"].append(clue)
-                data["Definition"].append(definition)
-                data["Answer"].append(answer)
-                data["Annotation"].append(annotation)
+                data["clue_number"].append(clue_number)
+                data["clue"].append(clue)
+                data["definition"].append(definition)
+                data["answer"].append(answer)
+                data["annotation"].append(annotation)
                 i += 3
             else:
                 i += 1
@@ -176,8 +176,8 @@ def parse_list_type_2(response):
     return pd.DataFrame(data)
 
 
-def is_parsable_list_type_3(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def is_parsable_list_type_3(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     return (
         32 * 2 - 10
@@ -192,8 +192,8 @@ def is_parsable_list_type_3(response):
     )
 
 
-def parse_list_type_3(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def parse_list_type_3(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     paragraphs = entry_content.find_all("p")
 
@@ -241,11 +241,11 @@ def parse_list_type_3(response):
             )
 
             if all([re.match("[0-9]+(a|d)", clue_number), answer.isupper()]):
-                data["ClueNumber"].append(clue_number)
-                data["Clue"].append(clue)
-                data["Definition"].append(definition)
-                data["Answer"].append(answer)
-                data["Annotation"].append(annotation)
+                data["clue_number"].append(clue_number)
+                data["clue"].append(clue)
+                data["definition"].append(definition)
+                data["answer"].append(answer)
+                data["annotation"].append(annotation)
                 i += 2
             else:
                 i += 1

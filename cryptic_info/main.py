@@ -1,55 +1,34 @@
-import datetime
-import json
-import random
-import time
-import traceback
-
-import bs4
-import requests
+import sqlite3
+import tqdm
 from cryptic_info.parse import try_parse
 
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
-    "Accept-Encoding": "gzip",
-}
-
-with open("metadata.json", "r") as f:
-    metadata = json.load(f)
+POST = "times_xwd_times"
 
 
-while metadata["unindexed_urls"]:
-    url = metadata["unindexed_urls"].pop()
-    print(url)
+with sqlite3.connect("cryptics.sqlite3") as conn:
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT url FROM raw_{POST} WHERE NOT is_parsed;")
+    urls = [url for url, in cursor.fetchall()]
 
-    response = requests.get(url, headers=headers)
-    soup = bs4.BeautifulSoup(response.text, features="lxml")
-    print("Requested response")
 
-    data = None
+for url in tqdm.tqdm(urls):
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT html FROM raw_{POST} WHERE url = '{url}';")
+        html, = cursor.fetchone()
+
     try:
-        data = try_parse(response, url)
-    except Exception:
-        print(traceback.format_exc())
+        data = try_parse(html, url)
+    except:
+        pass
+
     if data is None:
-        print("Failed to parse")
-        metadata["errored_urls"].append(url)
-    else:
-        print("Successfully parsed")
-        with open("data.jsonl", "a+") as f:
-            data.to_json(f, lines=True, orient="records")
-            print("\n", file=f)
-        metadata["indexed_urls"].append(url)
+        continue
 
-    metadata["last_run"] = (
-        datetime.datetime.now().astimezone(datetime.timezone.utc).strftime("%c %Z")
-    )
-    with open("metadata.json", "w") as f:
-        json.dump(metadata, f)
-    print("Wrote metadata")
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        data.to_sql(f"parsed_{POST}", conn, if_exists="append", index=False)
 
-    print("Sleeping...")
-    sleep_time = 20  # random.uniform(20, 40)
-    time.sleep(sleep_time)
-    print(f"Slept for {sleep_time:.2f}s")
-    print(78 * "=")
+        cursor = conn.cursor()
+        sql = f"UPDATE raw_{POST} SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE url = '{url}';"
+        cursor.execute(sql)

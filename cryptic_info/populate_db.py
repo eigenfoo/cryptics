@@ -10,9 +10,9 @@ import bs4
 
 
 SITEMAP_URLS = {
-    # "fifteensquared": "https://www.fifteensquared.net/wp-sitemap.xml",
-    # "times_xwd_times": "https://times-xwd-times.livejournal.com/sitemap.xml",
-    "bigdave44": "http://bigdave44.com/sitemap-index-1.xml",
+    "raw_fifteensquared": "https://www.fifteensquared.net/wp-sitemap.xml",
+    "raw_times_xwd_times": "https://times-xwd-times.livejournal.com/sitemap.xml",
+    "raw_bigdave44": "http://bigdave44.com/sitemap-index-1.xml",
 }
 
 logging.basicConfig(level=logging.INFO)

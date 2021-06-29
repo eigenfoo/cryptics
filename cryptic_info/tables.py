@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 
-def is_parsable_table_type_1(response):
-    tables = pd.read_html(response.text)
+def is_parsable_table_type_1(html):
+    tables = pd.read_html(html)
     for table in tables:
         try:
             if _is_parsable_table_type_1(table):
@@ -79,9 +79,9 @@ def _is_parsable_table_type_1(table):
     )
 
 
-def parse_table_type_1(response):
-    tables = pd.read_html(response.text)
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def parse_table_type_1(html):
+    tables = pd.read_html(html)
+    soup = bs4.BeautifulSoup(html, "html.parser")
     for table in tables:
         if _is_parsable_table_type_1(table):
             return _parse_table_type_1(table, soup)
@@ -115,16 +115,16 @@ def _parse_table_type_1(table, soup):
 
     out = pd.DataFrame(
         data=np.transpose(np.array([clue_numbers, answers, clues, annotations])),
-        columns=["ClueNumber", "Answer", "Clue", "Annotation"],
+        columns=["clue_number", "answer", "clue", "annotation"],
     )
     if definitions is not None:
-        out["Definition"] = definitions
+        out["definition"] = definitions
 
     return out
 
 
-def is_parsable_table_type_2(response):
-    tables = pd.read_html(response.text)
+def is_parsable_table_type_2(html):
+    tables = pd.read_html(html)
     for table in tables:
         try:
             if _is_parsable_table_type_2(table):
@@ -177,9 +177,9 @@ def _is_parsable_table_type_2(table):
     )
 
 
-def parse_table_type_2(response):
-    tables = pd.read_html(response.text)
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def parse_table_type_2(html):
+    tables = pd.read_html(html)
+    soup = bs4.BeautifulSoup(html, "html.parser")
     for table in tables:
         if _is_parsable_table_type_2(table):
             return _parse_table_type_2(table, soup)
@@ -189,13 +189,13 @@ def _parse_table_type_2(table, soup):
     # Cut out any extraneous columns
     table = table.iloc[:, :3]
 
-    table = table.rename(columns={0: "ClueNumber", 1: "Answer", 2: "ClueAndAnnotation"})
+    table = table.rename(columns={0: "clue_number", 1: "answer", 2: "ClueAndAnnotation"})
 
     # Append "a" to across clue numbers, and "d" to down clue numbers
-    (across_index,) = np.where(table["ClueNumber"].str.lower() == "across")[0]
-    (down_index,) = np.where(table["ClueNumber"].str.lower() == "down")[0]
-    table.iloc[across_index + 1 : down_index]["ClueNumber"] += "a"
-    table.iloc[down_index + 1 :]["ClueNumber"] += "d"
+    (across_index,) = np.where(table["clue_number"].str.lower() == "across")[0]
+    (down_index,) = np.where(table["clue_number"].str.lower() == "down")[0]
+    table.iloc[across_index + 1 : down_index]["clue_number"] += "a"
+    table.iloc[down_index + 1 :]["clue_number"] += "d"
 
     # Drop rows that are entirely "Across" and "Down"
     table = table.drop([across_index, down_index]).reset_index(drop=True)
@@ -211,15 +211,15 @@ def _parse_table_type_2(table, soup):
     # Separate clue and annotation
     clues_and_annotations = pd.DataFrame(
         table["ClueAndAnnotation"].apply(separate_clue_and_annotation).tolist()
-    ).rename(columns={0: "Clue", 1: "Annotation"})
+    ).rename(columns={0: "clue", 1: "annotation"})
 
     table = pd.concat([table, clues_and_annotations], axis=1)
     table = table.drop(columns=["ClueAndAnnotation"])
 
     # Add definitions
-    definitions = extract_definitions(soup, table["Clue"], table_type=2)
+    definitions = extract_definitions(soup, table["clue"], table_type=2)
     if definitions is not None:
-        table["Definition"] = definitions
+        table["definition"] = definitions
 
     return table
 
@@ -282,8 +282,8 @@ def extract_definitions(soup, clues, table_type):
         return None
 
 
-def is_parsable_table_type_3(response):
-    tables = pd.read_html(response.text)
+def is_parsable_table_type_3(html):
+    tables = pd.read_html(html)
     for table in tables:
         try:
             if _is_parsable_table_type_3(table):
@@ -334,8 +334,8 @@ def _is_parsable_table_type_3(table):
     )
 
 
-def parse_table_type_3(response):
-    tables = pd.read_html(response.text)
+def parse_table_type_3(html):
+    tables = pd.read_html(html)
     for table in tables:
         if _is_parsable_table_type_3(table):
             return _parse_table_type_3(table)
@@ -353,20 +353,20 @@ def _parse_table_type_3(table):
 
     table = table.iloc[:, :4]  # Drop extraneous columns
 
-    table.columns = ["ClueNumber", "Answer", "Clue", "DefinitionAndAnnotation"]
-    table["ClueNumber"] = table["ClueNumber"].str.lower()
-    table["Definition"] = table["DefinitionAndAnnotation"].apply(
+    table.columns = ["clue_number", "answer", "clue", "DefinitionAndAnnotation"]
+    table["clue_number"] = table["clue_number"].str.lower()
+    table["definition"] = table["DefinitionAndAnnotation"].apply(
         lambda s: "/".join(s.split(" / ")[:-1])
     )
-    table["Annotation"] = table["DefinitionAndAnnotation"].apply(
+    table["annotation"] = table["DefinitionAndAnnotation"].apply(
         lambda s: s.split(" / ")[-1]
     )
     table = table.drop(columns=["DefinitionAndAnnotation"])
     return table
 
 
-def is_parsable_table_type_4(response):
-    tables = pd.read_html(response.text)
+def is_parsable_table_type_4(html):
+    tables = pd.read_html(html)
     for table in tables:
         try:
             if _is_parsable_table_type_4(table):
@@ -380,7 +380,7 @@ def _is_parsable_table_type_4(table):
     return all(
         [
             # The first row is ["No", "Clue", "Wordplay", "Entry"]
-            all(["No", "Clue", "Wordplay", "Entry"] == table.iloc[0]),
+            all(["No", "clue", "Wordplay", "Entry"] == table.iloc[0]),
             # The first column contains 'Across' and 'Down'
             all([any(x == table[0].str.lower()) for x in ["across", "down"]]),
             # The first column (except for the 'Across', 'Down' and 'No' rows)
@@ -409,9 +409,9 @@ def _is_parsable_table_type_4(table):
     )
 
 
-def parse_table_type_4(response):
-    tables = pd.read_html(response.text)
-    soup = bs4.BeautifulSoup(response.text, "lxml")
+def parse_table_type_4(html):
+    tables = pd.read_html(html)
+    soup = bs4.BeautifulSoup(html, "lxml")
     for table in tables:
         if _is_parsable_table_type_4(table):
             return _parse_table_type_4(table, soup)
@@ -426,7 +426,7 @@ def _parse_table_type_4(table, soup):
     # Drop the first row and the 'Across' and 'Down' rows
     table = table.drop([0, 1, down_index]).reset_index(drop=True)
     table = table.iloc[:, :4]  # Drop extraneous columns
-    table.columns = ["ClueNumber", "Clue", "Annotation", "AnswerWithExplanation"]
+    table.columns = ["clue_number", "clue", "annotation", "answer_with_explanation"]
 
     def separate_definition_and_explanation(s):
         match = re.search("^[A-Z'\- ]+", s.strip())
@@ -435,19 +435,19 @@ def _parse_table_type_4(table, soup):
         return definition, explanation
 
     definitions_and_explanations = pd.DataFrame(
-        table["AnswerWithExplanation"]
+        table["answer_with_explanation"]
         .apply(separate_definition_and_explanation)
         .tolist(),
-        columns=["Answer", "Explanation"],
+        columns=["answer", "explanation"],
     )
 
     # Append the explanation of the answer to the annotation
     table = pd.concat([table, definitions_and_explanations], axis=1)
-    table["Annotation"] = table["Annotation"] + " " + table["Explanation"]
-    table = table.drop(columns=["AnswerWithExplanation", "Explanation"])
+    table["annotation"] = table["annotation"] + " " + table["explanation"]
+    table = table.drop(columns=["answer_with_explanation", "explanation"])
 
-    definitions = extract_definitions(soup, table["Clue"], table_type=4)
+    definitions = extract_definitions(soup, table["clue"], table_type=4)
     if definitions is not None:
-        table["Definition"] = definitions
+        table["definition"] = definitions
 
     return table
