@@ -96,6 +96,26 @@ def parse_list_type_1(html):
 
 
 def is_parsable_list_type_2(html):
+    """
+    Checks that the HTML primarily consists of divs like this:
+
+    <div class="fts-subgroup">
+      <span class="fts-clue" style="color: #000000">3. </span>
+      <em>
+	<span class="fts-clue" style="color: #ff0000">Needs a slap when drunk </span>
+	<span class="fts-definition" style="color: #800080">walks by the sea</span>
+	<span class="fts-clue" style="color: #ff0000"> (10)</span>
+      </em>
+    </div>
+
+    <div class="fts-subgroup fts-answer">
+      <span style="color: #0000ff">ESPLANADES</span>
+    </div>
+
+    <div class="fts-subgroup">
+      <p><span style="color: #000000">An anagram (”when drunk’) of NEEDS A SLAP</span></p>
+    </div>
+    """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     smallest_divs = [
@@ -177,6 +197,22 @@ def parse_list_type_2(html):
 
 
 def is_parsable_list_type_3(html):
+    """
+    Checks that the HTML primarily consists of paragraphs like this (note that
+    this test is fairly crude: it merely counts the number of `p` tags that
+    contain `span` tags):
+
+    <p>
+      <span style="color: blue">1. <span style="text-decoration: underline">Advantageous</span> to be young with a lisp … (6)<br/></span>
+    </p>
+
+    <p>
+      <span style="color: #c00000"><strong>USEFUL</strong></span> : …
+      <strong><em>pronounced</em></strong>
+      (<span style="color: #0000ff">to be …<span style="color: #000000">) </span></span>
+      <strong><em><span style="color: blue">with a lisp</span></em></strong>, “youthful”(young).
+    </p>
+    """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     return (
