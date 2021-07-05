@@ -296,6 +296,17 @@ def is_parsable_table_type_3(html):
 
 
 def _is_parsable_table_type_3(table):
+    """
+    Identifies if a table looks like this:
+
+         Across  Across.1              Across.2    Across.3  Across.4
+     0  Clue No  Solution                  Clue  Definition       NaN
+     1       1A    SUBWAY  Undermining Boris...    S(UBW)AY       NaN
+                                    ...
+    17     Down      Down                  Down        Down      Down
+    18  Clue No  Solution                  Clue  Definition       NaN
+    19       1D    SAMPLE      Sperm donor’s...   S + AMPLE       NaN
+    """
     return all(
         [
             # The index looks like ['Across', 'Across.1', 'Across.2', ...]
@@ -420,6 +431,17 @@ def parse_table_type_4(html):
 
 
 def _parse_table_type_4(table, soup):
+    """
+    Identifies if a table looks like this:
+
+            0            1               2            3
+    0      No         Clue        Wordplay        Entry
+    1  Across          NaN             NaN          NaN
+    2       1   Frantic...   Anagram of...  LAST MINUTE
+                            ...
+    16   Down          NaN       NaN                NaN
+    17 	1   Delayed...  VIOLATE (...)          LATE
+    """
     # Append clue directions to clue numbers
     (down_index,) = np.where(table[0].str.lower() == "down")[0]
     table.iloc[2:down_index, 0] += "a"
