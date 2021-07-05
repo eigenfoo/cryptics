@@ -43,6 +43,13 @@ def try_to_parse_as(html, is_parsable_func, parse_func):
 
 def postprocess_data(data, html, source_url):
     soup = bs4.BeautifulSoup(html, "html.parser")
+
+    data["clue"] = data["clue"].str.strip()
+    data["answer"] = data["answer"].str.strip()
+    data["definition"] = data["definition"].str.strip()
+    data["annotation"] = data["annotation"].str.strip()
+    data["clue_number"] = data["clue_number"].str.strip()
+
     data["puzzle_name"] = extract_puzzle_name(source_url, soup)
     data["puzzle_date"] = extract_puzzle_date(source_url, soup)
     data["puzzle_url"] = extract_puzzle_url(soup)
