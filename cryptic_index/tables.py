@@ -247,6 +247,14 @@ def extract_definitions(soup, clues, table_type):
         ]
     elif table_type == 2 or table_type == 4:
         raw_definitions = [tag.text for tag in soup.find_all("u")]
+    elif table_type == 5:
+        raw_definitions = [tag.text for tag in soup.find_all("u") + soup.find_all(
+                "span",
+                attrs={
+                    "style": (lambda s: "underline" in s if s is not None else False)
+                },
+            )
+        ]
 
     definitions = []
     i = 0
@@ -552,10 +560,10 @@ def _parse_table_type_5(table, table_html):
         for clue_number in table.iloc[:, 0].dropna().tolist()
     ]
     clues = table.iloc[::2, 1].tolist()
-    definitions = extract_definitions(table_html, clues, 4)
+    definitions = extract_definitions(table_html, clues, 5)
 
     def separate_answer_and_annotation(s):
-        match = re.search("^[A-Z'\- ]+ - ", s.strip())
+        match = re.search("^[A-Z'\- ]+\s-\s", s.strip())
         answer = s[: match.end()].strip()
         annotation = s[match.end() :].strip()
         return answer.strip("- "), annotation
