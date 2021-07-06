@@ -6,13 +6,32 @@ import pandas as pd
 from cryptic_index.tables import extract_definitions
 
 
-def is_parsable_text_type_1(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def is_parsable_text_type_1(html):
+    """
+    Identifies if the text looks something like this:
+
+    ACROSS
+     
+    1	Dad, to irritate, gets into row about mending equipment (6,3)
+    REPAIR KIT - PA IRK in TIER reversed
+    6	Carbon copies for heads (5)
+    CAPES - C APES; geographical heads (promontories)
+                        ...
+
+    DOWN
+
+    1	Holy object oddly laid in playing field (5)
+    RELIC - L[a]I[d] in REC
+    2	Sweet complexion(7,3,5)
+    PEACHES AND CREAM - DD
+                        ...
+    """
+    soup = bs4.BeautifulSoup(html, "html.parser")
     asset_body = soup.find("div", attrs={"class": "asset-body"})
     for br in asset_body.find_all("br"):
         br.replace_with("\n")
 
-    if not 20 <= len(asset_body.find_all("u")) <= 40:
+    if not 20 <= len(asset_body.find_all("u")):
         return False
 
     for tag in asset_body.find_all():
@@ -24,8 +43,8 @@ def is_parsable_text_type_1(response):
     return True
 
 
-def parse_text_type_1(response):
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+def parse_text_type_1(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
     asset_body = soup.find("div", attrs={"class": "asset-body"})
     # if asset_body is None:
     #     asset_body = soup.find("article")

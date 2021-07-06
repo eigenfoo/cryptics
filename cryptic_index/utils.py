@@ -20,8 +20,8 @@ def extract_puzzle_name(source_url, soup):
             .replace("By", "by")
         )
     elif "times-xwd-times" in source_url:
-        title = soup.find_all("title")[0].text
-        puzzle_name = re.search("Times [0-9]+", title).group()
+        title = soup.find("title").text
+        puzzle_name = re.search("Times [A-Za-z ]*[0-9]+", title).group()
 
     return puzzle_name
 
