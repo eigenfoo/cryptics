@@ -439,8 +439,8 @@ def _parse_table_type_4(table, soup):
     1  Across          NaN             NaN          NaN
     2       1   Frantic...   Anagram of...  LAST MINUTE
                             ...
-    16   Down          NaN       NaN                NaN
-    17 	1   Delayed...  VIOLATE (...)          LATE
+    16   Down          NaN             NaN          NaN
+    17 	    1   Delayed...   Anagram of...         LATE
     """
     # Append clue directions to clue numbers
     (down_index,) = np.where(table[0].str.lower() == "down")[0]

@@ -102,9 +102,9 @@ def is_parsable_list_type_2(html):
     <div class="fts-subgroup">
       <span class="fts-clue" style="color: #000000">3. </span>
       <em>
-	<span class="fts-clue" style="color: #ff0000">Needs a slap when drunk </span>
-	<span class="fts-definition" style="color: #800080">walks by the sea</span>
-	<span class="fts-clue" style="color: #ff0000"> (10)</span>
+        <span class="fts-clue" style="color: #ff0000">Needs a slap when drunk </span>
+        <span class="fts-definition" style="color: #800080">walks by the sea</span>
+        <span class="fts-clue" style="color: #ff0000"> (10)</span>
       </em>
     </div>
 
