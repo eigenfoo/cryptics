@@ -13,6 +13,8 @@ from cryptic_index.tables import (
     parse_table_type_3,
     is_parsable_table_type_4,
     parse_table_type_4,
+    is_parsable_table_type_5,
+    parse_table_type_5,
 )
 from cryptic_index.lists import (
     is_parsable_list_type_1,
@@ -65,6 +67,7 @@ def try_parse(html, source_url):
         (is_parsable_table_type_2, parse_table_type_2),
         (is_parsable_table_type_3, parse_table_type_3),
         (is_parsable_table_type_4, parse_table_type_4),
+        (is_parsable_table_type_5, parse_table_type_5),
         (is_parsable_list_type_1, parse_list_type_1),
         (is_parsable_list_type_2, parse_list_type_2),
         (is_parsable_list_type_3, parse_list_type_3),

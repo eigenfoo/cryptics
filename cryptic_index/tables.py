@@ -258,13 +258,18 @@ def extract_definitions(soup, clues, table_type):
                 definitions[-1] = "/".join([definitions[-1], definition])
             else:
                 definitions.append(definition)
-        elif definition in clues[i + 1]:
-            definitions.append(definition)
-            i += 1
-        elif definition in clues[i + 2]:
-            definitions.append("nan")
-            raw_definitions = [definition] + raw_definitions
-            i += 1
+        else:
+            # Search for the next clue that contains this definition.
+            for j, clue in enumerate(clues[i + 1:]):
+                if definition in clue:
+                    if j == 0:
+                        definitions.append(definition)
+                        i += 1
+                    else:
+                        definitions.extend(j * ["nan"])
+                        raw_definitions = [definition] + raw_definitions
+                        i += j
+                    break
 
     if len(definitions) < len(clues):
         while len(definitions) < len(clues):
@@ -475,3 +480,92 @@ def _parse_table_type_4(table, soup):
         table["definition"] = definitions
 
     return table
+
+
+def is_parsable_table_type_5(html):
+    tables = pd.read_html(html)
+    num_parsable = 0
+    for table in tables:
+        try:
+            if _is_parsable_table_type_5(table):
+                num_parsable += 1
+                if num_parsable == 2:
+                    return True
+        except:
+            pass
+    return False
+
+
+def _is_parsable_table_type_5(table):
+    """
+    Identifies if a table looks like this:
+
+            0               1
+    0  Across          Across
+    1       1  High Barnet...
+    2     NaN    MOHAWK - ...
+    """
+    return all(
+        [
+            all(table.iloc[0].values == "Across")
+            or all(
+                table.iloc[0].values == "Down"
+            ),  # First row is either "Across" or "Down"
+            table.iloc[1:, 0]
+            .dropna()
+            .str.isnumeric()
+            .all(),  # First column is either "Across", "Down", nan or numeric
+            10 <= table.iloc[1:, 0].dropna().shape[0],  # At least 10 clues
+            table.shape[1] == 2,  # Exactly two columns
+            table.iloc[2::2, 1]
+            .apply(lambda s: bool(re.match("^[A-Z]+", s)))
+            .all(),  # Clues have answers
+        ]
+    )
+
+
+def parse_table_type_5(html):
+    tables = pd.read_html(html)
+    soup = bs4.BeautifulSoup(html, "lxml")
+    table_htmls = soup.find_all("table")
+
+    parsed_tables = []
+    for table, table_html in zip(tables, table_htmls):
+        try:
+            parsed_tables.append(_parse_table_type_5(table, table_html))
+        except:
+            continue
+
+    return pd.concat(parsed_tables).reset_index(drop=True)
+
+
+def _parse_table_type_5(table, table_html):
+    clue_direction = "a" if table.iloc[0, 0].lower() == "across" else "d"
+    table = table.iloc[1:]  # Delete row with just "Across" or "Down"
+
+    clue_numbers = [
+        clue_number + clue_direction
+        for clue_number in table.iloc[:, 0].dropna().tolist()
+    ]
+    clues = table.iloc[::2, 1].tolist()
+    definitions = extract_definitions(table_html, clues, 4)
+
+    def separate_answer_and_annotation(s):
+        match = re.search("^[A-Z'\- ]+ - ", s.strip())
+        answer = s[: match.end()].strip()
+        annotation = s[match.end() :].strip()
+        return answer.strip("- "), annotation
+
+    answers_and_annotations = table.iloc[1::2, 1].tolist()
+    answers_and_annotations = [
+        separate_answer_and_annotation(s) for s in answers_and_annotations
+    ]
+    answers = [s[0] for s in answers_and_annotations]
+    annotations = [s[1] for s in answers_and_annotations]
+
+    return pd.DataFrame(
+        data=np.transpose(
+            np.array([clue_numbers, clues, answers, definitions, annotations])
+        ),
+        columns=["clue_number", "clue", "answer", "definition", "annotation"],
+    )
