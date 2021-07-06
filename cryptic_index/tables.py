@@ -260,7 +260,7 @@ def extract_definitions(soup, clues, table_type):
                 definitions.append(definition)
         else:
             # Search for the next clue that contains this definition.
-            for j, clue in enumerate(clues[i + 1:]):
+            for j, clue in enumerate(clues[i + 1 :]):
                 if definition in clue:
                     if j == 0:
                         definitions.append(definition)
@@ -504,22 +504,26 @@ def _is_parsable_table_type_5(table):
     0  Across          Across
     1       1  High Barnet...
     2     NaN    MOHAWK - ...
+    3       2     Small PO...
+    4     NaN    SPOUSE - ...
     """
     return all(
         [
-            all(table.iloc[0].values == "Across")
-            or all(
-                table.iloc[0].values == "Down"
+            (
+                all(table.iloc[0].values == "Across")
+                or all(table.iloc[0].values == "Down")
             ),  # First row is either "Across" or "Down"
-            table.iloc[1:, 0]
-            .dropna()
-            .str.isnumeric()
-            .all(),  # First column is either "Across", "Down", nan or numeric
+            (
+                table.iloc[1:, 0].dropna().str.isnumeric().all()
+            ),  # First column is either "Across", "Down", nan or numeric
             10 <= table.iloc[1:, 0].dropna().shape[0],  # At least 10 clues
+            (
+                2 * table.iloc[1:, 0].isna().sum() == table.iloc[1:].shape[0]
+            ),  # First column is exactly half NaN
             table.shape[1] == 2,  # Exactly two columns
-            table.iloc[2::2, 1]
-            .apply(lambda s: bool(re.match("^[A-Z]+", s)))
-            .all(),  # Clues have answers
+            (
+                table.iloc[2::2, 1].apply(lambda s: bool(re.match("^[A-Z]+", s))).all()
+            ),  # Clues have answers
         ]
     )
 

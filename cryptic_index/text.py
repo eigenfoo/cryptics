@@ -11,7 +11,7 @@ def is_parsable_text_type_1(html):
     Identifies if the text looks something like this:
 
     ACROSS
-     
+
     1	Dad, to irritate, gets into row about mending equipment (6,3)
     REPAIR KIT - PA IRK in TIER reversed
     6	Carbon copies for heads (5)
