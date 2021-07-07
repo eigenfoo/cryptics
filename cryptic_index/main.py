@@ -1,5 +1,4 @@
 import sqlite3
-import tqdm
 from cryptic_index.parse import try_parse
 
 
@@ -11,20 +10,23 @@ with sqlite3.connect("cryptics.sqlite3") as conn:
     urls = [url for url, in cursor.fetchall()]
 
 
-for url in tqdm.tqdm(urls):
+for i, url in enumerate(urls):
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT html FROM raw_{POST} WHERE url = '{url}';")
         (html,) = cursor.fetchone()
 
     try:
+        print(f"{i} / {len(urls)}", url)
         data = try_parse(html, url)
     except:
         pass
 
     if data is None:
+        print("\tFailed.")
         continue
 
+    print("\tSuccess!")
     with sqlite3.connect("cryptics.sqlite3") as conn:
         data.to_sql(f"parsed_{POST}", conn, if_exists="append", index=False)
 
