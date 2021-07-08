@@ -261,7 +261,7 @@ def extract_definitions(soup, clues, table_type):
 
     while raw_definitions:
         definition = raw_definitions.pop(0)
-        if definition in clues[i]:
+        if definition.strip() in clues[i]:
             if len(definitions) > 0:
                 definitions[-1] = "/".join([definitions[-1], definition])
             else:
@@ -283,18 +283,18 @@ def extract_definitions(soup, clues, table_type):
         while len(definitions) < len(clues):
             definitions.append("nan")
     elif len(definitions) > len(clues):
-        return None
+        raise RuntimeError("More definitions than clues")
 
     if all(
         [
-            all([s.lower() in clue.lower() for s in definition.split("/")])
+            all([s.strip().lower() in clue.lower() for s in definition.strip().split("/")])
             or definition == "nan"
             for (definition, clue) in zip(definitions, clues)
         ]
     ):
         return definitions
     else:
-        return None
+        raise RuntimeError("Produced mismatched definitions and clues")
 
 
 def is_parsable_table_type_3(html):

@@ -27,33 +27,29 @@ def is_parsable_text_type_1(html):
                         ...
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
-    asset_body = soup.find("div", attrs={"class": "asset-body"})
+    asset_body = soup.find("div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]})
     for br in asset_body.find_all("br"):
         br.replace_with("\n")
 
-    if not 20 <= len(asset_body.find_all("u")):
-        return False
-
-    for tag in asset_body.find_all():
-        tag.extract()
-
-    if not 100 <= len(asset_body):
-        return False
-
-    return True
+    return (
+        # At least 20 underlined entries (definitions)
+        20 <= len(asset_body.find_all("u") + asset_body.find_all("span", attrs={"style": re.compile("underline")}))
+        # At least 20 "ANSWER - annotation" lines
+        and 20 <= len(re.findall(r"\s+[A-Z ]+\s*[-|—|–|:]\s+", asset_body.text))
+        # At least 20 "123a clue goes here (123)" lines
+        and 20 <= len(re.findall(r"\s+[0-9]+[a|d|]\s+.*\([0-9, ]+\)", asset_body.text))
+    )
 
 
 def parse_text_type_1(html):
     soup = bs4.BeautifulSoup(html, "html.parser")
-    asset_body = soup.find("div", attrs={"class": "asset-body"})
-    # if asset_body is None:
-    #     asset_body = soup.find("article")
+    asset_body = soup.find("div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]})
     for br in asset_body.find_all("br"):
         br.replace_with("\n")
 
-    # Get rid of preamble
     lines = [line.strip() for line in asset_body.text.splitlines() if line.strip()]
-    while lines[0].lower() not in ["across", "down"]:
+    # Get rid of preamble
+    while all([s not in lines[0].lower() for s in ["across", "down"]]):
         lines.pop(0)
 
     annotations = []
@@ -62,26 +58,40 @@ def parse_text_type_1(html):
     clue_numbers = []
 
     while lines:
-        if lines[0].lower() in ["across", "down"]:
+        line_1 = None
+        line_2 = None
+
+        if lines[0].strip(string.whitespace + "\ufeff") == "":
+            lines.pop(0)
+        elif lines[0].lower() in ["across", "down"]:
             clue_direction = lines.pop(0)
-            clue_direction = "a" if clue_direction.lower() == "across" else "d"
+            clue_direction = "a" if "across" in clue_direction.lower() else "d"
         else:
-            line_1 = lines.pop(0)
-            line_2 = lines.pop(0)
+            try:
+                line_1 = lines.pop(0)
+                line_2 = lines.pop(0)
 
-            clue_number, clue = line_1.split(maxsplit=1)
-            match = re.search("^[A-Z ]*", line_2)
-            answer = line_2[: match.end()].strip()
-            annotation = line_2[match.end() :].strip(
-                string.whitespace + string.punctuation
-            )
+                clue_number, clue = line_1.split(maxsplit=1)
+                if not re.search(r"[0-9]+(a|d)", clue_number.strip()):
+                    raise ValueError("Clue number does not seem correct.")
+                match = re.search("^[A-Z ]*", line_2)
+                answer = line_2[: match.end()].strip()
+                annotation = line_2[match.end() :].strip(
+                    string.whitespace + string.punctuation + "—"
+                )
 
-            clue_numbers.append(clue_number.strip(string.punctuation) + clue_direction)
-            clues.append(clue)
-            answers.append(answer)
-            annotations.append(annotation)
+                clue_number = clue_number.strip(string.whitespace + string.punctuation)
+                clue_numbers.append(clue_number + (clue_direction if clue_number[-1] not in ["a", "d"] else ""))
+                clues.append(clue)
+                answers.append(answer)
+                annotations.append(annotation)
+            except (IndexError, ValueError):
+                if line_2 is not None:
+                    lines = [line_2] + lines
+                else:
+                    break
 
-    definitions = extract_definitions(asset_body, clues, 2)
+    definitions = extract_definitions(asset_body, clues, 5)
 
     table = pd.DataFrame([clue_numbers, clues, definitions, answers, annotations]).T
     table.columns = ["clue_number", "clue", "definition", "answer", "annotation"]
