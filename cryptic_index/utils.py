@@ -7,6 +7,7 @@ PUZZLE_URL_REGEXES = [
     "^https?://puzzles.independent.co.uk/games/cryptic-crossword-independent/.+",
     "^https?://www.ft.com/content/.+",
     "^https?://www.thetimes.co.uk/puzzles/.+",
+    "^https?://puzzles.telegraph.co.uk/.+",
 ]
 
 
@@ -22,13 +23,18 @@ def extract_puzzle_name(source_url, soup):
     elif "times-xwd-times" in source_url:
         title = soup.find("title").text
         puzzle_name = re.search("^[A-Za-z ]*[0-9]+", title).group()
+    elif "bigdave44" in source_url:
+        title = soup.find("title").text
+        puzzle_name = re.search("^[A-Za-z ]*[0-9]+", title).group()
+        if "DT" in puzzle_name:
+            puzzle_name = puzzle_name.replace("DT", "Daily Telegraph")
 
     return puzzle_name
 
 
 def extract_puzzle_date(source_url, soup):
     puzzle_date = None
-    if "fifteensquared" in source_url:
+    if "fifteensquared" in source_url or "bigdave44" in source_url:
         puzzle_date = (
             re.search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
         )
