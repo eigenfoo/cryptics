@@ -255,6 +255,8 @@ def extract_definitions(soup, clues, table_type):
                 },
             )
         ]
+    else:
+        raise ValueError("`table_type` not recognized.")
 
     definitions = []
     i = 0
