@@ -64,5 +64,27 @@ CREATE TABLE IF NOT EXISTS parsed_bigdave44 (
   FOREIGN KEY (source_url) REFERENCES raw_bigdave44 (url)
 );
 
+CREATE VIEW IF NOT EXISTS raw AS
+SELECT *
+FROM raw_fifteensquared
+UNION ALL
+    SELECT *
+    FROM raw_times_xwd_times
+UNION ALL
+    SELECT *
+    FROM raw_bigdave44
+;
+
+CREATE VIEW IF NOT EXISTS parsed AS
+SELECT *
+FROM parsed_fifteensquared
+UNION ALL
+    SELECT *
+    FROM parsed_times_xwd_times
+UNION ALL
+    SELECT *
+    FROM parsed_bigdave44
+;
+
 PRAGMA VACUUM;
 PRAGMA OPTIMIZE;
