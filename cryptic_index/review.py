@@ -3,7 +3,7 @@ import sqlite3
 import readline
 
 
-POST = "bigdave44"
+POST = "fifteensquared"
 
 
 def rlinput(prompt, prefill=""):
@@ -46,7 +46,7 @@ while True:
 
     print(f"{row_id}")
     print()
-    print(clue)
+    print(f"       Clue: {clue}")
     print(f"     Answer: {answer}")
     print()
     print(f" Definition: {definition}")
@@ -84,9 +84,17 @@ while True:
                 puzzle_date = '{puzzle_date}',
                 puzzle_name = '{puzzle_name}',
                 puzzle_url = '{puzzle_url}',
-                source_url = '{source_url}',
-                is_reviewed = True,
-                datetime_reviewed = datetime('now')
+                source_url = '{source_url}'
             WHERE rowid = {row_id};
             """
             cursor.execute(sql)
+
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        cursor = conn.cursor()
+        sql = f"""
+        UPDATE parsed_{POST}
+        SET is_reviewed = True,
+            datetime_reviewed = datetime('now')
+        WHERE rowid = {row_id};
+        """
+        cursor.execute(sql)
