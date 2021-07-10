@@ -128,9 +128,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# OS-specific files
+.DS_Store
+
 # Data files
 *.sqlite
 *.sqlite3
 *.json
 *.jsonl
 *.txt
+
