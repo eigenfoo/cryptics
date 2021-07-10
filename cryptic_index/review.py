@@ -1,12 +1,21 @@
 import os
 import sqlite3
+import readline
 
 
 POST = "bigdave44"
 
 
+def rlinput(prompt, prefill=""):
+    readline.set_startup_hook(lambda: readline.insert_text(prefill))
+    try:
+        return input(prompt)
+    finally:
+        readline.set_startup_hook()
+
+
 def maybe_edit(field, current_value):
-    new_value = input(field + ": ")
+    new_value = rlinput(field + ": ", prefill=current_value)
     if new_value.strip():
         return new_value
     else:
@@ -19,7 +28,7 @@ while True:
 
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT rowid, * FROM parsed_{POST} ORDER BY RANDOM() LIMIT 1;")
+        cursor.execute(f"SELECT rowid, * FROM parsed_{POST} WHERE NOT is_reviewed ORDER BY RANDOM() LIMIT 1;")
         (
             row_id,
             clue,
@@ -38,13 +47,8 @@ while True:
     print(f"{row_id}")
     print()
     print(clue)
-    print("\n\tPress Enter to reveal answer\n")
-    _ = input()
-
     print(f"     Answer: {answer}")
-    print("\n\tPress Enter for definition, annotation and metadata\n")
-    _ = input()
-
+    print()
     print(f" Definition: {definition}")
     print(f" Annotation: {annotation}")
     print()
@@ -80,10 +84,9 @@ while True:
                 puzzle_date = '{puzzle_date}',
                 puzzle_name = '{puzzle_name}',
                 puzzle_url = '{puzzle_url}',
-                source_url = '{source_url}'
+                source_url = '{source_url}',
+                is_reviewed = True,
+                datetime_reviewed = datetime('now')
             WHERE rowid = {row_id};
             """
             cursor.execute(sql)
-            cursor.execute(
-                f"UPDATE raw_{POST} SET datetime_parsed = datetime('now') WHERE url = '{source_url}';"
-            )

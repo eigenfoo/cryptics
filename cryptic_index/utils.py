@@ -28,6 +28,8 @@ def extract_puzzle_name(source_url, soup):
         puzzle_name = re.search("^[A-Za-z ]*[0-9]+", title).group()
         if "DT" in puzzle_name:
             puzzle_name = puzzle_name.replace("DT", "Daily Telegraph")
+        elif "ST" in puzzle_name:
+            puzzle_name = puzzle_name.replace("ST", "Sunday Telegraph")
 
     return puzzle_name
 
