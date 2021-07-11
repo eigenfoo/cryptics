@@ -3,7 +3,7 @@ import sqlite3
 import readline
 
 
-POST = "fifteensquared"
+POST = "times_xwd_times"
 
 
 def rlinput(prompt, prefill=""):
@@ -28,7 +28,9 @@ while True:
 
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT rowid, * FROM parsed_{POST} WHERE NOT is_reviewed ORDER BY RANDOM() LIMIT 1;")
+        cursor.execute(
+            f"SELECT rowid, * FROM parsed_{POST} WHERE NOT is_reviewed ORDER BY RANDOM() LIMIT 1;"
+        )
         (
             row_id,
             clue,
@@ -58,7 +60,7 @@ while True:
     print(f" Puzzle URL: {puzzle_url}")
     print(f" Source URL: {source_url}")
     print()
-    print("\n\tEnter `e` to edit, or any other characters for another clue\n")
+    print("\n\tEnter `e` to edit, `d` to delete, or Enter for another clue\n")
     user_input = input()
 
     if user_input.strip() == "e":
@@ -71,30 +73,52 @@ while True:
         puzzle_name = maybe_edit("Puzzle Name", puzzle_name)
         puzzle_url = maybe_edit("Puzzle URL", puzzle_url)
         source_url = maybe_edit("Source URL", source_url)
-
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
             UPDATE parsed_{POST}
-            SET clue = '{clue}',
-                answer = '{answer}',
-                definition = '{definition}',
-                annotation = '{annotation}',
-                clue_number = '{clue_number}',
-                puzzle_date = '{puzzle_date}',
-                puzzle_name = '{puzzle_name}',
-                puzzle_url = '{puzzle_url}',
-                source_url = '{source_url}'
-            WHERE rowid = {row_id};
+            SET clue = ?,
+                answer = ?,
+                definition = ?,
+                annotation = ?,
+                clue_number = ?,
+                puzzle_date = ?,
+                puzzle_name = ?,
+                puzzle_url = ?,
+                source_url = ?
+            WHERE rowid = ?;
             """
-            cursor.execute(sql)
+            cursor.execute(
+                sql,
+                (
+                    clue,
+                    answer,
+                    definition,
+                    annotation,
+                    clue_number,
+                    puzzle_date,
+                    puzzle_name,
+                    puzzle_url,
+                    source_url,
+                    row_id,
+                ),
+            )
+    elif user_input.strip() == "d":
+        with sqlite3.connect("cryptics.sqlite3") as conn:
+            cursor = conn.cursor()
+            sql = f"""
+            DELETE FROM parsed_{POST}
+            WHERE rowid = ?;
+            """
+            cursor.execute(sql, (row_id,))
+            continue  # Row is deleted; don't update is_reviewed
 
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         sql = f"""
         UPDATE parsed_{POST}
         SET is_reviewed = True,
-            datetime_reviewed = datetime('now')
-        WHERE rowid = {row_id};
+            datetime_reviewed = datetime("now")
+        WHERE rowid = ?;
         """
-        cursor.execute(sql)
+        cursor.execute(sql, (row_id,))
