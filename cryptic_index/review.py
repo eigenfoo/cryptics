@@ -4,8 +4,8 @@ import sqlite3
 import time
 
 
-POST = "bigdave44"
-TRAIN = False
+POST = "fifteensquared"
+TRAIN = True
 
 
 class Colors:
@@ -32,14 +32,6 @@ def maybe_edit(field, current_value):
         return current_value
 
 
-os.system("cls" if os.name == "nt" else "clear")
-print(10 * "\n")
-print("             Welcome!")
-print()
-time.sleep(1)
-print(f"             Serving clues indexed from {Colors.RED}{POST}{Colors.ENDC}...")
-time.sleep(1)
-
 while True:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
@@ -63,7 +55,7 @@ while True:
             _,
         ) = cursor.fetchone()
 
-    print(f"{Colors.YELLOW}             {row_id}{Colors.ENDC}")
+    print(f"{Colors.YELLOW}             {POST}/{row_id}{Colors.ENDC}")
     print()
     print(f"{Colors.CYAN}       Clue:{Colors.ENDC} {clue}")
     print()
