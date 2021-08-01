@@ -22,16 +22,16 @@ def extract_puzzle_name(source_url, soup):
         )
     elif "times-xwd-times" in source_url:
         title = soup.find("title").text
-        puzzle_name = re.search("^[A-Za-z ]*[0-9]+", title).group()
+        puzzle_name = re.search("^[A-Za-z ]*[0-9,]+", title).group()
     elif "bigdave44" in source_url:
         title = soup.find("title").text
-        puzzle_name = re.search("^[A-Za-z ]*[0-9]+", title).group()
+        puzzle_name = re.search("^[A-Za-z ]*[0-9,]+", title).group()
         if "DT" in puzzle_name:
             puzzle_name = puzzle_name.replace("DT", "Daily Telegraph")
         elif "ST" in puzzle_name:
             puzzle_name = puzzle_name.replace("ST", "Sunday Telegraph")
 
-    return puzzle_name
+    return puzzle_name.strip()
 
 
 def extract_puzzle_date(source_url, soup):
@@ -46,7 +46,7 @@ def extract_puzzle_date(source_url, soup):
         )[0].text.strip()
         puzzle_date = dateutil.parser.parse(entry_date_div).strftime("%Y-%m-%d")
 
-    return puzzle_date
+    return puzzle_date.strip()
 
 
 def extract_puzzle_url(soup):
@@ -69,6 +69,6 @@ def extract_puzzle_url(soup):
         return None
 
     if len(puzzle_urls) == 1:
-        return puzzle_urls[0]
+        return puzzle_urls[0].strip()
 
     return None
