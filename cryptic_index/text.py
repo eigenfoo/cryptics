@@ -33,11 +33,14 @@ def is_parsable_text_type_1(html):
 
     return (
         # At least 20 underlined entries (definitions)
-        20 <= len(asset_body.find_all("u") + asset_body.find_all("span", attrs={"style": re.compile("underline")}))
+        20 <= len(asset_body.find_all("u") + asset_body.find_all("span", attrs={"style": re.compile("underline|color")}))
         # At least 20 "ANSWER - annotation" lines
-        and 20 <= len(re.findall(r"\s+[A-Z ]+\s*[-|—|–|:]\s+", asset_body.text))
-        # At least 20 "123a clue goes here (123)" lines
-        and 20 <= len(re.findall(r"\s+[0-9]+[a|d]?\s+.*\([0-9, ]+\)", asset_body.text))
+        and (
+            20 <= len(re.findall(r"\s+[A-Z ]+\s*[-|—|–|–|:]\s+", asset_body.text))
+            or 20 <= len(re.findall(r"\s+\{[A-Z ]+\}\s*", asset_body.text))
+        )
+        # At least 20 "123a. clue goes here (123)" lines
+        and 20 <= len(re.findall(r"\s+[0-9]+[a|d]?\.?\s+.*\([0-9, ]+\)", asset_body.text))
     )
 
 
@@ -74,8 +77,11 @@ def parse_text_type_1(html):
                 clue_number, clue = line_1.split(maxsplit=1)
                 if not re.search(r"[0-9]+[a|d]?", clue_number.strip()):
                     raise ValueError("Clue number does not seem correct.")
-                match = re.search("^[A-Z ]*", line_2)
-                answer = line_2[: match.end()].strip()
+                # FIXME: this regex needs some fixing... see notebook
+                # It splits multi-word answers into the answer and annotation
+                # column... it needs to be greedier!
+                match = re.search("^\{?\s?[A-Z ]+\s?\}?(\s[-|—|–|–|:]\s)?", line_2) 
+                answer = line_2[: match.end()].strip(string.whitespace + "-—–:{}")
                 annotation = line_2[match.end() :].strip(
                     string.whitespace + string.punctuation + "—"
                 )
@@ -85,7 +91,7 @@ def parse_text_type_1(html):
                 clues.append(clue)
                 answers.append(answer)
                 annotations.append(annotation)
-            except (IndexError, ValueError):
+            except (AttributeError, IndexError, ValueError):
                 if line_2 is not None:
                     lines = [line_2] + lines
                 else:
