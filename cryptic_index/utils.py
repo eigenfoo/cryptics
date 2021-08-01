@@ -25,7 +25,7 @@ def extract_puzzle_name(source_url, soup):
         puzzle_name = re.search("^[A-Za-z ]*[0-9,]+", title).group()
     elif "bigdave44" in source_url:
         title = soup.find("title").text
-        puzzle_name = re.search("^[A-Za-z ]*[0-9,]+", title).group()
+        puzzle_name = re.search("^[A-Za-z ]*[-—––:\s]*[0-9,]+", title).group()
         if "DT" in puzzle_name:
             puzzle_name = puzzle_name.replace("DT", "Daily Telegraph")
         elif "ST" in puzzle_name:
