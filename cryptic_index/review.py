@@ -6,7 +6,7 @@ import time
 
 
 POST = "bigdave44"
-TRAIN = True
+TRAIN = False
 
 
 class Colors:
@@ -41,7 +41,7 @@ def maybe_give_hints(answer):
     while user_input.lower().strip() == "l":
         if i >= len(answer):
             break
-        to_show = to_show[0:i] + answer[i] + to_show[i + 1:]
+        to_show = to_show[0:i] + answer[i] + to_show[i + 1 :]
         i += 2
         print(f"       {Colors.CYAN}Hint:{Colors.ENDC} {to_show}")
         user_input = input()
@@ -79,7 +79,9 @@ while True:
     print(f"{Colors.CYAN}       Clue:{Colors.ENDC} {clue}")
     print()
     if TRAIN:
-        print(f"             Press {Colors.RED}l{Colors.ENDC} to reveal a letter or {Colors.GREEN}Enter{Colors.ENDC} to reveal answer.")
+        print(
+            f"             Press {Colors.RED}l{Colors.ENDC} to reveal a letter or {Colors.GREEN}Enter{Colors.ENDC} to reveal answer."
+        )
         maybe_give_hints(answer)
 
     print(f"{Colors.CYAN}     Answer:{Colors.ENDC} {answer}")
