@@ -16,6 +16,7 @@ for i, url in enumerate(urls):
         cursor.execute(f"SELECT html FROM raw_{POST} WHERE url = '{url}';")
         (html,) = cursor.fetchone()
 
+    data = None
     try:
         print(f"{i} / {len(urls)}", url)
         data = try_parse(html, url)
