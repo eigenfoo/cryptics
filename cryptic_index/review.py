@@ -1,10 +1,11 @@
 import os
+import random
 import readline
 import sqlite3
 import time
 
 
-POST = "fifteensquared"
+POST = "bigdave44"
 TRAIN = True
 
 
@@ -32,6 +33,20 @@ def maybe_edit(field, current_value):
         return current_value
 
 
+def maybe_give_hints(answer):
+    answer = answer.upper().strip()
+    user_input = input()
+    to_show = len(answer) * "."
+    i = round(random.random())
+    while user_input.lower().strip() == "l":
+        if i >= len(answer):
+            break
+        to_show = to_show[0:i] + answer[i] + to_show[i + 1:]
+        i += 2
+        print(f"       {Colors.CYAN}Hint:{Colors.ENDC} {to_show}")
+        user_input = input()
+
+
 while True:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
@@ -57,33 +72,32 @@ while True:
 
     print(f"{Colors.YELLOW}             {POST}/{row_id}{Colors.ENDC}")
     print()
+    print(f"{Colors.CYAN}Puzzle Name:{Colors.ENDC} {puzzle_name}")
+    print(f"{Colors.CYAN}Puzzle Date:{Colors.ENDC} {puzzle_date}")
+    print(f"{Colors.CYAN}Clue Number:{Colors.ENDC} {clue_number}")
+    print()
     print(f"{Colors.CYAN}       Clue:{Colors.ENDC} {clue}")
     print()
     if TRAIN:
-        print(f"             Press {Colors.GREEN}Enter{Colors.ENDC} to reveal answer.")
-        print()
-        _ = input()
+        print(f"             Press {Colors.RED}l{Colors.ENDC} to reveal a letter or {Colors.GREEN}Enter{Colors.ENDC} to reveal answer.")
+        maybe_give_hints(answer)
+
     print(f"{Colors.CYAN}     Answer:{Colors.ENDC} {answer}")
     print()
     if TRAIN:
         print(
-            f"             Press {Colors.GREEN}Enter{Colors.ENDC} for definition, annotation and metadata."
+            f"             Press {Colors.GREEN}Enter{Colors.ENDC} for definition, annotation and URLs."
         )
-        print()
         _ = input()
     print(f"{Colors.CYAN} Definition:{Colors.ENDC} {definition}")
     print(f"{Colors.CYAN} Annotation:{Colors.ENDC} {annotation}")
     print()
-    print(f"{Colors.CYAN}Clue Number:{Colors.ENDC} {clue_number}")
-    print(f"{Colors.CYAN}Puzzle Date:{Colors.ENDC} {puzzle_date}")
-    print(f"{Colors.CYAN}Puzzle Name:{Colors.ENDC} {puzzle_name}")
     print(f"{Colors.CYAN} Puzzle URL:{Colors.ENDC} {puzzle_url}")
     print(f"{Colors.CYAN} Source URL:{Colors.ENDC} {source_url}")
     print()
     print(
         f"             Press {Colors.RED}e{Colors.ENDC} to edit, {Colors.RED}d{Colors.ENDC} to delete, {Colors.RED}s{Colors.ENDC} to skip, or {Colors.GREEN}Enter{Colors.ENDC} for another clue."
     )
-    print()
     user_input = input()
 
     if user_input.strip() == "e":
@@ -91,9 +105,9 @@ while True:
         answer = maybe_edit(f"     Answer", answer)
         definition = maybe_edit(f" Definition", definition)
         annotation = maybe_edit(f" Annotation", annotation)
-        clue_number = maybe_edit(f"Clue Number", clue_number)
-        puzzle_date = maybe_edit(f"Puzzle Date", puzzle_date)
         puzzle_name = maybe_edit(f"Puzzle Name", puzzle_name)
+        puzzle_date = maybe_edit(f"Puzzle Date", puzzle_date)
+        clue_number = maybe_edit(f"Clue Number", clue_number)
         puzzle_url = maybe_edit(f" Puzzle URL", puzzle_url)
         source_url = maybe_edit(f" Source URL", source_url)
         with sqlite3.connect("cryptics.sqlite3") as conn:
