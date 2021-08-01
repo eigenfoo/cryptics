@@ -4,6 +4,15 @@ import readline
 
 
 POST = "times_xwd_times"
+TRAIN = True
+
+
+class colors:
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    ENDC = '\033[0m'
 
 
 def rlinput(prompt, prefill=""):
@@ -46,21 +55,31 @@ while True:
             _,
         ) = cursor.fetchone()
 
-    print(f"{row_id}")
+    print(f"{colors.YELLOW}{row_id}{colors.ENDC}")
     print()
-    print(f"       Clue: {clue}")
-    print(f"     Answer: {answer}")
+    print(f"{colors.CYAN}       Clue:{colors.ENDC} {clue}")
     print()
-    print(f" Definition: {definition}")
-    print(f" Annotation: {annotation}")
+    if TRAIN:
+        print("\t\tPress Enter to reveal answer")
+        print()
+        _ = input()
+    print(f"{colors.CYAN}     Answer:{colors.ENDC} {answer}")
     print()
-    print(f"Clue Number: {clue_number}")
-    print(f"Puzzle Date: {puzzle_date}")
-    print(f"Puzzle Name: {puzzle_name}")
-    print(f" Puzzle URL: {puzzle_url}")
-    print(f" Source URL: {source_url}")
+    if TRAIN:
+        print("\t\tPress Enter for definition, annotation and metadata")
+        print()
+        _ = input()
+    print(f"{colors.CYAN} Definition:{colors.ENDC} {definition}")
+    print(f"{colors.CYAN} Annotation:{colors.ENDC} {annotation}")
     print()
-    print("\n\tEnter `e` to edit, `d` to delete, or Enter for another clue\n")
+    print(f"{colors.CYAN}Clue Number:{colors.ENDC} {clue_number}")
+    print(f"{colors.CYAN}Puzzle Date:{colors.ENDC} {puzzle_date}")
+    print(f"{colors.CYAN}Puzzle Name:{colors.ENDC} {puzzle_name}")
+    print(f"{colors.CYAN} Puzzle URL:{colors.ENDC} {puzzle_url}")
+    print(f"{colors.CYAN} Source URL:{colors.ENDC} {source_url}")
+    print()
+    print("\t\tEnter `e` to edit, `d` to delete, or Enter for another clue")
+    print()
     user_input = input()
 
     if user_input.strip() == "e":
