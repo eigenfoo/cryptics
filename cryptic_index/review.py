@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 import readline
@@ -5,8 +6,12 @@ import sqlite3
 import time
 
 
-POST = "bigdave44"
-TRAIN = False
+parser = argparse.ArgumentParser()
+parser.add_argument("--source", type=str, nargs="?", default="times_xwd_times")
+parser.add_argument("--train", dest="train", action="store_true")
+parser.add_argument("--no-train", dest="train", action="store_false")
+parser.set_defaults(train=True)
+args = parser.parse_args()
 
 
 class Colors:
@@ -53,7 +58,7 @@ while True:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(
-            f"SELECT rowid, * FROM parsed_{POST} WHERE NOT is_reviewed ORDER BY RANDOM() LIMIT 1;"
+            f"SELECT rowid, * FROM parsed_{args.source} WHERE NOT is_reviewed ORDER BY RANDOM() LIMIT 1;"
         )
         (
             row_id,
@@ -70,7 +75,7 @@ while True:
             _,
         ) = cursor.fetchone()
 
-    print(f"{Colors.YELLOW}             {POST}/{row_id}{Colors.ENDC}")
+    print(f"{Colors.YELLOW}             {args.source}/{row_id}{Colors.ENDC}")
     print()
     print(f"{Colors.CYAN}Puzzle Name:{Colors.ENDC} {puzzle_name}")
     print(f"{Colors.CYAN}Puzzle Date:{Colors.ENDC} {puzzle_date}")
@@ -78,7 +83,7 @@ while True:
     print()
     print(f"{Colors.CYAN}       Clue:{Colors.ENDC} {clue}")
     print()
-    if TRAIN:
+    if args.train:
         print(
             f"             Press {Colors.RED}l{Colors.ENDC} to reveal a letter or {Colors.GREEN}Enter{Colors.ENDC} to reveal answer."
         )
@@ -86,7 +91,7 @@ while True:
 
     print(f"{Colors.CYAN}     Answer:{Colors.ENDC} {answer}")
     print()
-    if TRAIN:
+    if args.train:
         print(
             f"             Press {Colors.GREEN}Enter{Colors.ENDC} for definition, annotation and URLs."
         )
@@ -115,7 +120,7 @@ while True:
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
-            UPDATE parsed_{POST}
+            UPDATE parsed_{args.source}
             SET clue = ?,
                 answer = ?,
                 definition = ?,
@@ -146,7 +151,7 @@ while True:
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
-            DELETE FROM parsed_{POST}
+            DELETE FROM parsed_{args.source}
             WHERE rowid = ?;
             """
             cursor.execute(sql, (row_id,))
@@ -157,7 +162,7 @@ while True:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         sql = f"""
-        UPDATE parsed_{POST}
+        UPDATE parsed_{args.source}
         SET is_reviewed = True,
             datetime_reviewed = datetime("now")
         WHERE rowid = ?;
