@@ -50,7 +50,9 @@ def postprocess_data(data, html, source_url):
     data["answer"] = data["answer"].str.strip()
     data["definition"] = data["definition"].str.strip()
     data["annotation"] = data["annotation"].str.strip()
-    data["clue_number"] = data["clue_number"].str.strip()
+    # Instead of removing periods in each parsing function, we can just remove
+    # them here - it's simpler.
+    data["clue_number"] = data["clue_number"].str.strip().replace(".", "")
 
     data["puzzle_name"] = extract_puzzle_name(source_url, soup)
     data["puzzle_date"] = extract_puzzle_date(source_url, soup)
