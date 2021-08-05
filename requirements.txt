@@ -1,9 +1,11 @@
 beautifulsoup4
+datasette
 ipdb
 jupyter
 lxml
 nb_black
 numpy
 pandas
+puzpy
 requests
 -e .
