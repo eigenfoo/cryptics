@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import random
 import readline
@@ -52,6 +53,15 @@ def maybe_give_hints(answer):
         user_input = input()
 
 
+if args.train:
+    os.system("cls" if os.name == "nt" else "clear")
+    print(2 * "\n")
+    players = input(f"{Colors.RED}             Who's playing? Enter names separated by spaces.\n              > {Colors.ENDC}")
+    players = players.split()
+    with open("scores.json", "r") as f:
+        scores = json.load(f)
+
+
 while True:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
@@ -74,6 +84,12 @@ while True:
             _,
             _,
         ) = cursor.fetchone()
+
+
+    if args.train:
+        for player in players:
+            a, b = scores[player]
+            print(70 * " " + f"{Colors.RED}{player.title().rjust(10)} {a} / {b} ({a / b:.2f}){Colors.ENDC}")
 
     print(f"{Colors.YELLOW}             {args.source}/{row_id}{Colors.ENDC}")
     print()
@@ -101,6 +117,26 @@ while True:
     print()
     print(f"{Colors.CYAN} Puzzle URL:{Colors.ENDC} {puzzle_url}")
     print(f"{Colors.CYAN} Source URL:{Colors.ENDC} {source_url}")
+
+    if args.train:
+        print()
+        winners = input(f"{Colors.RED}             So, who got that one right?\n              > {Colors.ENDC}")
+        print()
+        winners = winners.split()
+        losers = set(players) - set(winners)
+        for winner in winners:
+            if player in scores.keys():
+                a, b = scores[winner]
+                scores[winner] = (a + 1, b + 1)
+                print(f"{Colors.RED}             Congrats, {winner.title()}!{Colors.ENDC}")
+        for loser in losers:
+            if loser in scores.keys():
+                a, b = scores[loser]
+                scores[loser] = (a, b + 1)
+                print(f"{Colors.RED}             Oof, {loser.title()}...{Colors.ENDC}")
+        with open("scores.json", "w") as f:
+            json.dump(scores, f)
+
     print()
     print(
         f"             Press {Colors.RED}e{Colors.ENDC} to edit, {Colors.RED}d{Colors.ENDC} to delete, {Colors.RED}s{Colors.ENDC} to skip, or {Colors.GREEN}Enter{Colors.ENDC} for another clue."
