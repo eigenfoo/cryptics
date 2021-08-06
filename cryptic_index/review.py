@@ -39,7 +39,7 @@ def maybe_edit(field, current_value):
 
 
 def maybe_give_hints(answer):
-    answer = answer.upper().strip()
+    answer = answer.upper().strip().replace(" ", "").replace("-", "")
     user_input = input()
     to_show = len(answer) * "."
     i = round(random.random())
@@ -108,15 +108,15 @@ while True:
     user_input = input()
 
     if user_input.strip() == "e":
-        clue = maybe_edit(f"       Clue", clue)
-        answer = maybe_edit(f"     Answer", answer)
-        definition = maybe_edit(f" Definition", definition)
-        annotation = maybe_edit(f" Annotation", annotation)
-        puzzle_name = maybe_edit(f"Puzzle Name", puzzle_name)
-        puzzle_date = maybe_edit(f"Puzzle Date", puzzle_date)
-        clue_number = maybe_edit(f"Clue Number", clue_number)
-        puzzle_url = maybe_edit(f" Puzzle URL", puzzle_url)
-        source_url = maybe_edit(f" Source URL", source_url)
+        clue = maybe_edit("       Clue", clue)
+        answer = maybe_edit("     Answer", answer)
+        definition = maybe_edit(" Definition", definition)
+        annotation = maybe_edit(" Annotation", annotation)
+        puzzle_name = maybe_edit("Puzzle Name", puzzle_name)
+        puzzle_date = maybe_edit("Puzzle Date", puzzle_date)
+        clue_number = maybe_edit("Clue Number", clue_number)
+        puzzle_url = maybe_edit(" Puzzle URL", puzzle_url)
+        source_url = maybe_edit(" Source URL", source_url)
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
