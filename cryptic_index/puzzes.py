@@ -1,5 +1,4 @@
 import argparse
-import logging
 import os
 import pathlib
 import sqlite3
@@ -9,6 +8,13 @@ from glob import glob
 import numpy as np
 import pandas as pd
 import puz
+
+
+def last_dirname_basename(path):
+    return os.path.join(
+        os.path.basename(os.path.dirname(path)),
+        os.path.basename(path),
+    )
 
 
 def parse_puz(puz_filename):
@@ -39,13 +45,7 @@ def parse_puz(puz_filename):
     ]
     puzzle_names = [puzzle.title for _ in range(len(clues))]
     puzzle_urls = [None for _ in range(len(clues))]
-    source_urls = [
-        os.path.join(
-            os.path.basename(os.path.dirname(puz_filename)),
-            os.path.basename(puz_filename),
-        )
-        for _ in range(len(clues))
-    ]
+    source_urls = [last_dirname_basename(puz_filename) for _ in range(len(clues))]
 
     return pd.DataFrame(
         data=np.array(
@@ -81,9 +81,20 @@ if __name__ == "__main__":
     parser.add_argument("--source", type=str, required=True)
     args = parser.parse_args()
 
-    puz_filenames = sorted(glob(args.puz_glob))
-    for puz_filename in puz_filenames:
-        logging.info(f"Parsing {puz_filename}")
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT DISTINCT source_url FROM parsed_{args.source};")
+        known_urls = cursor.fetchall()
+        known_urls = {url[0] for url in known_urls}
+
+    new_puz_filenames = {
+        puz_filename
+        for puz_filename in glob(args.puz_glob)
+        if last_dirname_basename(puz_filename) not in known_urls
+    }
+
+    for puz_filename in new_puz_filenames:
+        print(f"Parsing {puz_filename}")
         data = parse_puz(puz_filename)
         with sqlite3.connect("cryptics.sqlite3") as conn:
             data.to_sql(f"parsed_{args.source}", conn, if_exists="append", index=False)
