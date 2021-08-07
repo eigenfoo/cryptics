@@ -12,7 +12,9 @@ parser.add_argument("--source", type=str, nargs="?", default="times_xwd_times")
 parser.add_argument("--train", dest="train", action="store_true")
 parser.add_argument("--no-train", dest="train", action="store_false")
 parser.set_defaults(train=True)
-parser.add_argument("--where", type=str, default="definition != 'nan' and not is_reviewed")
+parser.add_argument(
+    "--where", type=str, default="definition != 'nan' and not is_reviewed"
+)
 args = parser.parse_args()
 
 
@@ -57,7 +59,9 @@ def maybe_give_hints(answer):
 if args.train:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
-    players = input(f"{Colors.RED}             Who's playing? Enter names separated by spaces.\n              > {Colors.ENDC}")
+    players = input(
+        f"{Colors.RED}             Who's playing? Enter names separated by spaces.\n              > {Colors.ENDC}"
+    )
     players = players.split()
     with open("scores.json", "r") as f:
         scores = json.load(f)
@@ -86,11 +90,13 @@ while True:
             _,
         ) = cursor.fetchone()
 
-
     if args.train:
         for player in players:
             a, b = scores[player]
-            print(70 * " " + f"{Colors.RED}{player.title().rjust(10)} {a} / {b} ({a / b:.2f}){Colors.ENDC}")
+            print(
+                70 * " "
+                + f"{Colors.RED}{player.title().rjust(10)} {a} / {b} ({a / b:.2f}){Colors.ENDC}"
+            )
 
     print(f"{Colors.YELLOW}             {args.source}/{row_id}{Colors.ENDC}")
     print()
@@ -121,7 +127,9 @@ while True:
 
     if args.train:
         print()
-        winners = input(f"{Colors.RED}             So, who got that one right?\n              > {Colors.ENDC}")
+        winners = input(
+            f"{Colors.RED}             So, who got that one right?\n              > {Colors.ENDC}"
+        )
         print()
         winners = winners.split()
         losers = set(players) - set(winners)
@@ -129,7 +137,9 @@ while True:
             if player in scores.keys():
                 a, b = scores[winner]
                 scores[winner] = (a + 1, b + 1)
-                print(f"{Colors.RED}             Congrats, {winner.title()}!{Colors.ENDC}")
+                print(
+                    f"{Colors.RED}             Congrats, {winner.title()}!{Colors.ENDC}"
+                )
         for loser in losers:
             if loser in scores.keys():
                 a, b = scores[loser]

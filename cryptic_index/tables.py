@@ -248,7 +248,10 @@ def extract_definitions(soup, clues, table_type):
     elif table_type == 2 or table_type == 4:
         raw_definitions = [tag.text for tag in soup.find_all("u")]
     elif table_type == 5:
-        raw_definitions = [tag.text for tag in soup.find_all("u") + soup.find_all(
+        raw_definitions = [
+            tag.text
+            for tag in soup.find_all("u")
+            + soup.find_all(
                 "span",
                 attrs={
                     "style": (lambda s: "underline" in s if s is not None else False)
@@ -289,7 +292,12 @@ def extract_definitions(soup, clues, table_type):
 
     if all(
         [
-            all([s.strip().lower() in clue.lower() for s in definition.strip().split("/")])
+            all(
+                [
+                    s.strip().lower() in clue.lower()
+                    for s in definition.strip().split("/")
+                ]
+            )
             or definition == "nan"
             for (definition, clue) in zip(definitions, clues)
         ]

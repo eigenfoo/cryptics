@@ -27,26 +27,37 @@ def is_parsable_text_type_1(html):
                         ...
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
-    asset_body = soup.find("div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]})
+    asset_body = soup.find(
+        "div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]}
+    )
     for br in asset_body.find_all("br"):
         br.replace_with("\n")
 
     return (
         # At least 20 underlined entries (definitions)
-        20 <= len(asset_body.find_all("u") + asset_body.find_all("span", attrs={"style": re.compile("underline|color")}))
+        20
+        <= len(
+            asset_body.find_all("u")
+            + asset_body.find_all(
+                "span", attrs={"style": re.compile("underline|color")}
+            )
+        )
         # At least 20 "ANSWER - annotation" lines
         and (
             20 <= len(re.findall(r"\s+[A-Z ]+\s*[-|—|–|–|:]\s+", asset_body.text))
             or 20 <= len(re.findall(r"\s+\{[A-Z ]+\}\s*", asset_body.text))
         )
         # At least 20 "123a. clue goes here (123)" lines
-        and 20 <= len(re.findall(r"\s+[0-9]+[a|d]?\.?\s+.*\([0-9, ]+\)", asset_body.text))
+        and 20
+        <= len(re.findall(r"\s+[0-9]+[a|d]?\.?\s+.*\([0-9, ]+\)", asset_body.text))
     )
 
 
 def parse_text_type_1(html):
     soup = bs4.BeautifulSoup(html, "html.parser")
-    asset_body = soup.find("div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]})
+    asset_body = soup.find(
+        "div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]}
+    )
     for br in asset_body.find_all("br"):
         br.replace_with("\n")
 
@@ -80,14 +91,17 @@ def parse_text_type_1(html):
                 # FIXME: this regex needs some fixing... see notebook
                 # It splits multi-word answers into the answer and annotation
                 # column... it needs to be greedier!
-                match = re.search("^\{?\s?[A-Z ]+\s?\}?(\s[-|—|–|–|:]\s)?", line_2) 
+                match = re.search("^\{?\s?[A-Z ]+\s?\}?(\s[-|—|–|–|:]\s)?", line_2)
                 answer = line_2[: match.end()].strip(string.whitespace + "-—–:{}")
                 annotation = line_2[match.end() :].strip(
                     string.whitespace + string.punctuation + "—"
                 )
 
                 clue_number = clue_number.strip(string.whitespace + string.punctuation)
-                clue_numbers.append(clue_number + (clue_direction if clue_number[-1] not in ["a", "d"] else ""))
+                clue_numbers.append(
+                    clue_number
+                    + (clue_direction if clue_number[-1] not in ["a", "d"] else "")
+                )
                 clues.append(clue)
                 answers.append(answer)
                 annotations.append(annotation)
