@@ -95,7 +95,12 @@ def get_new_urls(site):
         sitemap = SITEMAP_URLS[site]
         response = requests.get(sitemap, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
-        urls = {url["href"] for url in soup.find_all("a", attrs={"href": lambda s: "puz" in s if s else False})}
+        urls = {
+            url["href"]
+            for url in soup.find_all(
+                "a", attrs={"href": lambda s: "puz" in s if s else False}
+            )
+        }
         new_urls = list(urls - known_urls)
 
     return new_urls
@@ -112,14 +117,20 @@ if __name__ == "__main__":
             logging.info(f"{i} / {len(new_urls)}:\t{url}")
             response = requests.get(url, headers=headers)
             try:
-                if response.ok:
-                    with sqlite3.connect("cryptics.sqlite3") as conn:
-                        cursor = conn.cursor()
-                        sql = f"INSERT INTO {site} (url, {FORMATS[site]}) VALUES (?, ?)"
-                        cursor.execute(sql, (url, response.text))
-                        conn.commit()
-                else:
+                if not response.ok:
                     logging.error(f"Response not OK for {url}")
+                    continue
+
+                with sqlite3.connect("cryptics.sqlite3") as conn:
+                    cursor = conn.cursor()
+                    sql = f"INSERT INTO {site} (url, {FORMATS[site]}) VALUES (?, ?)"
+                    if FORMATS[site] == "html":
+                        cursor.execute(sql, (url, response.text))
+                    elif FORMATS[site] == "puz":
+                        cursor.execute(
+                            sql, (url, sqlite3.Binary(response.text.encode()))
+                        )
+                    conn.commit()
             except:
                 logging.error(f"Error inserting {url}")
 
