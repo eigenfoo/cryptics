@@ -102,6 +102,22 @@ CREATE TABLE IF NOT EXISTS parsed_the_browser (
   datetime_reviewed TIMESTAMP DEFAULT NULL
 );
 
+-- Out of Left Field
+-- https://www.leftfieldcryptics.com/
+-- https://www.patreon.com/leftfieldcryptics/posts
+CREATE TABLE IF NOT EXISTS parsed_out_of_left_field (
+  clue TEXT,
+  answer TEXT,
+  definition TEXT,
+  annotation TEXT,
+  clue_number TEXT,
+  puzzle_date TEXT,
+  puzzle_name TEXT,
+  puzzle_url TEXT,
+  source_url TEXT NOT NULL,
+  is_reviewed BOOLEAN DEFAULT FALSE,
+  datetime_reviewed TIMESTAMP DEFAULT NULL
+);
 
 CREATE VIEW IF NOT EXISTS clues AS
 SELECT *
@@ -118,4 +134,7 @@ UNION ALL
 UNION ALL
     SELECT *
     FROM parsed_the_browser
+UNION ALL
+    SELECT *
+    FROM parsed_out_of_left_field
 ;
