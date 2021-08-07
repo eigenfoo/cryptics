@@ -67,6 +67,17 @@ queries = {
             "select printf('%.1f', 100.0 * (select count(1) from parsed_times_xwd_times where is_reviewed) / (select count(1) from parsed_times_xwd_times));",
         ),
     ],
+    "cru_cryptics": [
+        ("# clues", "select count(1) from parsed_cru_cryptics;"),
+        (
+            "# clues reviewed",
+            "select count(1) from parsed_cru_cryptics where is_reviewed;",
+        ),
+        (
+            "% clues reviewed",
+            "select printf('%.1f', 100.0 * (select count(1) from parsed_cru_cryptics where is_reviewed) / (select count(1) from parsed_cru_cryptics));",
+        ),
+    ],
 }
 
 
