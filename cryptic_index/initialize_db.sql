@@ -86,6 +86,22 @@ CREATE TABLE IF NOT EXISTS parsed_cru_cryptics (
   datetime_reviewed TIMESTAMP DEFAULT NULL
 );
 
+-- The Browser
+-- https://thebrowser.com/crossword-archive/
+CREATE TABLE IF NOT EXISTS parsed_the_browser (
+  clue TEXT,
+  answer TEXT,
+  definition TEXT,
+  annotation TEXT,
+  clue_number TEXT,
+  puzzle_date TEXT,
+  puzzle_name TEXT,
+  puzzle_url TEXT,
+  source_url TEXT NOT NULL,
+  is_reviewed BOOLEAN DEFAULT FALSE,
+  datetime_reviewed TIMESTAMP DEFAULT NULL
+);
+
 
 CREATE VIEW IF NOT EXISTS clues AS
 SELECT *
@@ -99,7 +115,7 @@ UNION ALL
 UNION ALL
     SELECT *
     FROM parsed_cru_cryptics
+UNION ALL
+    SELECT *
+    FROM parsed_the_browser
 ;
-
-PRAGMA VACUUM;
-PRAGMA OPTIMIZE;
