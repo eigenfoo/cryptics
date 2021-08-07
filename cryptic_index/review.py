@@ -12,6 +12,7 @@ parser.add_argument("--source", type=str, nargs="?", default="times_xwd_times")
 parser.add_argument("--train", dest="train", action="store_true")
 parser.add_argument("--no-train", dest="train", action="store_false")
 parser.set_defaults(train=True)
+parser.add_argument("--where", type=str, default="definition != 'nan' and not is_reviewed")
 args = parser.parse_args()
 
 
@@ -68,7 +69,7 @@ while True:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(
-            f"SELECT rowid, * FROM parsed_{args.source} WHERE NOT is_reviewed ORDER BY RANDOM() LIMIT 1;"
+            f"SELECT rowid, * FROM parsed_{args.source} WHERE {args.where} ORDER BY RANDOM() LIMIT 1;"
         )
         (
             row_id,
@@ -148,11 +149,7 @@ while True:
         answer = maybe_edit("     Answer", answer)
         definition = maybe_edit(" Definition", definition)
         annotation = maybe_edit(" Annotation", annotation)
-        puzzle_name = maybe_edit("Puzzle Name", puzzle_name)
-        puzzle_date = maybe_edit("Puzzle Date", puzzle_date)
         clue_number = maybe_edit("Clue Number", clue_number)
-        puzzle_url = maybe_edit(" Puzzle URL", puzzle_url)
-        source_url = maybe_edit(" Source URL", source_url)
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
