@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS parsed_bigdave44 (
 CREATE TABLE IF NOT EXISTS raw_cru_cryptics (
     url PRIMARY KEY,
     datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    puz TEXT,
+    puz BLOB,
     is_parsed BOOLEAN DEFAULT FALSE,
     datetime_parsed TIMESTAMP DEFAULT NULL
 );
