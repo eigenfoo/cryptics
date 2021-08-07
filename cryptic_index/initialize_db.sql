@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS parsed_cru_cryptics (
   puzzle_url TEXT,
   source_url TEXT NOT NULL,
   is_reviewed BOOLEAN DEFAULT FALSE,
-  datetime_reviewed TIMESTAMP DEFAULT NULL,
+  datetime_reviewed TIMESTAMP DEFAULT NULL
 );
 
 
