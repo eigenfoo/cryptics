@@ -39,8 +39,7 @@ def get_new_urls(site):
                     sitemap.text
                     for sitemap in soup.find_all("sitemap")
                     if re.search(
-                        # Just 7/8/9/10 for now...
-                        r"https://www.fifteensquared.net/wp-sitemap-posts-post-(7|8|9|10).xml",
+                        r"https://www.fifteensquared.net/wp-sitemap-posts-post-[0-9]*.xml",
                         sitemap.text,
                     )
                 ]
@@ -63,8 +62,7 @@ def get_new_urls(site):
                     sitemap.text
                     for sitemap in soup.find_all("loc")
                     if re.search(
-                        # Just 4/5/6 for now...
-                        r"http://bigdave44.com/sitemap-(4|5|6).xml",
+                        r"http://bigdave44.com/sitemap-[0-9]*.xml",
                         sitemap.text,
                     )
                 ]
