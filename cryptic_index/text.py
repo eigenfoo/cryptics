@@ -70,6 +70,7 @@ def parse_text_type_1(html):
     answers = []
     clues = []
     clue_numbers = []
+    have_clue_number_from_previous_line = False
 
     while lines:
         line_1 = None
@@ -80,12 +81,23 @@ def parse_text_type_1(html):
         elif lines[0].lower() in ["across", "down"]:
             clue_direction = lines.pop(0)
             clue_direction = "a" if "across" in clue_direction.lower() else "d"
+        elif lines[0].strip(string.whitespace + "\ufeff").isnumeric():
+            # The clue number is its own line, preceding the clue itself. This
+            # can happen e.g. when the clue number is a separate column in a
+            # table: https://times-xwd-times.livejournal.com/1568749.html
+            clue_number = lines.pop(0).strip(string.whitespace + "\ufeff")
+            have_clue_number_from_previous_line = True
         else:
             try:
                 line_1 = lines.pop(0)
                 line_2 = lines.pop(0)
 
-                clue_number, clue = line_1.split(maxsplit=1)
+                if have_clue_number_from_previous_line:
+                    clue = line_1
+                else:
+                    clue_number, clue = line_1.split(maxsplit=1)
+                have_clue_number_from_previous_line = False
+
                 if not re.search(r"[0-9]+[a|d]?", clue_number.strip()):
                     raise ValueError("Clue number does not seem correct.")
                 # FIXME: this regex needs some fixing... see notebook
