@@ -1,10 +1,10 @@
 import bs4
 
-from cryptic_index.text import (
+from cryptics.text import (
     is_parsable_text_type_1,
     parse_text_type_1,
 )
-from cryptic_index.tables import (
+from cryptics.tables import (
     is_parsable_table_type_1,
     parse_table_type_1,
     is_parsable_table_type_2,
@@ -16,7 +16,7 @@ from cryptic_index.tables import (
     is_parsable_table_type_5,
     parse_table_type_5,
 )
-from cryptic_index.lists import (
+from cryptics.lists import (
     is_parsable_list_type_1,
     parse_list_type_1,
     is_parsable_list_type_2,
@@ -24,7 +24,7 @@ from cryptic_index.lists import (
     is_parsable_list_type_3,
     parse_list_type_3,
 )
-from cryptic_index.utils import (
+from cryptics.utils import (
     extract_puzzle_name,
     extract_puzzle_date,
     extract_puzzle_url,

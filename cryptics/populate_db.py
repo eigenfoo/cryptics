@@ -108,4 +108,4 @@ if __name__ == "__main__":
             except:
                 logging.error(f"Error inserting {url}")
 
-            time.sleep(20)
+            time.sleep(2)
