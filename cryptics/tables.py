@@ -3,6 +3,7 @@ import re
 import bs4
 import numpy as np
 import pandas as pd
+from cryptics.utils import extract_definitions
 
 
 def is_parsable_table_type_1(html):
@@ -224,87 +225,6 @@ def _parse_table_type_2(table, soup):
         table["definition"] = definitions
 
     return table
-
-
-def extract_definitions(soup, clues, table_type):
-    if table_type == 1:
-        raw_definitions = [
-            tag.text
-            for tag in soup.find_all(
-                "span",
-                attrs={
-                    "style": (lambda s: "underline" in s if s is not None else False)
-                },
-            )
-            + soup.find_all(
-                "span",
-                attrs={
-                    "class": (
-                        lambda s: "fts-definition" in s if s is not None else False
-                    )
-                },
-            )
-        ]
-    elif table_type == 2 or table_type == 4:
-        raw_definitions = [tag.text for tag in soup.find_all("u")]
-    elif table_type == 5:
-        raw_definitions = [
-            tag.text
-            for tag in soup.find_all("u")
-            + soup.find_all(
-                "span",
-                attrs={
-                    "style": (lambda s: "underline" in s if s is not None else False)
-                },
-            )
-        ]
-    else:
-        raise ValueError("`table_type` not recognized.")
-
-    definitions = []
-    i = 0
-
-    while raw_definitions:
-        definition = raw_definitions.pop(0)
-        if definition.strip() in clues[i]:
-            if len(definitions) > 0:
-                definitions[-1] = "/".join([definitions[-1], definition])
-            else:
-                definitions.append(definition)
-        else:
-            # Search for the next clue that contains this definition.
-            for j, clue in enumerate(clues[i + 1 :]):
-                if definition in clue:
-                    if j == 0:
-                        definitions.append(definition)
-                        i += 1
-                    else:
-                        definitions.extend(j * ["nan"])
-                        raw_definitions = [definition] + raw_definitions
-                        i += j
-                    break
-
-    if len(definitions) < len(clues):
-        while len(definitions) < len(clues):
-            definitions.append("nan")
-    elif len(definitions) > len(clues):
-        raise RuntimeError("More definitions than clues")
-
-    if all(
-        [
-            all(
-                [
-                    s.strip().lower() in clue.lower()
-                    for s in definition.strip().split("/")
-                ]
-            )
-            or definition == "nan"
-            for (definition, clue) in zip(definitions, clues)
-        ]
-    ):
-        return definitions
-    else:
-        raise RuntimeError("Produced mismatched definitions and clues")
 
 
 def is_parsable_table_type_3(html):
