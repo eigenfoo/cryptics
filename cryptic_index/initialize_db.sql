@@ -119,6 +119,22 @@ CREATE TABLE IF NOT EXISTS parsed_out_of_left_field (
   datetime_reviewed TIMESTAMP DEFAULT NULL
 );
 
+-- Square Pursuit
+-- https://squarepursuit.com/
+CREATE TABLE IF NOT EXISTS parsed_square_pursuit (
+  clue TEXT,
+  answer TEXT,
+  definition TEXT,
+  annotation TEXT,
+  clue_number TEXT,
+  puzzle_date TEXT,
+  puzzle_name TEXT,
+  puzzle_url TEXT,
+  source_url TEXT NOT NULL,
+  is_reviewed BOOLEAN DEFAULT FALSE,
+  datetime_reviewed TIMESTAMP DEFAULT NULL
+);
+
 CREATE VIEW IF NOT EXISTS clues AS
 SELECT *
 FROM parsed_fifteensquared
@@ -137,4 +153,7 @@ UNION ALL
 UNION ALL
     SELECT *
     FROM parsed_out_of_left_field
+UNION ALL
+    SELECT *
+    FROM parsed_square_pursuit
 ;
