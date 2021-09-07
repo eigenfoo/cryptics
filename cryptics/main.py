@@ -1,11 +1,13 @@
+import json
 import sqlite3
 from cryptics.parse import try_parse
 
 
-SOURCES = ["bigdave44", "fifteensquared", "times_xwd_times"]
+with open("sitemaps.json") as f:
+    sources = json.load(f).keys()
 
 
-for source in SOURCES:
+for source in sources:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT url FROM raw_{source} WHERE NOT is_parsed;")

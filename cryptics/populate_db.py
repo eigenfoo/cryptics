@@ -9,12 +9,6 @@ import requests
 import bs4
 
 
-SITEMAP_URLS = {
-    "raw_fifteensquared": "https://www.fifteensquared.net/wp-sitemap.xml",
-    "raw_times_xwd_times": "https://times-xwd-times.livejournal.com/sitemap.xml",
-    "raw_bigdave44": "http://bigdave44.com/sitemap-index-1.xml",
-}
-
 logging.basicConfig(level=logging.INFO)
 headers = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
@@ -22,16 +16,15 @@ headers = {
 }
 
 
-def get_new_urls(site):
+def get_new_urls(table, sitemap_url):
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT url FROM {site};")
+        cursor.execute(f"SELECT url FROM {table};")
         known_urls = cursor.fetchall()
         known_urls = {url[0] for url in known_urls}
 
     if "fifteensquared" in site:
-        sitemap = SITEMAP_URLS[site]
-        response = requests.get(sitemap, headers=headers)
+        response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         sitemaps = list(
             reversed(
@@ -53,8 +46,7 @@ def get_new_urls(site):
             new_urls.extend(list(urls - known_urls))
 
     elif "bigdave44" in site:
-        sitemap = SITEMAP_URLS[site]
-        response = requests.get(sitemap, headers=headers)
+        response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         sitemaps = list(
             reversed(
@@ -76,8 +68,7 @@ def get_new_urls(site):
             new_urls.extend(list(urls - known_urls))
 
     elif "times_xwd_times" in site:
-        sitemap = SITEMAP_URLS[site]
-        response = requests.get(sitemap, headers=headers)
+        response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         urls = {url.text for url in soup.find_all("loc")}
         new_urls = list(urls - known_urls)
@@ -86,8 +77,12 @@ def get_new_urls(site):
 
 
 if __name__ == "__main__":
-    for site, sitemap_url in SITEMAP_URLS.items():
-        new_urls = get_new_urls(site)
+    with open("sitemaps.json") as f:
+        sitemap_urls = json.load(f)
+
+    for site, sitemap_url in sitemap_urls.items():
+        table = f"raw_{site}"
+        new_urls = get_new_urls(table, sitemap_url)
 
         logging.info(f"Found {len(new_urls)} new urls.")
 
@@ -102,7 +97,7 @@ if __name__ == "__main__":
 
                 with sqlite3.connect("cryptics.sqlite3") as conn:
                     cursor = conn.cursor()
-                    sql = f"INSERT INTO {site} (url, html) VALUES (?, ?)"
+                    sql = f"INSERT INTO {table} (url, html) VALUES (?, ?)"
                     cursor.execute(sql, (url, response.text))
                     conn.commit()
             except:
