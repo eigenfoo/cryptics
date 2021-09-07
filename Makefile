@@ -39,30 +39,30 @@ venv:  # Set up a Python virtual environment for development.
 .PHONY: blackstyle
 blackstyle:
 	@printf "Checking code style with black...\n"
-	black --check --diff cryptic_index/
+	black --check --diff cryptics/
 	@printf "\033[1;34mBlack passes!\033[0m\n\n"
 
 .PHONY: pylintstyle
 pylintstyle:
 	@printf "Checking code style with pylint...\n"
-	pylint cryptic_index/
+	pylint cryptics/
 	@printf "\033[1;34mPylint passes!\033[0m\n\n"
 
 .PHONY: pydocstyle
 pydocstyle:
 	@printf "Checking documentation with pydocstyle...\n"
-	pydocstyle --convention=numpy --match='(?!parallel_sampling).*\.py' cryptic_index/
+	pydocstyle --convention=numpy --match='(?!parallel_sampling).*\.py' cryptics/
 	@printf "\033[1;34mPydocstyle passes!\033[0m\n\n"
 
 .PHONY: mypytypes
 mypytypes:
 	@printf "Checking code type signatures with mypy...\n"
-	python -m mypy --ignore-missing-imports cryptic_index/
+	python -m mypy --ignore-missing-imports cryptics/
 	@printf "\033[1;34mMypy passes!\033[0m\n\n"
 
 .PHONY: black
 black:  # Format code in-place using black.
-	black cryptic_index/
+	black cryptics/
 
 .PHONY: lint
 lint: blackstyle pylintstyle pydocstyle mypytypes  # Lint code using black, pylint, pydocstyle and mypy.
@@ -72,7 +72,7 @@ check: lint test  # Both lint and test code. Runs `make lint` followed by `make 
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -rf dist/ site/ cryptic_index.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
-	find cryptic_index/ -type d -name "__pycache__" -exec rm -rf {} +
-	find cryptic_index/ -type d -name "__pycache__" -delete
-	find cryptic_index/ -type f -name "*.pyc" -delete
+	rm -rf dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
+	find cryptics/ -type d -name "__pycache__" -exec rm -rf {} +
+	find cryptics/ -type d -name "__pycache__" -delete
+	find cryptics/ -type f -name "*.pyc" -delete
