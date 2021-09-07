@@ -13,7 +13,7 @@ parser.add_argument("--train", dest="train", action="store_true")
 parser.add_argument("--no-train", dest="train", action="store_false")
 parser.set_defaults(train=True)
 parser.add_argument(
-    "--where", type=str, default="definition != 'nan' and not is_reviewed"
+    "--where", type=str, default="definition != 'nan' AND NOT is_reviewed"
 )
 args = parser.parse_args()
 
@@ -73,10 +73,11 @@ while True:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(
-            f"SELECT rowid, * FROM parsed_{args.source} WHERE {args.where} ORDER BY RANDOM() LIMIT 1;"
+            f"SELECT rowid, * FROM clues WHERE source = '{args.source}' AND {args.where} ORDER BY RANDOM() LIMIT 1;"
         )
         (
             row_id,
+            source,
             clue,
             answer,
             definition,
@@ -163,7 +164,7 @@ while True:
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
-            UPDATE parsed_{args.source}
+            UPDATE clues
             SET clue = ?,
                 answer = ?,
                 definition = ?,
@@ -194,7 +195,7 @@ while True:
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
             sql = f"""
-            DELETE FROM parsed_{args.source}
+            DELETE FROM clues
             WHERE rowid = ?;
             """
             cursor.execute(sql, (row_id,))
@@ -205,7 +206,7 @@ while True:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         sql = f"""
-        UPDATE parsed_{args.source}
+        UPDATE clues
         SET is_reviewed = True,
             datetime_reviewed = datetime("now")
         WHERE rowid = ?;
