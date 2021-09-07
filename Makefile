@@ -70,6 +70,10 @@ lint: blackstyle pylintstyle pydocstyle mypytypes  # Lint code using black, pyli
 .PHONY: check
 check: lint test  # Both lint and test code. Runs `make lint` followed by `make test`.
 
+.PHONY: publish
+publish:
+	bash scripts/publish.sh
+
 .PHONY: clean
 clean:  # Clean project directories.
 	rm -rf dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
