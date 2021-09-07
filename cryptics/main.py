@@ -10,13 +10,13 @@ with open("sitemaps.json") as f:
 for source in sources:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT url FROM raw_{source} WHERE NOT is_parsed;")
+        cursor.execute(f"SELECT url FROM html WHERE source = '{source}' AND NOT is_parsed AND datetime_requested >= '2021-09-04';")
         urls = [url for url, in cursor.fetchall()]
 
     for i, url in enumerate(urls):
         with sqlite3.connect("cryptics.sqlite3") as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT html FROM raw_{source} WHERE url = '{url}';")
+            cursor.execute(f"SELECT html FROM html WHERE url = '{url}';")
             (html,) = cursor.fetchone()
 
         data = None
@@ -31,9 +31,11 @@ for source in sources:
             continue
 
         print("\tSuccess!")
+
+        data["source"] = source
         with sqlite3.connect("cryptics.sqlite3") as conn:
-            data.to_sql(f"parsed_{source}", conn, if_exists="append", index=False)
+            data.to_sql(f"clues", conn, if_exists="append", index=False)
 
             cursor = conn.cursor()
-            sql = f"UPDATE raw_{source} SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE url = '{url}';"
+            sql = f"UPDATE html SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE url = '{url}';"
             cursor.execute(sql)

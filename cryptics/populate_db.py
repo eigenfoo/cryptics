@@ -1,4 +1,3 @@
-import datetime
 import json
 import logging
 import re
@@ -16,14 +15,14 @@ headers = {
 }
 
 
-def get_new_urls(table, sitemap_url):
+def get_new_urls(source, sitemap_url):
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT url FROM {table};")
+        cursor.execute(f"SELECT url FROM html WHERE source = '{source}';")
         known_urls = cursor.fetchall()
         known_urls = {url[0] for url in known_urls}
 
-    if "fifteensquared" in site:
+    if "fifteensquared" in source:
         response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         sitemaps = list(
@@ -45,7 +44,7 @@ def get_new_urls(table, sitemap_url):
             urls = {url.text for url in soup.find_all("url")}
             new_urls.extend(list(urls - known_urls))
 
-    elif "bigdave44" in site:
+    elif "bigdave44" in source:
         response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         sitemaps = list(
@@ -67,7 +66,7 @@ def get_new_urls(table, sitemap_url):
             urls = {url.text for url in soup.find_all("loc")}
             new_urls.extend(list(urls - known_urls))
 
-    elif "times_xwd_times" in site:
+    elif "times_xwd_times" in source:
         response = requests.get(sitemap_url, headers=headers)
         soup = bs4.BeautifulSoup(response.text, "lxml")
         urls = {url.text for url in soup.find_all("loc")}
@@ -80,10 +79,8 @@ if __name__ == "__main__":
     with open("sitemaps.json") as f:
         sitemap_urls = json.load(f)
 
-    for site, sitemap_url in sitemap_urls.items():
-        table = f"raw_{site}"
-        new_urls = get_new_urls(table, sitemap_url)
-
+    for source, sitemap_url in sitemap_urls.items():
+        new_urls = get_new_urls(source, sitemap_url)
         logging.info(f"Found {len(new_urls)} new urls.")
 
         # Index `new_urls`
@@ -97,8 +94,8 @@ if __name__ == "__main__":
 
                 with sqlite3.connect("cryptics.sqlite3") as conn:
                     cursor = conn.cursor()
-                    sql = f"INSERT INTO {table} (url, html) VALUES (?, ?)"
-                    cursor.execute(sql, (url, response.text))
+                    sql = f"INSERT INTO html (source, url, html) VALUES (?, ?, ?)"
+                    cursor.execute(sql, (source, url, response.text))
                     conn.commit()
             except:
                 logging.error(f"Error inserting {url}")
