@@ -4,15 +4,23 @@
 
 ### Why was this dataset created?
 
+This dataset was originally a project for me to practice my webscraping and
+data processing skills. Since then, it has evolved to become a potential
+resource for cryptic crossword solvers and constructors - for example, one
+might use this dataset as a lookup table for answers, or to see how an answer
+has been clued in the past by other constructors.
+
+While there is prior art in datasets for cryptic crossword clue datasets
+([_Decrypting Cryptic Crosswords_ by Rozner et
+al.](https://arxiv.org/abs/2104.08620) and [_Cryptonite_ by Efrat et
+al.](https://arxiv.org/abs/2103.01242)), to my knowledge this is the first such
+dataset that is at least as large as the research datasets and is openly
+accessible.
+
 ### Who created this dataset and on whose behalf? Who funded the creation of the dataset?
 
 This dataset was created by me (George Ho) as a side project in my free time.
 Any expenses were covered by me personally.
-
-### What prior art is there?
-
-- [_Decrypting Cryptic Crosswords: Semantically Complex Wordplay Puzzles as a Target for NLP_ by Rozner et al.](https://arxiv.org/abs/2104.08620)
-- [_Cryptonite: A Cryptic Crossword Benchmark for Extreme Ambiguity in Language_ by Efrat et al.](https://arxiv.org/abs/2103.01242)
 
 ## Composition
 
@@ -25,7 +33,7 @@ Each row represents one clue from a published cryptic crossword.
 Clues are sourced from three cryptic crossword blogs and a few online archives
 of cryptic crosswords (for more details, see the _Collection Process_ section).
 
-As of September 2021:
+As of September 2021, the number of rows break down as so:
 
 | Source                                                                         | Number of Clues |
 |--------------------------------------------------------------------------------|----------------:|
@@ -36,6 +44,29 @@ As of September 2021:
 | Total                                                                          |          518598 |
 
 ### Does the dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
+
+The dataset is a large portion of the scraped blog posts (and may be considered
+exhaustive or nearly so).
+
+However, there are many reasons why a clue may be missing from the dataset - in
+order for a clue to be included, the following must be true:
+
+1. The crossword must be covered by a blog
+   * The three blogs cover exclusively British newspapers. As such, the
+     resulting dataset is heavy in British jargon, such as slang, idioms or
+     names of British towns or royalty.
+2. The blog must publish a blog post
+   * In particular, the blog must include at least the clues and answers of the
+     crossword.
+   * Many blog posts from the sources are not about crosswords at all (e.g.
+     they may be administrative announcements), and those that are may not
+     include the clues (instead simply publishing the puzzle name, clue
+     numbers, answers and annotations).
+3. The blog post must be parseable
+   * As explained in the _Collection Process_ section, the clues and answers
+     are extracted from the raw HTML by a collection of parsing functions. If
+     none of the parsing functions successfully return parsed clues, the raw
+     HTML is deemed "unparseable" and is skipped.
 
 ### What data does each row consist of?
 
@@ -52,15 +83,44 @@ There are seven columns:
 ### Is any information missing from individual rows?
 
 Less than 5% of all rows include a `puzzle_url`. Some data may also be missing
-(or be `nan`s) due to data preprocessing errors (see below).
+(or be `NaN`s) due to data preprocessing errors (see below).
+
+Furthermore, some columns have been scrubbed prior to publishing:
+
+- `source_url`: the URL of the scraped blog post from which this clue comes
+- `annotation`: a brief explanation and/or commentary from the blogger
+- `is_reviewed`: whether this clue has been reviewed by a human evaluator
+- `reviewed_datetime`: if the clue `is_reviewed`, the datetime at which it was
+  reviewed
+
+These columns have been dropped to respect the copyright of the scraped blogs.
+While it is fair use to republish the cryptic clues in a transformatively
+different structured format, the blogs hold the copyright to any annotations
+and commentary on the clues.
 
 ### Are there any errors, sources of noise, or redundancies in the dataset?
 
-Yes.
+Yes. As described below, errors may be introduced in the dataset through human
+error by the blogger, or through machine error by the parsing code.
+
+Human errors may include:
+
+- missing enumerations (i.e. the clue does not specify the number of letters in
+  the answer)
+- mismatched parentheses or braces
+- typos
+
+Machine errors may include:
+
+- missing or redundant definitions
+- multi-word answers split across the `answer` and `annotation` columns
 
 ### Is the dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?
 
-Asides from the `puzzle_url`, the dataset is self-contained.
+Asides from the `puzzle_url`, the dataset is self-contained. Users are
+encouraged to ignore the `puzzle_url` column and treat the dataset as
+self-contained, as the `puzzle_url` column is sparse, does not bring much value
+and may be removed in a future version of the dataset.
 
 ### Does the dataset contain data that might be considered confidential?
 
@@ -176,9 +236,13 @@ using it, please [let me know](https://raw.githubusercontent.com/eigenfoo/eigenf
 The dataset will be distributed via a hosted [Datasette](https://datasette.io/)
 site.
 
-### Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
+### Is the dataset distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
+
+No.
 
 ### Have any third parties imposed IP-based or other restrictions on the data?
+
+No.
 
 ## Maintenance
 
@@ -213,4 +277,3 @@ Yes. Please [raise an issue on
 GitHub](https://github.com/eigenfoo/cryptics/issues) if you have a specific
 issue in mind. Otherwise, please reach out to me [via
 email](https://raw.githubusercontent.com/eigenfoo/eigenfoo.xyz/master/assets/images/email.png).
-
