@@ -10,7 +10,9 @@ with open("sitemaps.json") as f:
 for source in sources:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT url FROM html WHERE source = '{source}' AND NOT is_parsed AND datetime_requested >= '2021-09-04';")
+        cursor.execute(
+            f"SELECT url FROM html WHERE source = '{source}' AND NOT is_parsed AND datetime_requested >= '2021-09-04';"
+        )
         urls = [url for url, in cursor.fetchall()]
 
     for i, url in enumerate(urls):
