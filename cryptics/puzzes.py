@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT DISTINCT source_url FROM parsed_{args.source};")
+        cursor.execute(f"SELECT DISTINCT source_url FROM clues;")
         known_urls = cursor.fetchall()
         known_urls = {url[0] for url in known_urls}
 
@@ -96,5 +96,6 @@ if __name__ == "__main__":
     for puz_filename in new_puz_filenames:
         print(f"Parsing {puz_filename}")
         data = parse_puz(puz_filename)
+        data["source"] = args.source
         with sqlite3.connect("cryptics.sqlite3") as conn:
-            data.to_sql(f"parsed_{args.source}", conn, if_exists="append", index=False)
+            data.to_sql(f"clues", conn, if_exists="append", index=False)
