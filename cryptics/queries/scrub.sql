@@ -1,5 +1,4 @@
 CREATE TABLE new_clues (
-    source TEXT,
     clue TEXT,
     answer TEXT,
     definition TEXT,
@@ -9,7 +8,6 @@ CREATE TABLE new_clues (
     puzzle_url TEXT
 );
 INSERT INTO new_clues SELECT
-    source,
     clue,
     answer,
     definition,
