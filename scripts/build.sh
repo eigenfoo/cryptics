@@ -51,6 +51,7 @@ mkdir -p "$dest_dir"
 
 css_rel_path="$("$realpath" "static/css/" --relative-to "$dest_dir")"
 
+# Removed --toc flag
 pandoc \
   --katex \
   --from markdown+tex_math_single_backslash \
@@ -59,6 +60,5 @@ pandoc \
   --template=template \
   --css="$css_rel_path/theme.css" \
   --css="$css_rel_path/skylighting-solarized-theme.css" \
-  --toc \
   --output "$dest" \
   "$src"
