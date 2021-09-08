@@ -10,6 +10,9 @@ SHELL := bash
 .DELETE_ON_ERROR:
 MAKEFLAGS += --no-builtin-rules
 
+DOC_SOURCES := $(shell find docs -type f -name '*.md')
+DOC_TARGETS := $(patsubst docs/%.md,static/%.html,$(DOC_SOURCES))
+
 .PHONY: help
 help:
 	@printf "Usage:\n"
@@ -74,9 +77,20 @@ check: lint test  # Both lint and test code. Runs `make lint` followed by `make 
 publish:
 	bash scripts/publish.sh
 
+.PHONY: static
+static: static/.nojekyll $(DOC_TARGETS)
+
+static/.nojekyll: $(wildcard public/*) public/.nojekyll
+	rm -vrf static && mkdir -p static && cp -vr public/.nojekyll public/* static
+
+# Generalized rule: how to build a .html file from each .md
+# Note: you will need pandoc 2 or greater for this to work
+static/%.html: docs/%.md template.html5 scripts/build.sh
+	scripts/build.sh "$<" "$@"
+
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -rf dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
+	rm -rf static/ dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
 	find cryptics/ -type d -name "__pycache__" -exec rm -rf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete

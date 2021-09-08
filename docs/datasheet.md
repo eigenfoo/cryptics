@@ -1,4 +1,8 @@
-# Datasheet
+---
+title: Cryptic Crossword Clues Datasheet
+author: George Ho
+date: 2021-09-07
+---
 
 ## Motivation
 
