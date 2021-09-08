@@ -132,9 +132,10 @@ dmypy.json
 .DS_Store
 
 # Data files
+*.db
 *.sqlite
 *.sqlite3
 *.json
-*.jsonl
-*.txt
 
+# Generated static files
+static/
