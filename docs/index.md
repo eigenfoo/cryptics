@@ -2,9 +2,9 @@
 title: A Dataset of Cryptic Crossword Clues
 nav-links: |
   <nav>
-    <a href="/static/index.html">Home</a>
+    <a href="/">Home</a>
     &centerdot;
-    <a href="/static/datasheet.html">Datasheet</a>
+    <a href="/datasheet">Datasheet</a>
     &centerdot;
     <a href="/clues/clues">Data</a>
   </nav>
