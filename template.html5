@@ -51,7 +51,7 @@ $if(author)$
 </p>
 $endif$
 $if(date)$
-<p class="date $if(toc)$before-toc$endif$"><time datetime="$date$">$date$</time></p>
+<p class="date $if(toc)$before-toc$endif$"><time datetime="$date$">Last updated $date$</time></p>
 $endif$
 </blockquote>
 </header>
