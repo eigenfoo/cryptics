@@ -8,4 +8,4 @@
 
 The resulting structured dataset looks something like this:
 
-![Example of resulting structured dataset](public/img/examples.png)
+![Example of resulting structured dataset](static/img/examples.png)
