@@ -51,7 +51,6 @@ mkdir -p "$dest_dir"
 
 css_rel_path="$("$realpath" "static/css/" --relative-to "$dest_dir")"
 
-# Removed --toc flag
 pandoc \
   --metadata date="`date +%F`" \
   --katex \
