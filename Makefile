@@ -10,8 +10,8 @@ SHELL := bash
 .DELETE_ON_ERROR:
 MAKEFLAGS += --no-builtin-rules
 
-STATIC_SOURCES := $(shell find docs -type f -name '*.md')
-STATIC_TARGETS := $(patsubst docs/%.md,static/%.html,$(STATIC_SOURCES))
+STATIC_SOURCES := docs/index.md docs/datasheet.md
+STATIC_TARGETS := templates/index.html templates/pages/datasheet.html
 
 .PHONY: help
 help:
@@ -74,27 +74,28 @@ lint: blackstyle pylintstyle pydocstyle mypytypes  # Lint code using black, pyli
 check: lint test  # Both lint and test code. Runs `make lint` followed by `make test`.
 
 .PHONY: build
-build: build-static build-db  # Build SQLite database and static documentation pages.
+build: build-templates build-db  # Build SQLite database and static documentation pages.
 
 .PHONY: build-db
 build-db:
 	bash scripts/build-db.sh
 
-build-static: static/.nojekyll $(STATIC_TARGETS)
-
-static/.nojekyll: $(wildcard public/*) public/.nojekyll
-	rm -vrf static/
-	mkdir -p static/
-	cp -vr public/.nojekyll public/* static/
+build-templates: templates/index.html $(STATIC_TARGETS)
 
 # Generalized rule: how to build a .html file from each .md
 # Note: you will need pandoc 2 or greater for this to work
-static/%.html: docs/%.md template.html5 scripts/build-static.sh
-	scripts/build-static.sh "$<" "$@"
+templates/index.html: docs/index.md template.html5 scripts/build-template.sh
+	scripts/build-template.sh "$<" "$@"
+
+templates/pages/%.html: docs/%.md template.html5 scripts/build-template.sh
+	scripts/build-template.sh "$<" "$@"
+
+serve:
+	datasette clues.sqlite3 --template-dir templates/ --static static:static/
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -vrf static/ dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
+	rm -vrf templates/ dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
 	find cryptics/ -type d -name "__pycache__" -exec rm -vrf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
