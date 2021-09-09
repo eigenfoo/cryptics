@@ -33,6 +33,9 @@ $include-before$
 $endfor$
 
 <header>
+$if(nav-links)$
+  $nav-links$
+$endif$
 <h1 class="title">$title$</h1>
 <blockquote class="metadata">
 $if(subtitle)$
