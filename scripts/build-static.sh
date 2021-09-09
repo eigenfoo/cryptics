@@ -52,6 +52,7 @@ mkdir -p "$dest_dir"
 css_rel_path="$("$realpath" "static/css/" --relative-to "$dest_dir")"
 
 pandoc \
+  -s \
   --metadata date="`date +%F`" \
   --katex \
   --from markdown+tex_math_single_backslash \
