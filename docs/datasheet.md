@@ -1,7 +1,13 @@
 ---
-title: Cryptic Crossword Clues Datasheet
-author: George Ho
-date: 2021-09-07
+title: Datasheet
+nav-links: |
+  <nav>
+    <a href="/static/index.html">Home</a>
+    &centerdot;
+    <a href="/static/datasheet.html">Datasheet</a>
+    &centerdot;
+    <a href="/clues/clues">Data</a>
+  </nav>
 ---
 
 ## Motivation
@@ -21,14 +27,14 @@ al.](https://arxiv.org/abs/2103.01242)), to my knowledge this is the first such
 dataset that is at least as large as the research datasets and is openly
 accessible.
 
-### Who created this dataset and on whose behalf? Who funded the creation of the dataset?
+### Who created this dataset and on whose behalf? Who funded the creation of this dataset?
 
-This dataset was created by me (George Ho) as a side project in my free time.
-Any expenses were covered by me personally.
+This dataset was created by me ([George Ho](https://eigenfoo.xyz)) as a side
+project in my free time. Any and all expenses were covered by me personally.
 
 ## Composition
 
-### What do the rows that comprise the dataset represent?
+### What do the rows that comprise this dataset represent?
 
 Each row represents one clue from a published cryptic crossword.
 
@@ -47,7 +53,7 @@ As of September 2021, the number of rows break down as so:
 | https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html |            6858 |
 | Total                                                                          |          518598 |
 
-### Does the dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
+### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
 
 The dataset is a large portion of the scraped blog posts (and may be considered
 exhaustive or nearly so).
@@ -102,7 +108,7 @@ While it is fair use to republish the cryptic clues in a transformatively
 different structured format, the blogs hold the copyright to any annotations
 and commentary on the clues.
 
-### Are there any errors, sources of noise, or redundancies in the dataset?
+### Are there any errors, sources of noise, or redundancies in this dataset?
 
 Yes. As described below, errors may be introduced in the dataset through human
 error by the blogger, or through machine error by the parsing code.
@@ -119,19 +125,19 @@ Machine errors may include:
 - missing or redundant definitions
 - multi-word answers split across the `answer` and `annotation` columns
 
-### Is the dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?
+### Is this dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?
 
 Asides from the `puzzle_url`, the dataset is self-contained. Users are
 encouraged to ignore the `puzzle_url` column and treat the dataset as
 self-contained, as the `puzzle_url` column is sparse, does not bring much value
 and may be removed in a future version of the dataset.
 
-### Does the dataset contain data that might be considered confidential?
+### Does this dataset contain data that might be considered confidential?
 
 No. All cryptic crossword clues have been published (either in newspapers or
 in online publications) and are not confidential.
 
-### Does the dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety?
+### Does this dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety?
 
 To my knowledge, no. These clues are published in widely syndicated newspapers
 or online publications, and are thus unlikely to contain offensive content.
@@ -224,7 +230,7 @@ recreate the dataset yourself.
 
 ## Uses
 
-### Has the dataset been used for any tasks already? Is there a repository that links to any or all papers or systems that use the dataset?
+### Has this dataset been used for any tasks already? Is there a repository that links to any or all papers or systems that use this dataset?
 
 The most immediate use case is for cryptic crossword constructors and solvers,
 both as a lookup table for answers and also to see how an answer has been clued
@@ -235,12 +241,13 @@ using it, please [let me know](https://raw.githubusercontent.com/eigenfoo/eigenf
 
 ## Distribution
 
-### How will the dataset will be distributed (e.g., tarball on website, API, GitHub)?
+### How will this dataset will be distributed (e.g., tarball on website, API, GitHub)?
 
 The dataset will be distributed via a hosted [Datasette](https://datasette.io/)
-site.
+site. For more information, please watch Simon Willison's [introduction to
+Datasette on YouTube](https://youtu.be/7kDFBnXaw-c).
 
-### Is the dataset distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
+### Is this dataset distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
 
 No.
 
@@ -250,11 +257,11 @@ No.
 
 ## Maintenance
 
-### Who is supporting/hosting/maintaining the dataset?
+### Who is supporting/hosting/maintaining this dataset?
 
 Me, [George Ho](https://eigenfoo.xyz/).
 
-### How can the owner/curator/manager of the dataset be contacted?
+### How can the owner/curator/manager of this dataset be contacted?
 
 I can be reached via [email](https://raw.githubusercontent.com/eigenfoo/eigenfoo.xyz/master/assets/images/email.png).
 
@@ -262,7 +269,7 @@ I can be reached via [email](https://raw.githubusercontent.com/eigenfoo/eigenfoo
 
 Not currently, although there will eventually be a `CHANGELOG.md`.
 
-### Will the dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?
+### Will this dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?
 
 Yes. There is no set schedule for releases of new versions of the data. Updates
 will most likely entail:
@@ -271,11 +278,11 @@ will most likely entail:
 - correcting parsing errors (described above), either by overwriting the row or
   deleting it entirely
 
-### Will older versions of the dataset continue to be supported/hosted/maintained?
+### Will older versions of this dataset continue to be supported/hosted/maintained?
 
 Older versions of the data will _not_ be supported, hosted or maintained.
 
-### If others want to extend/augment/build on/contribute to the dataset, is there a mechanism for them to do so?
+### If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?
 
 Yes. Please [raise an issue on
 GitHub](https://github.com/eigenfoo/cryptics/issues) if you have a specific
