@@ -90,11 +90,10 @@ order for a clue to be included, the following must be true:
 
 ### What data does each row consist of?
 
-Each row contains data in eight columns:
+Each row contains data in seven columns:
 
 | Column Name      | Description                                           | Example                                      |
 | ---------------- | ----------------------------------------------------- | -------------------------------------------- |
-| `source`         | String indicating the blog this clue was sourced from | `times_xwd_times`                            |
 | `clue`           |                                                       | `Labourers going around spotted tools (8)`   |
 | `answer`         |                                                       | `HANDSAWS`                                   |
 | `definition`     |                                                       | `tools`                                      |
@@ -116,17 +115,18 @@ for more details). I unforutnately have not quantified what proportion of the
 dataset is missing or malformed.
 
 Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
-provides four more other columns, in addition to the eight provided in the
+provides five more other columns, in addition to the seven provided in the
 dataset:
 
 | Column Name         | Description                                                  | Example                                                |
 |---------------------|--------------------------------------------------------------|--------------------------------------------------------|
+| `source`            | String indicating the blog this clue was sourced from        | `times_xwd_times`                                      |
 | `annotation`        | Explanation and/or commentary on this clue by a blogger      | `HANDS (labourers) arranged around SAW`                |
 | `source_url`        | The URL of the blog post where this clue was scraped from    | `https://times-xwd-times.livejournal.com/1799231.html` |
 | `is_reviewed`       | If `1`, a human has reviewed the parsed clue for correctness | `1`                                                    |
 | `datetime_reviewed` | If the clue `is_reviewed`, the date and time it was          | `2021-08-01 16:06:19`                                  |
 
-These four columns have been dropped to respect the copyright of the scraped
+These five columns have been dropped to respect the copyright of the scraped
 blogs. While it is fair use to republish the cryptic clues in a centralized,
 structured and searchable format[^1], the blogs hold the copyright to any
 annotations and commentary on the clues.

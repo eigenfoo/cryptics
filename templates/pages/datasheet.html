@@ -89,13 +89,8 @@
 </ul></li>
 </ol>
 <h3 id="what-data-does-each-row-consist-of">What data does each row consist of?</h3>
-<p>Each row contains data in eight columns:</p>
+<p>Each row contains data in seven columns:</p>
 <table>
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 46%" />
-<col style="width: 38%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>Column Name</th>
@@ -105,41 +100,36 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>source</code></td>
-<td>String indicating the blog this clue was sourced from</td>
-<td><code>times_xwd_times</code></td>
-</tr>
-<tr class="even">
 <td><code>clue</code></td>
 <td></td>
 <td><code>Labourers going around spotted tools (8)</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>answer</code></td>
 <td></td>
 <td><code>HANDSAWS</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>definition</code></td>
 <td></td>
 <td><code>tools</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>clue_number</code></td>
 <td></td>
 <td><code>17a</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>puzzle_date</code></td>
 <td>Date the puzzle was published</td>
 <td><code>2017-08-25</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>puzzle_name</code></td>
 <td>Name of the publication and/or puzzle</td>
 <td><code>Quick Cryptic 904</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>puzzle_url</code></td>
 <td>If available, a URL to the puzzle itself</td>
 <td></td>
@@ -150,7 +140,7 @@
 <p>Yes.</p>
 <p>Firstly, Less than 5% of all rows include a <code>puzzle_url</code>.</p>
 <p>Secondly, some data may be missing or malformed due to data preprocessing errors (see <a href="/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">the “Are there any errors?” question</a> for more details). I unforutnately have not quantified what proportion of the dataset is missing or malformed.</p>
-<p>Finally, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
+<p>Finally, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides five more other columns, in addition to the seven provided in the dataset:</p>
 <table>
 <colgroup>
 <col style="width: 15%" />
@@ -166,28 +156,33 @@
 </thead>
 <tbody>
 <tr class="odd">
+<td><code>source</code></td>
+<td>String indicating the blog this clue was sourced from</td>
+<td><code>times_xwd_times</code></td>
+</tr>
+<tr class="even">
 <td><code>annotation</code></td>
 <td>Explanation and/or commentary on this clue by a blogger</td>
 <td><code>HANDS (labourers) arranged around SAW</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>source_url</code></td>
 <td>The URL of the blog post where this clue was scraped from</td>
 <td><code>https://times-xwd-times.livejournal.com/1799231.html</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>is_reviewed</code></td>
 <td>If <code>1</code>, a human has reviewed the parsed clue for correctness</td>
 <td><code>1</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>datetime_reviewed</code></td>
 <td>If the clue <code>is_reviewed</code>, the date and time it was</td>
 <td><code>2021-08-01 16:06:19</code></td>
 </tr>
 </tbody>
 </table>
-<p>These four columns have been dropped to respect the copyright of the scraped blogs. While it is fair use to republish the cryptic clues in a centralized, structured and searchable format<span class="sidenote-wrapper"><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"/><span class="sidenote">I believe the legal term is a <a href="https://copyright.columbia.edu/basics/fair-use.html"><em>transformatively</em></a> different resource.<br />
+<p>These five columns have been dropped to respect the copyright of the scraped blogs. While it is fair use to republish the cryptic clues in a centralized, structured and searchable format<span class="sidenote-wrapper"><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"/><span class="sidenote">I believe the legal term is a <a href="https://copyright.columbia.edu/basics/fair-use.html"><em>transformatively</em></a> different resource.<br />
 <br />
 </span></span>, the blogs hold the copyright to any annotations and commentary on the clues.</p>
 <h3 id="are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">Are there any errors, sources of noise, or redundancies in this dataset?</h3>
