@@ -96,7 +96,7 @@ deploy:  # Deploy Datasette project to Heroku.
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -vrf templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
+	rm -vrf clues.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
 	find cryptics/ -type d -name "__pycache__" -exec rm -vrf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
