@@ -1,5 +1,4 @@
 CREATE TABLE new_clues (
-    source TEXT,
     clue TEXT,
     answer TEXT,
     definition TEXT,
@@ -9,7 +8,6 @@ CREATE TABLE new_clues (
     puzzle_url TEXT
 );
 INSERT INTO new_clues SELECT
-    source,
     clue,
     answer,
     definition,
@@ -17,12 +15,12 @@ INSERT INTO new_clues SELECT
     puzzle_date,
     puzzle_name,
     puzzle_url
-FROM clues;
-DROP TABLE IF EXISTS clues;
-ALTER TABLE new_clues RENAME TO clues;
-
-DELETE FROM clues WHERE source IN (
+FROM clues
+WHERE source NOT IN (
     'out_of_left_field',
     'square_pursuit',
     'the_browser'
 );
+DROP TABLE IF EXISTS clues;
+ALTER TABLE new_clues RENAME TO clues;
+
