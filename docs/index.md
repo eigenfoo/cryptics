@@ -10,7 +10,7 @@ nav-links: |
   </nav>
 ---
 
-This is a dataset of cryptic crossword clues, collected from cryptic crossword
+This is a dataset of cryptic crossword clues[^1], collected from cryptic crossword
 blogs and publicly available digital cryptic crossword archives.
 
 I originally started this project to practice my webscraping and data
@@ -36,9 +36,11 @@ The data can be [viewed online](/clues/clues) and downloaded for free
 datasheet](/static/datasheet.html) and the source code for creating the dataset
 [is available on GitHub](https://github.com/eigenfoo/cryptics).
 
-Please send all suggestions, offers, and complaints to
-[george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz)
+Send all comments, suggestions and complaints to
+[george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz).
 
 Please share and enjoy!
 
 \~ [George Ho](eigenfoo.xyz/)
+
+[^1]: If you're new to cryptic crosswords, there's a whole new world waiting for you to discover it! The New Yorker has [an excellent introduction to cryptic crosswords](https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword), and Matt Gritzmacher has [a daily newsletter which will point you to crosswords](https://crosswordlinks.substack.com/).
