@@ -10,7 +10,7 @@ nav-links: |
   </nav>
 ---
 
-Heeding Gebru et al.'s recommendations in [_Datasheets for
+Following Gebru et al.'s recommendations in [_Datasheets for
 Datasets_](https://arxiv.org/abs/1803.09010), I provide this datasheet as
 detailed documentation for this dataset.
 
@@ -28,8 +28,10 @@ While there is prior art in datasets for cryptic crossword clue datasets
 ([_Decrypting Cryptic Crosswords_ by Rozner et
 al.](https://arxiv.org/abs/2104.08620) and [_Cryptonite_ by Efrat et
 al.](https://arxiv.org/abs/2103.01242)), to my knowledge this is the first such
-dataset that is at least as large as the research datasets and is openly
-accessible.
+dataset that is at least as large as the research datasets, is openly
+accessible, and potentially includes annotations for each clue (however, see
+the answer to the ["Is any information missing?"
+question](/datasheet#is-any-information-missing-from-individual-rows)).
 
 ### Who created this dataset and on whose behalf? Who funded the creation of this dataset?
 
@@ -40,7 +42,8 @@ project in my free time. Any and all expenses were covered by me personally.
 
 ### What do the rows that comprise this dataset represent?
 
-Each row represents one clue from a published cryptic crossword.
+Each row represents one clue from a published cryptic crossword. The crossword
+grid itself is not saved.
 
 ### How many rows are there in total (of each type, if appropriate)?
 
@@ -48,7 +51,7 @@ Clues are sourced from three cryptic crossword blogs and a few online archives
 of cryptic crosswords (for more details, see [the Collection Process
 section](/datasheet#collection-process)).
 
-As of September 2021, the number of rows break down as so:
+As of September 2021, the number of rows approximately break down as follows:
 
 | Source                                                                         | Number of Clues |
 |--------------------------------------------------------------------------------|----------------:|
@@ -60,10 +63,10 @@ As of September 2021, the number of rows break down as so:
 
 ### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
 
-The dataset is a large portion of the scraped blog posts (and may be considered
-exhaustive or nearly so).
+The dataset covers a large portion of the scraped blog posts, and may thus be
+considered exhaustive (or nearly so) for the covered sources.
 
-However, there are many reasons why a clue may be missing from the dataset - in
+However, there are many reasons why a clue may not appear in the dataset - in
 order for a clue to be included, the following must be true:
 
 1. The crossword must be covered by a blog.
@@ -75,8 +78,8 @@ order for a clue to be included, the following must be true:
      crossword.
    * Many blog posts from the sources are not about crosswords at all (e.g.
      they may be administrative announcements), and those that are may not
-     include the clues (instead simply publishing the puzzle name, clue
-     numbers, answers and annotations).
+     include the clues, instead simply identifying clues by puzzle name and
+     clue numbers. Several blogs' early blog posts fit this description.
 3. The blog post must be parseable.
    * As explained in [the Collection Process
      section](/datasheet#collection-process), the clues and answers are
@@ -86,17 +89,18 @@ order for a clue to be included, the following must be true:
 
 ### What data does each row consist of?
 
-Each row contains data in seven columns:
+Each row contains data in eight columns:
 
-| Column Name      | Description                              | Example                                      |
-| ---------------- | ---------------------------------------- | -------------------------------------------- |
-| `clue`           |                                          | `Labourers going around spotted tools (8)`   |
-| `answer`         |                                          | `HANDSAWS`                                   |
-| `definition`     |                                          | `tools`                                      |
-| `clue_number`    |                                          | `17a`                                        |
-| `puzzle_date`    | The date the puzzle was published        | `2017-08-25`                                 |
-| `puzzle_name`    | Name of the publication and/or puzzle    | `Quick Cryptic 904`                          |
-| `puzzle_url`     | If available, a URL to the puzzle itself |                                              |
+| Column Name      | Description                                           | Example                                      |
+| ---------------- | ----------------------------------------------------- | -------------------------------------------- |
+| `source`         | String indicating the blog this clue was sourced from | `times_xwd_times`                            |
+| `clue`           |                                                       | `Labourers going around spotted tools (8)`   |
+| `answer`         |                                                       | `HANDSAWS`                                   |
+| `definition`     |                                                       | `tools`                                      |
+| `clue_number`    |                                                       | `17a`                                        |
+| `puzzle_date`    | Date the puzzle was published                         | `2017-08-25`                                 |
+| `puzzle_name`    | Name of the publication and/or puzzle                 | `Quick Cryptic 904`                          |
+| `puzzle_url`     | If available, a URL to the puzzle itself              |                                              |
 
 ### Is any information missing from individual rows?
 
@@ -111,7 +115,7 @@ for more details). I unforutnately have not quantified what proportion of the
 dataset is missing or malformed.
 
 Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
-provides four more other columns, in addition to the seven provided in the
+provides four more other columns, in addition to the eight provided in the
 dataset:
 
 | Column Name         | Description                                                  | Example                                                |
@@ -222,11 +226,12 @@ and can be parsed to augment the dataset.
 
 ### Was any preprocessing/cleaning of the data done?
 
-Yes. As discussed in [the Collection Process
-section](/datasheet#collection-process), the raw HTML is preprocessed/cleaned
-by parsing and extracting the clues from the unstructured HTML into a
-structured table of clues and answers. This parsing is the main value-add of
-this dataset over the raw blog posts.
+Yes. As described in [the Collection Process
+section](/datasheet#collection-process), the raw HTML is "preprocessed" by
+parsing the unstructured HTML into a structured table of clues and answers.
+This parsing is the main value proposition of this dataset over the raw blog
+posts, and the clues and answers are now presented in a centralized, structured
+and searchable format.
 
 ### Is the software used to preprocess/clean the data available?
 
@@ -240,15 +245,15 @@ following four modules contain the preprocessing and cleaning code:
 
 ### Was the raw data saved in addition to the preprocessed/cleaned data (e.g. to support unanticipated future uses)?
 
-Yes: as discussed above, the raw HTML for the blog posts have been saved to
-avoid re-requesting. However, the raw HTML is not published, due to size
-constraints.
+Yes. As described in [the Collection Process
+section](/datasheet#collection-process), the raw HTML for the blog posts have
+been saved to avoid requesting them multiple times. However, the raw HTML is
+not published, due to size constraints.
 
-Please [contact
-me](https://raw.githubusercontent.com/eigenfoo/eigenfoo.xyz/master/assets/images/email.png)
-if you'd like to receive the raw data. Alternatively, you can simply rerun the
-open source [`cryptics`](https://github.com/eigenfoo/cryptics) library to
-recreate the dataset yourself.
+Please [email me](mailto:george[&#230;]eigenfoo.xyz) if you'd like to receive
+the raw HTML data. Alternatively, you can simply rerun the open source
+[`cryptics`](https://github.com/eigenfoo/cryptics) library to recreate the
+dataset yourself.
 
 ## Uses
 
@@ -265,9 +270,9 @@ using it, please [let me know](https://raw.githubusercontent.com/eigenfoo/eigenf
 
 ### How will this dataset will be distributed (e.g., tarball on website, API, GitHub)?
 
-The dataset will be distributed via a hosted [Datasette](https://datasette.io/)
-site. For more information, please watch Simon Willison's [introduction to
-Datasette on YouTube](https://youtu.be/7kDFBnXaw-c).
+The dataset is published online using [Datasette](https://datasette.io/). For
+more information, please watch Simon Willison's [introduction to Datasette on
+YouTube](https://youtu.be/7kDFBnXaw-c).
 
 ### Is this dataset distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
 
@@ -303,7 +308,8 @@ will most likely entail:
 
 ### Will older versions of this dataset continue to be supported/hosted/maintained?
 
-Older versions of the data will _not_ be supported, hosted or maintained.
+No. Unfortunately, I have neither the time nor inclination to support, host or
+maintain previous versions of the data.
 
 ### If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?
 
