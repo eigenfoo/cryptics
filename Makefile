@@ -91,7 +91,7 @@ templates/pages/%.html: docs/%.md template.html5 scripts/build-template.sh
 	scripts/build-template.sh "$<" "$@"
 
 serve:
-	datasette clues.sqlite3 --template-dir templates/ --static static:static/
+	datasette --immutable clues.sqlite3 --template-dir templates/ --static static:static/ --metadata metadata.json
 
 .PHONY: clean
 clean:  # Clean project directories.

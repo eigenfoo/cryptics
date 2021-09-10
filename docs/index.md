@@ -32,7 +32,7 @@ The sources for clues are:
 
 The data can be [viewed online](/clues/clues) and downloaded for free
 ([JSON](/clues/clues.json), [CSV](/clues/clues.csv?_size=max),
-[advanced](/clues/clues#export)). Detailed documentation can be found [on the
+[SQLite](/clues.db)). Detailed documentation can be found [on the
 datasheet](/static/datasheet.html) and the source code for creating the dataset
 [is available on GitHub](https://github.com/eigenfoo/cryptics).
 
