@@ -295,7 +295,9 @@ I can be reached via [email](mailto:george[&#230;]eigenfoo.xyz).
 
 ### Is there an erratum?
 
-Not currently, although there will eventually be a `CHANGELOG.md`.
+No, but there is a [`CHANGELOG.md` in the GitHub
+repository](https://github.com/eigenfoo/cryptics/blob/main/CHANGELOG.md), which
+is similar enough.
 
 ### Will this dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?
 
