@@ -311,12 +311,14 @@ will most likely entail:
 
 ### Will older versions of this dataset continue to be supported/hosted/maintained?
 
-No. Unfortunately, I have neither the time nor inclination to support, host or
-maintain previous versions of the data.
+No. Unfortunately, I currently have neither the time nor inclination to
+support, host or maintain previous versions of the dataset. I am open to
+changing my mind: please [reach out](mailto:george[&#230;]eigenfoo.xyz) if you
+suspect you can convince me otherwise.
 
 ### If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?
 
 Yes. Please [raise an issue on
 GitHub](https://github.com/eigenfoo/cryptics/issues) if you have a specific
-issue in mind. Otherwise, please reach out to me [via
+issue in mind. Otherwise,  reach out to me [via
 email](mailto:george[&#230;]eigenfoo.xyz).

@@ -35,8 +35,8 @@ Currently the sources for clues are:
 The data can be [viewed online](/clues/clues) and downloaded for free
 ([CSV](/clues/clues.csv?_size=max), [JSON](/clues/clues.json),
 [SQLite](/clues.db)). Detailed documentation can be found on [the
-datasheet](/static/datasheet.html) and the source code for creating the dataset
-is [available on GitHub](https://github.com/eigenfoo/cryptics).
+datasheet](/datasheet) and the source code for creating the dataset is
+[available on GitHub](https://github.com/eigenfoo/cryptics).
 
 Send all comments, suggestions and complaints to
 [george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz).
