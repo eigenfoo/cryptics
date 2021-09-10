@@ -9,3 +9,8 @@
 The resulting structured dataset looks something like this:
 
 ![Example of resulting structured dataset](static/img/examples.png)
+
+---
+
+- Data published using [Datasette](https://datasette.io/)
+- Documentation template adapted from [`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme)
