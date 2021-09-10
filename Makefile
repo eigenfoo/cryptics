@@ -39,23 +39,15 @@ venv:  # Set up a Python virtual environment for development.
 	deactivate
 	@printf "\n\nVirtual environment created! \033[1;34mRun \`source venv/bin/activate\` to activate it.\033[0m\n\n\n"
 
+.PHONY: black
+black:  # Format code in-place using black.
+	black cryptics/
+
 .PHONY: blackstyle
 blackstyle:
 	@printf "Checking code style with black...\n"
 	black --check --diff cryptics/
 	@printf "\033[1;34mBlack passes!\033[0m\n\n"
-
-.PHONY: pylintstyle
-pylintstyle:
-	@printf "Checking code style with pylint...\n"
-	pylint cryptics/
-	@printf "\033[1;34mPylint passes!\033[0m\n\n"
-
-.PHONY: pydocstyle
-pydocstyle:
-	@printf "Checking documentation with pydocstyle...\n"
-	pydocstyle --convention=numpy --match='(?!parallel_sampling).*\.py' cryptics/
-	@printf "\033[1;34mPydocstyle passes!\033[0m\n\n"
 
 .PHONY: mypytypes
 mypytypes:
@@ -63,25 +55,15 @@ mypytypes:
 	python -m mypy --ignore-missing-imports cryptics/
 	@printf "\033[1;34mMypy passes!\033[0m\n\n"
 
-.PHONY: black
-black:  # Format code in-place using black.
-	black cryptics/
-
 .PHONY: lint
-lint: blackstyle pylintstyle pydocstyle mypytypes  # Lint code using black, pylint, pydocstyle and mypy.
-
-.PHONY: test
-test:
-	bash scripts/test.sh
-
-.PHONY: check
-check: lint test  # Both lint and test code. Runs `make lint` followed by `make test`.
+lint: blackstyle mypytypes  # Lint code using black and mypy.
 
 .PHONY: build
-build: build-templates build-db  # Build SQLite database and static documentation pages.
+build: build-db build-templates test-build  # Build SQLite database and documentation and test build.
 
-.PHONY: build-db
-build-db:
+build-db: clues.sqlite3
+
+clues.sqlite3: cryptics/cryptics.sqlite3
 	bash scripts/build-db.sh
 
 build-templates: templates/index.html $(STATIC_TARGETS)
@@ -94,6 +76,10 @@ templates/index.html: docs/index.md template.html5 scripts/build-template.sh
 templates/pages/%.html: docs/%.md template.html5 scripts/build-template.sh
 	scripts/build-template.sh "$<" "$@"
 
+.PHONY: test-build
+test-build:
+	bash scripts/test-build.sh
+
 serve:
 	datasette \
 		--immutable clues.sqlite3 \
@@ -104,9 +90,13 @@ serve:
 		--setting suggest_facets off \
 		--setting allow_download on
 
+.PHONY: deploy
+deploy:  # Deploy Datasette project to Heroku.
+	bash scripts/deploy.sh
+
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -vrf templates/ dist/ site/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/ testing-report.html coverage.xml
+	rm -vrf templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
 	find cryptics/ -type d -name "__pycache__" -exec rm -vrf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
