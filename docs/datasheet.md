@@ -35,8 +35,9 @@ question](/datasheet#is-any-information-missing-from-individual-rows)).
 
 ### Who created this dataset and on whose behalf? Who funded the creation of this dataset?
 
-This dataset was created by me, [George Ho](https://eigenfoo.xyz), as a side
-project in my free time. Any and all expenses were covered by me personally.
+This dataset was created by me, [George Ho](https://www.eigenfoo.xyz), as a
+side project in my free time. No expenses have been incurred, so the question
+of funding is moot.
 
 ## Composition
 
@@ -58,7 +59,7 @@ As of September 2021, the number of rows approximately break down as follows:
 | http://bigdave44.com/                                                          |        ~208,000 |
 | http://www.fifteensquared.net/                                                 |        ~206,000 |
 | https://times-xwd-times.livejournal.com/                                       |         ~97,000 |
-| https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html |           ~7000 |
+| https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html |          ~7,000 |
 | Total                                                                          |        ~519,000 |
 
 ### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
@@ -214,7 +215,7 @@ difficult to see what further value human evaluation brings.
 
 Since this dataset is the result of a side project in my free time, the only
 person involved in the data collection process was me, [George
-Ho](https://eigenfoo.xyz/). I was not compensated for this work.
+Ho](https://www.eigenfoo.xyz/). I was not compensated for this work.
 
 ### Over what timeframe was the data collected?
 
@@ -264,7 +265,7 @@ both as a lookup table for answers and also to see how an answer has been clued
 in the past by other constructors.
 
 Beyond that though, I am unaware of other uses for the dataset. If you are
-using it, please [let me know](https://raw.githubusercontent.com/eigenfoo/eigenfoo.xyz/master/assets/images/email.png)!
+using it, please [let me know](mailto:george[&#230;]eigenfoo.xyz)!
 
 ## Distribution
 
@@ -287,7 +288,7 @@ No.
 
 ### Who is supporting/hosting/maintaining this dataset?
 
-Me, [George Ho](https://eigenfoo.xyz/).
+Me, [George Ho](https://www.eigenfoo.xyz/).
 
 ### How can the owner/curator/manager of this dataset be contacted?
 
