@@ -13,6 +13,8 @@ nav-links: |
 This is a dataset of cryptic crossword clues[^1], collected from cryptic crossword
 blogs and publicly available digital cryptic crossword archives.
 
+[^1]: If you're new to cryptic crosswords, rejoice! A whole new world awaits you! The New Yorker has [an excellent introduction to cryptic crosswords](https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword), and Matt Gritzmacher has [a daily newsletter with links to crosswords](https://crosswordlinks.substack.com/).
+
 I originally started this project to practice my webscraping and data
 engineering skills, but as it's evolved I hope it can be a resource to solvers
 and constructors of cryptic crosswords.
@@ -31,7 +33,7 @@ The sources for clues are:
 - [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
 The data can be [viewed online](/clues/clues) and downloaded for free
-([JSON](/clues/clues.json), [CSV](/clues/clues.csv?_size=max),
+([CSV](/clues/clues.csv?_size=max), [JSON](/clues/clues.json),
 [SQLite](/clues.db)). Detailed documentation can be found [on the
 datasheet](/static/datasheet.html) and the source code for creating the dataset
 [is available on GitHub](https://github.com/eigenfoo/cryptics).
@@ -42,5 +44,3 @@ Send all comments, suggestions and complaints to
 Please share and enjoy!
 
 \~ [George Ho](eigenfoo.xyz/)
-
-[^1]: If you're new to cryptic crosswords, there's a whole new world waiting for you to discover it! The New Yorker has [an excellent introduction to cryptic crosswords](https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword), and Matt Gritzmacher has [a daily newsletter which will point you to crosswords](https://crosswordlinks.substack.com/).

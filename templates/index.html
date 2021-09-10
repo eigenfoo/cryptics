@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc-markdown-css-theme" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="dcterms.date" content="2021-09-08" />
+  <meta name="dcterms.date" content="2021-09-09" />
   <title>A Dataset of Cryptic Crossword Clues</title>
   <link rel="stylesheet" href="../static/css/theme.css" />
   <link rel="stylesheet" href="../static/css/skylighting-solarized-theme.css" />
@@ -17,13 +17,15 @@
   </nav>
 <h1 class="title">A Dataset of Cryptic Crossword Clues</h1>
 <blockquote class="metadata">
-<p class="date "><time datetime="2021-09-08">Last updated 2021-09-08</time></p>
+<p class="date "><time datetime="2021-09-09">Last updated 2021-09-09</time></p>
 </blockquote>
 </header>
 
 
 <main>
-<p>This is a dataset of cryptic crossword clues, collected from cryptic crossword blogs and publicly available digital cryptic crossword archives.</p>
+<p>This is a dataset of cryptic crossword clues<span class="sidenote-wrapper"><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"/><span class="sidenote">If you’re new to cryptic crosswords, rejoice! A whole new world awaits you! The New Yorker has <a href="https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword">an excellent introduction to cryptic crosswords</a>, and Matt Gritzmacher has <a href="https://crosswordlinks.substack.com/">a daily newsletter with links to crosswords</a>.<br />
+<br />
+</span></span>, collected from cryptic crossword blogs and publicly available digital cryptic crossword archives.</p>
 <p>I originally started this project to practice my webscraping and data engineering skills, but as it’s evolved I hope it can be a resource to solvers and constructors of cryptic crosswords.</p>
 <p>The project scrapes several blogs and archives for cryptic crosswords. Out of the scraped web pages, the clue, answer, clue number, title, date are parsed out. The result (as of September 2021) is a bit more than half a million clues from cryptic crosswords over the past twelve years, which makes for a rich and peculiar dataset.</p>
 <p>The sources for clues are:</p>
@@ -33,8 +35,8 @@
 <li><a href="https://www.fifteensquared.net/">Fifteensquared</a> (<em>Financial Times</em>, <em>The Guardian</em>, <em>The Independent</em>)</li>
 <li><a href="https://times-xwd-times.livejournal.com/">Times for the Times</a> (<em>The Times</em> of London)</li>
 </ul>
-<p>The data can be <a href="/clues/clues">viewed online</a> and downloaded for free (<a href="/clues/clues.json">JSON</a>, <a href="/clues/clues.csv?_size=max">CSV</a>, <a href="/clues/clues#export">advanced</a>). Detailed documentation can be found <a href="/static/datasheet.html">on the datasheet</a> and the source code for creating the dataset <a href="https://github.com/eigenfoo/cryptics">is available on GitHub</a>.</p>
-<p>Please send all suggestions, offers, and complaints to <a href="mailto:george%5Bæ%5Deigenfoo.xyz">george[æ]eigenfoo.xyz</a></p>
+<p>The data can be <a href="/clues/clues">viewed online</a> and downloaded for free (<a href="/clues/clues.csv?_size=max">CSV</a>, <a href="/clues/clues.json">JSON</a>, <a href="/clues.db">SQLite</a>). Detailed documentation can be found <a href="/static/datasheet.html">on the datasheet</a> and the source code for creating the dataset <a href="https://github.com/eigenfoo/cryptics">is available on GitHub</a>.</p>
+<p>Send all comments, suggestions and complaints to <a href="mailto:george%5Bæ%5Deigenfoo.xyz">george[æ]eigenfoo.xyz</a>.</p>
 <p>Please share and enjoy!</p>
 <p>~ <a href="eigenfoo.xyz/">George Ho</a></p>
 </main>
