@@ -12,5 +12,5 @@ The resulting structured dataset looks something like this:
 
 ---
 
-- Data published using [Datasette](https://datasette.io/)
+- Data published using [Datasette](https://datasette.io/) and deployed with [Heroku](https://dashboard.heroku.com/apps)
 - Documentation template adapted from [`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme)
