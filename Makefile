@@ -91,7 +91,14 @@ templates/pages/%.html: docs/%.md template.html5 scripts/build-template.sh
 	scripts/build-template.sh "$<" "$@"
 
 serve:
-	datasette --immutable clues.sqlite3 --template-dir templates/ --static static:static/ --metadata metadata.json
+	datasette \
+		--immutable clues.sqlite3 \
+		--template-dir templates/ \
+		--static static:static/ \
+		--metadata metadata.json \
+		--setting allow_facet off \
+		--setting suggest_facets off \
+		--setting allow_download on
 
 .PHONY: clean
 clean:  # Clean project directories.
