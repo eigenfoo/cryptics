@@ -70,6 +70,10 @@ black:  # Format code in-place using black.
 .PHONY: lint
 lint: blackstyle pylintstyle pydocstyle mypytypes  # Lint code using black, pylint, pydocstyle and mypy.
 
+.PHONY: test
+test:
+	bash scripts/test.sh
+
 .PHONY: check
 check: lint test  # Both lint and test code. Runs `make lint` followed by `make test`.
 
