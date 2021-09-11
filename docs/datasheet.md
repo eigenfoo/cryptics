@@ -277,8 +277,12 @@ YouTube](https://youtu.be/7kDFBnXaw-c).
 
 ### Is this dataset distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
 
-No. This is a work in progress: if you have comments or complaints, please
-reach out via [email](mailto:george[&#230;]eigenfoo.xyz).
+Yes. This dataset is made available under the [Open Database
+License](http://opendatacommons.org/licenses/odbl/1.0/). A human-readable
+summary is [available
+here](https://opendatacommons.org/licenses/odbl/summary/).  Any rights in
+individual contents of the database are licensed under the [Database Contents
+License](http://opendatacommons.org/licenses/dbcl/1.0/).
 
 ### Have any third parties imposed IP-based or other restrictions on the data?
 
