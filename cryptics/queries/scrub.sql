@@ -24,3 +24,7 @@ WHERE source NOT IN (
 DROP TABLE IF EXISTS clues;
 ALTER TABLE new_clues RENAME TO clues;
 
+CREATE TABLE metadata (
+    key TEXT PRIMARY KEY,
+    value TEXT
+) WITHOUT ROWID;
