@@ -39,7 +39,7 @@ The data can be [viewed online](/clues/clues) and downloaded for free
 [the datasheet](/datasheet) and the source code for creating the dataset is
 [available on GitHub](https://github.com/eigenfoo/cryptics).
 
-[^2]: The CSV request will only return the first 1000 rows, [click here](https://cryptics.eigenfoo.xyz/clues/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
+[^2]: The CSV request will only return the first 1000 rows, [click here](/clues/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
 
 Send all comments, suggestions and complaints to
 [george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz).
