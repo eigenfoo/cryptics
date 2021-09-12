@@ -10,8 +10,6 @@ The resulting structured dataset looks something like this:
 
 ![Example of resulting structured dataset](static/img/examples.png)
 
----
-
 ## License
 
 This dataset is made available under the [Open Database
@@ -26,8 +24,6 @@ HTML and CSS code was modified from
 which is licensed under the [Blue Oak Model
 License](https://blueoakcouncil.org/license/1.0.0). The remainder of the code
 is licensed under the [MIT License](https://mit-license.org/).
-
----
 
 ## Colophon
 
