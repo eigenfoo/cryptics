@@ -99,7 +99,7 @@ Each row contains data in eight columns:
 
 Yes.
 
-Firstly, Less than 5% of all rows include a `puzzle_url`.
+Firstly, less than 5% of all rows include a `puzzle_url`.
 
 Secondly, some data may be missing or malformed due to data preprocessing
 errors (see [the "Are there any errors?"
