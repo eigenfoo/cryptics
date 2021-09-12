@@ -3,6 +3,7 @@ import logging
 import re
 import sqlite3
 import time
+from typing import List
 
 import requests
 import bs4
@@ -10,9 +11,40 @@ import bs4
 
 logging.basicConfig(level=logging.INFO)
 headers = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+    "User-Agent": "cryptics.eigenfoo.xyz bot (https://cryptics.eigenfoo.xyz/)",
     "Accept-Encoding": "gzip",
 }
+
+
+def get_new_urls_from_sitemap(sitemap_url: str, known_urls: List[str]):
+    response = requests.get(sitemap_url, headers=headers)
+    soup = bs4.BeautifulSoup(response.text, "lxml")
+    urls = {url.text for url in soup.find_all("loc")}
+    new_urls = list(urls - known_urls)
+    return new_urls
+
+
+def get_new_urls_from_nested_sitemaps(
+    sitemap_url: str, nested_sitemap_regex: str, known_urls: List[str]
+):
+    response = requests.get(sitemap_url, headers=headers)
+    soup = bs4.BeautifulSoup(response.text, "lxml")
+    nested_sitemaps = list(
+        reversed(
+            [
+                sitemap.text
+                for sitemap in soup.find_all("loc")
+                if re.search(nested_sitemap_regex, sitemap.text)
+            ]
+        )
+    )
+
+    new_urls = []
+    for nested_sitemap_url in nested_sitemaps:
+        new_urls_ = get_new_urls_from_sitemap(nested_sitemap_url, known_urls)
+        new_urls.extend(new_urls_)
+
+    return new_urls
 
 
 def get_new_urls(source, sitemap_url):
@@ -22,55 +54,28 @@ def get_new_urls(source, sitemap_url):
         known_urls = cursor.fetchall()
         known_urls = {url[0] for url in known_urls}
 
-    if "fifteensquared" in source:
-        response = requests.get(sitemap_url, headers=headers)
-        soup = bs4.BeautifulSoup(response.text, "lxml")
-        sitemaps = list(
-            reversed(
-                [
-                    sitemap.text
-                    for sitemap in soup.find_all("sitemap")
-                    if re.search(
-                        r"https://www.fifteensquared.net/wp-sitemap-posts-post-[0-9]*.xml",
-                        sitemap.text,
-                    )
-                ]
-            )
+    if "bigdave44" in source:
+        new_urls = get_new_urls_from_nested_sitemaps(
+            sitemap_url,
+            r"http://bigdave44.com/sitemap-[0-9]*.xml",
+            known_urls,
         )
-        new_urls = []
-        for sitemap in sitemaps:
-            response = requests.get(sitemap, headers=headers)
-            soup = bs4.BeautifulSoup(response.text, "lxml")
-            urls = {url.text for url in soup.find_all("url")}
-            new_urls.extend(list(urls - known_urls))
-
-    elif "bigdave44" in source:
-        response = requests.get(sitemap_url, headers=headers)
-        soup = bs4.BeautifulSoup(response.text, "lxml")
-        sitemaps = list(
-            reversed(
-                [
-                    sitemap.text
-                    for sitemap in soup.find_all("loc")
-                    if re.search(
-                        r"http://bigdave44.com/sitemap-[0-9]*.xml",
-                        sitemap.text,
-                    )
-                ]
-            )
+    elif "fifteensquared" in source:
+        new_urls = get_new_urls_from_nested_sitemaps(
+            sitemap_url,
+            r"https://www.fifteensquared.net/wp-sitemap-posts-post-[0-9]*.xml",
+            known_urls,
         )
-        new_urls = []
-        for sitemap in sitemaps:
-            response = requests.get(sitemap, headers=headers)
-            soup = bs4.BeautifulSoup(response.text, "lxml")
-            urls = {url.text for url in soup.find_all("loc")}
-            new_urls.extend(list(urls - known_urls))
-
+    elif "thehinducrosswordcorner" in source:
+        new_urls = get_new_urls_from_nested_sitemaps(
+            sitemap_url,
+            r"https://thehinducrosswordcorner.blogspot.com/sitemap.xml\?page=[0-9]*",
+            known_urls,
+        )
     elif "times_xwd_times" in source:
-        response = requests.get(sitemap_url, headers=headers)
-        soup = bs4.BeautifulSoup(response.text, "lxml")
-        urls = {url.text for url in soup.find_all("loc")}
-        new_urls = list(urls - known_urls)
+        new_urls = get_new_urls_from_sitemap(sitemap_url, known_urls)
+    else:
+        raise ValueError(f"Unrecognized source: {source}")
 
     return new_urls
 
@@ -80,6 +85,7 @@ if __name__ == "__main__":
         sitemap_urls = json.load(f)
 
     for source, sitemap_url in sitemap_urls.items():
+        logging.info(f"Populating from {source}...")
         new_urls = get_new_urls(source, sitemap_url)
         logging.info(f"Found {len(new_urls)} new urls.")
 
@@ -100,4 +106,4 @@ if __name__ == "__main__":
             except:
                 logging.error(f"Error inserting {url}")
 
-            time.sleep(20)
+            time.sleep(2)
