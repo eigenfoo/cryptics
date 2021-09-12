@@ -33,10 +33,13 @@ Currently the sources for clues are:
 - [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
 The data can be [viewed online](/clues/clues) and downloaded for free
-([CSV](/clues/clues.csv?_size=max), [JSON](/clues/clues.json),
-[SQLite](/clues.db), [advanced](/clues/clues#export)). Detailed documentation
-can be found on [the datasheet](/datasheet) and the source code for creating
-the dataset is [available on GitHub](https://github.com/eigenfoo/cryptics).
+([CSV](https://cryptics.eigenfoo.xyz/clues/clues.csv?_stream=on&_size=max),
+[JSON](/clues/clues.json), [SQLite](/clues.db),
+[advanced](/clues/clues#export)[^2]). Detailed documentation can be found on
+[the datasheet](/datasheet) and the source code for creating the dataset is
+[available on GitHub](https://github.com/eigenfoo/cryptics).
+
+[^2]: The CSV request will only return the first 1000 rows, [click here](https://cryptics.eigenfoo.xyz/clues/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
 
 Send all comments, suggestions and complaints to
 [george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz).
