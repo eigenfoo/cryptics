@@ -1,13 +1,5 @@
 ---
 title: A Dataset of Cryptic Crossword Clues
-nav-links: |
-  <nav>
-    <a href="/">Home</a>
-    &centerdot;
-    <a href="/datasheet">Datasheet</a>
-    &centerdot;
-    <a href="/clues/clues">Data</a>
-  </nav>
 ---
 
 `cryptics.eigenfoo.xyz` is a dataset of cryptic crossword clues[^1], collected

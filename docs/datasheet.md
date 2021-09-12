@@ -1,13 +1,5 @@
 ---
 title: Datasheet
-nav-links: |
-  <nav>
-    <a href="/">Home</a>
-    &centerdot;
-    <a href="/datasheet">Datasheet</a>
-    &centerdot;
-    <a href="/clues/clues">Data</a>
-  </nav>
 ---
 
 Following Gebru et al.'s recommendations in [_Datasheets for
@@ -90,17 +82,18 @@ order for a clue to be included, the following must be true:
 
 ### What data does each row consist of?
 
-Each row contains data in seven columns:
+Each row contains data in eight columns:
 
-| Column Name      | Description                                           | Example                                      |
-| ---------------- | ----------------------------------------------------- | -------------------------------------------- |
-| `clue`           |                                                       | `Labourers going around spotted tools (8)`   |
-| `answer`         |                                                       | `HANDSAWS`                                   |
-| `definition`     |                                                       | `tools`                                      |
-| `clue_number`    |                                                       | `17a`                                        |
-| `puzzle_date`    | Date the puzzle was published                         | `2017-08-25`                                 |
-| `puzzle_name`    | Name of the publication and/or puzzle                 | `Quick Cryptic 904`                          |
-| `puzzle_url`     | If available, a URL to the puzzle itself              |                                              |
+| Column Name      | Description                                               | Example                                                |
+| ---------------- | -----------------------------------------------------     | --------------------------------------------           |
+| `clue`           |                                                           | `Labourers going around spotted tools (8)`             |
+| `answer`         |                                                           | `HANDSAWS`                                             |
+| `definition`     |                                                           | `tools`                                                |
+| `clue_number`    |                                                           | `17a`                                                  |
+| `puzzle_date`    | Date the puzzle was published                             | `2017-08-25`                                           |
+| `puzzle_name`    | Name of the publication and/or puzzle                     | `Quick Cryptic 904`                                    |
+| `puzzle_url`     | If available, a URL to the puzzle itself                  |                                                        |
+| `source_url`     | The URL of the blog post where this clue was scraped from | `https://times-xwd-times.livejournal.com/1799231.html` |
 
 ### Is any information missing from individual rows?
 
@@ -115,23 +108,23 @@ for more details). I unforutnately have not quantified what proportion of the
 dataset is missing or malformed.
 
 Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
-provides five more other columns, in addition to the seven provided in the
+provides four more other columns, in addition to the eight provided in the
 dataset:
 
 | Column Name         | Description                                                  | Example                                                |
 |---------------------|--------------------------------------------------------------|--------------------------------------------------------|
 | `source`            | String indicating the blog this clue was sourced from        | `times_xwd_times`                                      |
 | `annotation`        | Explanation and/or commentary on this clue by a blogger      | `HANDS (labourers) arranged around SAW`                |
-| `source_url`        | The URL of the blog post where this clue was scraped from    | `https://times-xwd-times.livejournal.com/1799231.html` |
 | `is_reviewed`       | If `1`, a human has reviewed the parsed clue for correctness | `1`                                                    |
 | `datetime_reviewed` | If the clue `is_reviewed`, the date and time it was          | `2021-08-01 16:06:19`                                  |
 
-These five columns have been dropped to respect the copyright of the scraped
-blogs. While it is fair use to republish the cryptic clues in a centralized,
-structured and searchable format[^1], the blogs hold the copyright to any
-annotations and commentary on the clues.
+These four columns have been dropped prior to publication, either because they
+are redundant and of limited value, or to respect the copyright of the scraped
+blogs. While I believe it is fair use to republish the cryptic clues in a
+centralized, structured and searchable format[^1], the blogs hold the copyright
+to any annotations and commentary on the clues.
 
-[^1]: I believe the legal term is a [_transformatively_](https://copyright.columbia.edu/basics/fair-use.html) different resource.
+[^1]: a.k.a. a [_transformatively_](https://copyright.columbia.edu/basics/fair-use.html) different resource.
 
 ### Are there any errors, sources of noise, or redundancies in this dataset?
 

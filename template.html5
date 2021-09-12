@@ -35,9 +35,13 @@ $include-before$
 $endfor$
 
 <header>
-$if(nav-links)$
-  $nav-links$
-$endif$
+<nav>
+<a href="/">Home</a>
+&centerdot;
+<a href="/datasheet">Datasheet</a>
+&centerdot;
+<a href="/clues/clues">Data</a>
+</nav>
 <h1 class="title">$title$</h1>
 <blockquote class="metadata">
 $if(subtitle)$
