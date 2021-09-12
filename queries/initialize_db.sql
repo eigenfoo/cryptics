@@ -6,7 +6,14 @@ CREATE TABLE IF NOT EXISTS html (
     is_parsed BOOLEAN DEFAULT FALSE,
     datetime_parsed TIMESTAMP DEFAULT NULL
 );
-CREATE INDEX IF NOT EXISTS html_index ON html (url);
+CREATE TABLE IF NOT EXISTS puz (
+    source TEXT,
+    url PRIMARY KEY,
+    datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    puz TEXT,
+    is_parsed BOOLEAN DEFAULT FALSE,
+    datetime_parsed TIMESTAMP DEFAULT NULL
+);
 CREATE TABLE IF NOT EXISTS clues (
     source TEXT,
     clue TEXT,

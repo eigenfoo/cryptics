@@ -5,7 +5,8 @@ CREATE TABLE new_clues (
     clue_number TEXT,
     puzzle_date TEXT,
     puzzle_name TEXT,
-    puzzle_url TEXT
+    puzzle_url TEXT,
+    source_url TEXT NOT NULL
 );
 INSERT INTO new_clues SELECT
     clue,
@@ -14,7 +15,8 @@ INSERT INTO new_clues SELECT
     clue_number,
     puzzle_date,
     puzzle_name,
-    puzzle_url
+    puzzle_url,
+    source_url
 FROM clues
 WHERE source NOT IN (
     'out_of_left_field',

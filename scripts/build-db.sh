@@ -4,7 +4,7 @@ set -eu -o pipefail
 
 rm -rf clues.sqlite3
 sqlite3 cryptics/cryptics.sqlite3 ".dump clues" | sqlite3 clues.sqlite3
-sqlite3 clues.sqlite3 ".read cryptics/queries/scrub.sql"
+sqlite3 clues.sqlite3 ".read queries/scrub.sql"
 sqlite3 clues.sqlite3 "
 INSERT INTO metadata (key, value)
 VALUES
