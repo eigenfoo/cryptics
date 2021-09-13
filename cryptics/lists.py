@@ -308,7 +308,7 @@ def is_parsable_list_type_4(html):
     smallest_divs = get_smallest_divs(entry_content)
     out = (
         32 - 10 <= len(smallest_divs) <= 32 + 10
-        and 32 - 10 <= sum([bool(div.find_all("i")) for div in smallest_divs]) <= 32 + 10
+        and 32 - 15 <= sum([bool(div.find_all("i")) for div in smallest_divs]) <= 32 + 15
     )
     return out
 
