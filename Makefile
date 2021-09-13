@@ -41,7 +41,7 @@ venv:  # Set up a Python virtual environment for development.
 
 .PHONY: black
 black:  # Format code in-place using black.
-	black cryptics/
+	black cryptics/ *.py
 
 .PHONY: blackstyle
 blackstyle:
@@ -88,7 +88,8 @@ serve:
 		--metadata metadata.json \
 		--setting allow_facet off \
 		--setting suggest_facets off \
-		--setting allow_download on
+		--setting allow_download on \
+		--setting max_csv_mb 0
 
 .PHONY: deploy
 deploy:  # Deploy Datasette project to Heroku.
