@@ -11,7 +11,7 @@ for source in sources:
     with sqlite3.connect("cryptics.sqlite3") as conn:
         cursor = conn.cursor()
         cursor.execute(
-            f"SELECT url FROM html WHERE source = '{source}' AND NOT is_parsed AND datetime_requested >= '2021-09-04';"
+            f"SELECT url FROM html WHERE source = '{source}' AND NOT is_parsed;"
         )
         urls = [url for url, in cursor.fetchall()]
 
