@@ -1,5 +1,7 @@
 ---
 title: A Dataset of Cryptic Crossword Clues
+author-meta: George Ho
+description-meta: A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives.
 ---
 
 `cryptics.eigenfoo.xyz` is a dataset of cryptic crossword clues[^1], collected
