@@ -66,6 +66,20 @@ def get_new_urls(source, sitemap_url):
             r"https://www.fifteensquared.net/wp-sitemap-posts-post-[0-9]*.xml",
             known_urls,
         )
+    elif "natpostcryptic" in source:
+        urls = get_new_urls_from_nested_sitemaps(
+            sitemap_url,
+            r"https://natpostcryptic.blogspot.com/sitemap.xml\?page=[0-9]*",
+            known_urls,
+        )
+        # Hex (a.k.a. Emily Cox & Henry Rathvon) only publish a cryptic in the
+        # National Post on Saturdays. On all other days, the blog reviews other
+        # cryptics (usually The Daily Telegraph, for which we have bgidave44).
+        new_urls = [
+            url
+            for url in urls
+            if any([s in url.lower() for s in ["saturday", "cox", "ravthon"]])
+        ]
     elif "thehinducrosswordcorner" in source:
         new_urls = get_new_urls_from_nested_sitemaps(
             sitemap_url,
@@ -106,4 +120,4 @@ if __name__ == "__main__":
             except:
                 logging.error(f"Error inserting {url}")
 
-            time.sleep(2)
+            time.sleep(20)
