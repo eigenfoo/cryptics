@@ -24,6 +24,7 @@ Currently the sources for clues are:
 - [Big Dave's Crossword Blog](http://bigdave44.com/) (_The Daily Telegraph_, _The Sunday Telegraph_)
 - [Cru Cryptic Archive](https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html) (_The New York Times_ "Cru" Forums)
 - [Fifteensquared](https://www.fifteensquared.net/) (_Financial Times_, _The Guardian_, _The Independent_)
+- [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/) (_The Hindu_)
 - [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
 The data can be [viewed online](/clues/clues) and downloaded for free
