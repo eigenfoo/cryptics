@@ -1,5 +1,6 @@
 import re
 import dateutil
+import numpy as np
 
 
 PUZZLE_URL_REGEXES = [
@@ -9,6 +10,21 @@ PUZZLE_URL_REGEXES = [
     "^https?://www.thetimes.co.uk/puzzles/.+",
     "^https?://puzzles.telegraph.co.uk/.+",
 ]
+
+
+def get_smallest_divs(soup):
+    """Return the smallest (i.e. innermost, un-nested) `div` HTML tags."""
+    return [
+        div for div in soup.find_all("div") if not div.find("div") and div.text.strip()
+    ]
+
+
+def get_across_down_indexes(divs):
+    (across_index,) = np.where([div.text.strip().lower() == "across" for div in divs])[
+        0
+    ]
+    (down_index,) = np.where([div.text.strip().lower() == "down" for div in divs])[0]
+    return across_index, down_index
 
 
 def extract_puzzle_name(source_url, soup):
@@ -30,6 +46,11 @@ def extract_puzzle_name(source_url, soup):
             puzzle_name = puzzle_name.replace("DT", "Daily Telegraph")
         elif "ST" in puzzle_name:
             puzzle_name = puzzle_name.replace("ST", "Sunday Telegraph")
+    elif "thehinducrosswordcorner" in source_url:
+        title = soup.find("title").text
+        puzzle_name = title.replace("THE HINDU CROSSWORD CORNER: ", "")
+    else:
+        raise ValueError(f"Unknown source: {source_url}")
 
     return puzzle_name.strip()
 
@@ -45,6 +66,11 @@ def extract_puzzle_date(source_url, soup):
             "div", attrs={"class": "asset-meta asset-entry-date"}
         )[0].text.strip()
         puzzle_date = dateutil.parser.parse(entry_date_div).strftime("%Y-%m-%d")
+    elif "thehinducrosswordcorner" in source_url:
+        date_header_h2 = soup.find_all("h2", "date-header")[0].text.strip()
+        puzzle_date = dateutil.parser.parse(date_header_h2).strftime("%Y-%m-%d")
+    else:
+        raise ValueError(f"Unknown source: {source_url}")
 
     return puzzle_date.strip()
 
@@ -74,7 +100,11 @@ def extract_puzzle_url(soup):
     return None
 
 
-def extract_definitions(soup, clues, table_type):
+def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
+    if table_type == raw_definitions:
+        msg = "Expected exactly one of `table_type` and `raw_definitions` to be non-None"
+        raise ValueError(msg)
+
     if table_type == 1:
         raw_definitions = [
             tag.text
@@ -106,6 +136,9 @@ def extract_definitions(soup, clues, table_type):
                 },
             )
         ]
+    elif table_type is None:
+        if not isinstance(raw_definitions[0], str):
+            raw_definitions = [raw_definition.text for raw_definition in raw_definitions]
     else:
         raise ValueError("`table_type` not recognized.")
 

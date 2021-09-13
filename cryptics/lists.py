@@ -4,6 +4,8 @@ import bs4
 import numpy as np
 import pandas as pd
 
+from cryptics.utils import get_across_down_indexes, get_smallest_divs, extract_definitions
+
 
 def is_parsable_list_type_1(html):
     """
@@ -289,3 +291,70 @@ def parse_list_type_3(html):
             i += 1
 
     return pd.DataFrame(data)
+
+
+def is_parsable_list_type_4(html):
+    """
+    Checks that the HTML primarily consists of divs like this:
+
+    <div>
+        1   Encourage fight to obtain a <i><b>container </b></i>(3,3)
+        <b><span style="color: #2b00fe;">EGG BOX</span></b>
+        {EGG}{BOX}
+    </div>
+    """
+    soup = bs4.BeautifulSoup(html, "html.parser")
+    entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
+    smallest_divs = get_smallest_divs(entry_content)
+    out = (
+        32 - 10 <= len(smallest_divs) <= 32 + 10
+        and 32 - 10 <= sum([bool(div.find_all("i")) for div in smallest_divs]) <= 32 + 10
+    )
+    return out
+
+
+def parse_list_type_4(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
+    entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
+    smallest_divs = get_smallest_divs(entry_content)
+    across_index, down_index = get_across_down_indexes(smallest_divs)
+
+    clue_numbers = []
+    clues = []
+    answers = []
+    annotations = []
+
+    for i in range(across_index + 1, len(smallest_divs)):
+        if i == down_index:
+            continue
+
+        try:
+            clue_number = re.search(r"^[0-9]*[a|d]?", smallest_divs[i].text)
+            enumeration = re.search(r"\([0-9,\- ]*\)", smallest_divs[i].text)
+            clue = smallest_divs[i].text[clue_number.end() : enumeration.end()].strip()
+            answer = re.search(r"^[A-Z\s\-]+\b", smallest_divs[i].text[enumeration.end() :])
+            annotation = smallest_divs[i].text[enumeration.end() + answer.end() :].strip()
+        except AttributeError:
+            continue
+
+        clue_number = clue_number.group()
+        if not ("a" in clue_number or "d" in clue_number):
+            clue_number += "a" if across_index < i and i < down_index else "d"
+
+        clue_numbers.append(clue_number)
+        clues.append(clue)
+        answers.append(answer.group().strip())
+        annotations.append(annotation)
+
+    definitions = extract_definitions(
+        entry_content, clues, raw_definitions=entry_content.find_all("i")
+    )
+
+    out = pd.DataFrame(
+        data=np.transpose(np.array([clue_numbers, answers, clues, annotations])),
+        columns=["clue_number", "answer", "clue", "annotation"],
+    )
+    if definitions is not None:
+        out["definition"] = definitions
+
+    return out

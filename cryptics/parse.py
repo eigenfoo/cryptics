@@ -23,6 +23,8 @@ from cryptics.lists import (
     parse_list_type_2,
     is_parsable_list_type_3,
     parse_list_type_3,
+    is_parsable_list_type_4,
+    parse_list_type_4,
 )
 from cryptics.utils import (
     extract_puzzle_name,
@@ -36,7 +38,6 @@ def try_to_parse_as(html, is_parsable_func, parse_func):
         is_parseable = is_parsable_func(html)
     except:
         return None
-        pass
 
     if is_parseable:
         print(f"Parsing using {parse_func.__name__}")
@@ -73,6 +74,7 @@ def try_parse(html, source_url):
         (is_parsable_list_type_1, parse_list_type_1),
         (is_parsable_list_type_2, parse_list_type_2),
         (is_parsable_list_type_3, parse_list_type_3),
+        (is_parsable_list_type_4, parse_list_type_4),
         (is_parsable_text_type_1, parse_text_type_1),
     ]
 
