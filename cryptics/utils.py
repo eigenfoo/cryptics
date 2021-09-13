@@ -145,6 +145,7 @@ def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
     definitions = []
     i = 0
 
+    num_raw_definitions = len(raw_definitions)
     while raw_definitions:
         definition = raw_definitions.pop(0)
         # If definition is in clue, add to `definitions` at appropriate place.
@@ -159,7 +160,7 @@ def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
             for j, clue in enumerate(clues[i + 1 :]):
                 if definition in clue:
                     if j == 0:
-                        if i == 0:
+                        if len(raw_definitions) == num_raw_definitions - 1:
                             # Edge case: if the first clue lacks a definition,
                             # and the second clue has a definition.
                             definitions.append("nan")
