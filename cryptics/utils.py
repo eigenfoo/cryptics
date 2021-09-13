@@ -147,16 +147,22 @@ def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
 
     while raw_definitions:
         definition = raw_definitions.pop(0)
+        # If definition is in clue, add to `definitions` at appropriate place.
         if definition.strip() in clues[i]:
             if len(definitions) > 0:
                 definitions[-1] = "/".join([definitions[-1], definition])
             else:
                 definitions.append(definition)
         else:
-            # Search for the next clue that contains this definition.
+            # Search for the next clue that contains this definition. Upon
+            # finding one, handle it appropriately and stop looking.
             for j, clue in enumerate(clues[i + 1 :]):
                 if definition in clue:
                     if j == 0:
+                        if i == 0:
+                            # Edge case: if the first clue lacks a definition,
+                            # and the second clue has a definition.
+                            definitions.append("nan")
                         definitions.append(definition)
                         i += 1
                     else:
