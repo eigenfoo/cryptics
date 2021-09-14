@@ -5,12 +5,12 @@
 
 This repository contains:
 
-- The [`cryptics/`](https://github.com/eigenfoo/cryptics/tree/main/cryptics)
+- The [`cryptics`](https://github.com/eigenfoo/cryptics/tree/main/cryptics)
   Python library to scrape various cryptic crossword blogs and parse the
   scraped blog posts into a structured dataset of cryptic crossword clues.
-- The [`docs/`](https://github.com/eigenfoo/cryptics/tree/main/docs),
-  [`static/`](https://github.com/eigenfoo/cryptics/tree/main/static) files and
-  [`templates/`](https://github.com/eigenfoo/cryptics/tree/main/templates)
+- The [`docs`](https://github.com/eigenfoo/cryptics/tree/main/docs),
+  [`static`](https://github.com/eigenfoo/cryptics/tree/main/static) files and
+  [`templates`](https://github.com/eigenfoo/cryptics/tree/main/templates)
   needed to generate the static site for documentation.
 - Miscellanous
   [`scripts`](https://github.com/eigenfoo/cryptics/tree/main/scripts) and
