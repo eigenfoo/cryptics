@@ -2,6 +2,7 @@ import re
 import string
 
 import bs4
+import numpy as np
 import pandas as pd
 from cryptics.utils import extract_definitions
 
@@ -129,3 +130,83 @@ def parse_text_type_1(html):
     table.columns = ["clue_number", "clue", "definition", "answer", "annotation"]
 
     return table
+
+
+def is_parsable_text_type_2(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
+    entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
+
+    # Append a <br> tag after the two ACROSS and DOWN <h4> tags
+    for h4 in entry_content.find_all("h4"):
+        h4_index = h4.parent.contents.index(h4)
+        h4.insert(h4_index + 1, bs4.BeautifulSoup("<br>"))
+
+    # Turn all <br> tags into newlines
+    for br in entry_content.find_all("br"):
+        br.replace_with("\n")
+
+    return (
+        # At least 20 "123a. clue goes here (123)" lines
+        20
+        <= len(re.findall(r"\s+[0-9]+[a|d]?\.?\s+.*\([0-9, ]+\)", entry_content.text))
+        # Around 64 bolded entries (definitions and answers)
+        and 64 - 10 <= len(entry_content.find_all("b")) <= 64 + 10
+        # At least two h4 headers
+        and 2 <= len(entry_content.find_all("h4"))
+    )
+
+
+def parse_text_type_2(html):
+    soup = bs4.BeautifulSoup(html, "html.parser")
+    entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
+
+    # Append a <br> tag after the two ACROSS and DOWN <h4> tags
+    for h4 in entry_content.find_all("h4"):
+        h4_index = h4.parent.contents.index(h4)
+        h4.insert(h4_index + 1, bs4.BeautifulSoup("<br>"))
+
+    # Turn all <br> tags into newlines
+    for br in entry_content.find_all("br"):
+        br.replace_with("\n")
+
+    lines = [line.strip() for line in entry_content.text.splitlines() if line]
+
+    clue_numbers = []
+    clues = []
+    answers = []
+    annotations = []
+
+    for line in lines:
+        if line.lower() == "across":
+            clue_direction = "a"
+            continue
+        elif line.lower() == "down":
+            clue_direction = "d"
+            continue
+
+        clue_number = re.search(r"^[0-9]+[a|d]?", line)
+        if clue_number is None:
+            break
+
+        enumeration = re.search(r"\([0-9,\- ]*\)", line)
+        clue = line[clue_number.end() : enumeration.end()].strip()
+        answer = re.search(r"^[A-Z\s\-]+\b", line[enumeration.end() :])
+        annotation = line[enumeration.end() + answer.end() :].strip()
+
+        clue_number = clue_number.group()
+        if not ("a" in clue_number or "d" in clue_number):
+            clue_number += clue_direction
+
+        clue_numbers.append(clue_number)
+        clues.append(clue)
+        answers.append(answer.group().strip())
+        annotations.append(annotation)
+
+    definitions = extract_definitions(
+        entry_content, clues, raw_definitions=entry_content.find_all("b")
+    )
+
+    return pd.DataFrame(
+        data=np.transpose(np.array([clue_numbers, answers, clues, annotations, definitions])),
+        columns=["clue_number", "answer", "clue", "annotation", "definitions"],
+    )

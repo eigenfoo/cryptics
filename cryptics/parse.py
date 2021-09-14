@@ -3,6 +3,8 @@ import bs4
 from cryptics.text import (
     is_parsable_text_type_1,
     parse_text_type_1,
+    is_parsable_text_type_2,
+    parse_text_type_2,
 )
 from cryptics.tables import (
     is_parsable_table_type_1,
@@ -76,6 +78,7 @@ def try_parse(html, source_url):
         (is_parsable_list_type_3, parse_list_type_3),
         (is_parsable_list_type_4, parse_list_type_4),
         (is_parsable_text_type_1, parse_text_type_1),
+        (is_parsable_text_type_2, parse_text_type_2),
     ]
 
     for is_parsable_func, parse_func in parsers:
