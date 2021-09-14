@@ -1,14 +1,23 @@
-# `cryptics.eigenfoo.xyz`
+# [`cryptics.eigenfoo.xyz`](https://cryptics.eigenfoo.xyz/)
 
-> A Python library to scrape three cryptic crossword blogs and parse the scraped
-> blog posts into a structured dataset of cryptic crossword clues. The three
-> blogs are [http://bigdave44.com/](http://bigdave44.com/),
-> [https://www.fifteensquared.net/](https://www.fifteensquared.net/) and
-> [https://times-xwd-times.livejournal.com/](https://times-xwd-times.livejournal.com/).
+> `cryptics.eigenfoo.xyz` is a dataset of cryptic crossword clues, collected from
+> various blogs and publicly available digital archives.
 
-The resulting structured dataset looks something like this:
+This repository contains:
 
-![Example of resulting structured dataset](static/img/examples.png)
+- The [`cryptics/`](https://github.com/eigenfoo/cryptics/tree/main/cryptics)
+  Python library to scrape various cryptic crossword blogs and parse the
+  scraped blog posts into a structured dataset of cryptic crossword clues.
+- The [`docs/`](https://github.com/eigenfoo/cryptics/tree/main/docs),
+  [`static/`](https://github.com/eigenfoo/cryptics/tree/main/static) files and
+  [`templates/`](https://github.com/eigenfoo/cryptics/tree/main/templates)
+  needed to generate the static site for documentation.
+- Miscellanous
+  [`scripts`](https://github.com/eigenfoo/cryptics/tree/main/scripts) and
+  [`queries`](https://github.com/eigenfoo/cryptics/tree/main/queries) to
+  publish and deploy the Datasette instance.
+
+For more information, please see [`cryptics.eigenfoo.xyz`](https://cryptics.eigenfoo.xyz/).
 
 ## License
 
@@ -27,5 +36,13 @@ is licensed under the [MIT License](https://mit-license.org/).
 
 ## Colophon
 
-- Data published using [Datasette](https://datasette.io/) and deployed with [Heroku](https://dashboard.heroku.com/apps)
-- Documentation template adapted from [`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme)
+`cryptics.eigenfoo.xyz` is written in Python and run on a mix of [Digital Ocean
+Droplets (Basic Plan)](https://www.digitalocean.com/products/droplets/)  and a
+personal MacBook Pro.
+
+The data is published using [Datasette](https://datasette.io/) and deployed on
+[Heroku (Free Web Dyno)](https://dashboard.heroku.com/apps). Datasette has been
+remarkably easy to work with and a pleasure to use.
+
+The documentation is a static site adapted from
+[`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme).
