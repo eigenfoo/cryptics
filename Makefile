@@ -59,7 +59,7 @@ mypytypes:
 lint: blackstyle mypytypes  # Lint code using black and mypy.
 
 .PHONY: build
-build: build-db build-templates test-build  # Build SQLite database and documentation and test build.
+build: clean build-db build-templates test-build  # Build SQLite database and documentation and test build.
 
 build-db: clues.sqlite3
 
@@ -92,7 +92,7 @@ serve:
 		--setting max_csv_mb 0
 
 .PHONY: deploy
-deploy:  # Deploy Datasette project to Heroku.
+deploy:  clean build  # Deploy Datasette project to Heroku.
 	bash scripts/deploy.sh
 
 .PHONY: clean
