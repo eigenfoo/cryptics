@@ -102,7 +102,9 @@ def extract_puzzle_url(soup):
 
 def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
     if table_type == raw_definitions:
-        msg = "Expected exactly one of `table_type` and `raw_definitions` to be non-None"
+        msg = (
+            "Expected exactly one of `table_type` and `raw_definitions` to be non-None"
+        )
         raise ValueError(msg)
 
     if table_type == 1:
@@ -138,7 +140,9 @@ def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
         ]
     elif table_type is None:
         if not isinstance(raw_definitions[0], str):
-            raw_definitions = [raw_definition.text for raw_definition in raw_definitions]
+            raw_definitions = [
+                raw_definition.text for raw_definition in raw_definitions
+            ]
     else:
         raise ValueError("`table_type` not recognized.")
 

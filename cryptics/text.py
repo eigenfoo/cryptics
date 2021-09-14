@@ -207,6 +207,8 @@ def parse_text_type_2(html):
     )
 
     return pd.DataFrame(
-        data=np.transpose(np.array([clue_numbers, answers, clues, annotations, definitions])),
+        data=np.transpose(
+            np.array([clue_numbers, answers, clues, annotations, definitions])
+        ),
         columns=["clue_number", "answer", "clue", "annotation", "definitions"],
     )

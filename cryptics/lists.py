@@ -4,7 +4,11 @@ import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import get_across_down_indexes, get_smallest_divs, extract_definitions
+from cryptics.utils import (
+    get_across_down_indexes,
+    get_smallest_divs,
+    extract_definitions,
+)
 
 
 def is_parsable_list_type_1(html):
@@ -308,7 +312,9 @@ def is_parsable_list_type_4(html):
     smallest_divs = get_smallest_divs(entry_content)
     out = (
         32 - 10 <= len(smallest_divs) <= 32 + 10
-        and 32 - 15 <= sum([bool(div.find_all("i")) for div in smallest_divs]) <= 32 + 15
+        and 32 - 15
+        <= sum([bool(div.find_all("i")) for div in smallest_divs])
+        <= 32 + 15
     )
     return out
 
@@ -332,8 +338,12 @@ def parse_list_type_4(html):
             clue_number = re.search(r"^[0-9]*[a|d]?", smallest_divs[i].text)
             enumeration = re.search(r"\([0-9,\- ]*\)", smallest_divs[i].text)
             clue = smallest_divs[i].text[clue_number.end() : enumeration.end()].strip()
-            answer = re.search(r"^[A-Z\s\-]+\b", smallest_divs[i].text[enumeration.end() :])
-            annotation = smallest_divs[i].text[enumeration.end() + answer.end() :].strip()
+            answer = re.search(
+                r"^[A-Z\s\-]+\b", smallest_divs[i].text[enumeration.end() :]
+            )
+            annotation = (
+                smallest_divs[i].text[enumeration.end() + answer.end() :].strip()
+            )
         except AttributeError:
             continue
 
