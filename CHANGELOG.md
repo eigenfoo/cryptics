@@ -1,3 +1,7 @@
+# Unreleased
+
+- Deleted duplicate rows in the `clues` table.
+
 # v2021.09.12
 
 ## Data
