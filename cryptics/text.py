@@ -139,7 +139,7 @@ def is_parsable_text_type_2(html):
     # Append a <br> tag after the two ACROSS and DOWN <h4> tags
     for h4 in entry_content.find_all("h4"):
         h4_index = h4.parent.contents.index(h4)
-        h4.insert(h4_index + 1, bs4.BeautifulSoup("<br>"))
+        h4.insert(h4_index + 1, bs4.BeautifulSoup("<br>", features="lxml"))
 
     # Turn all <br> tags into newlines
     for br in entry_content.find_all("br"):
@@ -163,7 +163,7 @@ def parse_text_type_2(html):
     # Append a <br> tag after the two ACROSS and DOWN <h4> tags
     for h4 in entry_content.find_all("h4"):
         h4_index = h4.parent.contents.index(h4)
-        h4.insert(h4_index + 1, bs4.BeautifulSoup("<br>"))
+        h4.insert(h4_index + 1, bs4.BeautifulSoup("<br>", features="lxml"))
 
     # Turn all <br> tags into newlines
     for br in entry_content.find_all("br"):
@@ -186,12 +186,13 @@ def parse_text_type_2(html):
 
         clue_number = re.search(r"^[0-9]+[a|d]?", line)
         if clue_number is None:
-            break
+            continue
 
         enumeration = re.search(r"\([0-9,\- ]*\)", line)
         clue = line[clue_number.end() : enumeration.end()].strip()
         answer = re.search(r"^[A-Z\s\-]+\b", line[enumeration.end() :])
         annotation = line[enumeration.end() + answer.end() :].strip()
+
 
         clue_number = clue_number.group()
         if not ("a" in clue_number or "d" in clue_number):
@@ -210,5 +211,5 @@ def parse_text_type_2(html):
         data=np.transpose(
             np.array([clue_numbers, answers, clues, annotations, definitions])
         ),
-        columns=["clue_number", "answer", "clue", "annotation", "definitions"],
+        columns=["clue_number", "answer", "clue", "annotation", "definition"],
     )
