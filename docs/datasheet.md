@@ -48,13 +48,14 @@ section](/datasheet#collection-process)).
 
 As of September 2021, the number of rows approximately break down as follows:
 
-| Source                                                                         | Number of Clues |
-|--------------------------------------------------------------------------------|----------------:|
-| http://bigdave44.com/                                                          |        ~208,000 |
-| http://www.fifteensquared.net/                                                 |        ~206,000 |
-| https://times-xwd-times.livejournal.com/                                       |         ~97,000 |
-| https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html |          ~7,000 |
-| Total                                                                          |        ~519,000 |
+| Source                                                                                                | Number of Clues |
+|-------------------------------------------------------------------------------------------------------|----------------:|
+| [Big Dave's Crossword Blog](http://bigdave44.com/)                                                    |        ~207,000 |
+| [Fifteensquared](http://www.fifteensquared.net/)                                                      |        ~200,000 |
+| [Times for the Times](https://times-xwd-times.livejournal.com/)                                       |         ~94,000 |
+| [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/)                           |         ~67,000 |
+| [Cru Cryptic Archive](https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html) |          ~7,000 |
+| Total                                                                                                 |        ~575,000 |
 
 ### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
 
@@ -87,7 +88,7 @@ order for a clue to be included, the following must be true:
 Each row contains data in eight columns:
 
 | Column Name      | Description                                               | Example                                                |
-| ---------------- | -----------------------------------------------------     | --------------------------------------------           |
+| ---------------- | --------------------------------------------------------- | ------------------------------------------------------ |
 | `clue`           |                                                           | `Labourers going around spotted tools (8)`             |
 | `answer`         |                                                           | `HANDSAWS`                                             |
 | `definition`     |                                                           | `tools`                                                |
@@ -101,7 +102,7 @@ Each row contains data in eight columns:
 
 Yes.
 
-Firstly, less than 5% of all rows include a `puzzle_url`.
+Firstly, fewer than 5% of all rows include a `puzzle_url`.
 
 Secondly, some data may be missing or malformed due to data preprocessing
 errors (see [the "Are there any errors?"

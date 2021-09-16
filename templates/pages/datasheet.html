@@ -7,7 +7,7 @@
   <meta name="generator" content="pandoc-markdown-css-theme" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="George Ho" />
-  <meta name="dcterms.date" content="2021-09-12" />
+  <meta name="dcterms.date" content="2021-09-15" />
   <meta name="description" content="A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives." />
   <title>Datasheet</title>
   <link rel="stylesheet" href="../../static/css/theme.css" />
@@ -25,7 +25,7 @@
 </nav>
 <h1 class="title">Datasheet</h1>
 <blockquote class="metadata">
-<p class="date "><time datetime="2021-09-12">Last updated 2021-09-12</time></p>
+<p class="date "><time datetime="2021-09-15">Last updated 2021-09-15</time></p>
 </blockquote>
 </header>
 
@@ -45,10 +45,6 @@
 <p>Clues are sourced from three cryptic crossword blogs and a few online archives of cryptic crosswords (for more details, see <a href="/datasheet#collection-process">the Collection Process section</a>).</p>
 <p>As of September 2021, the number of rows approximately break down as follows:</p>
 <table>
-<colgroup>
-<col style="width: 82%" />
-<col style="width: 17%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>Source</th>
@@ -57,24 +53,28 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td>http://bigdave44.com/</td>
-<td style="text-align: right;">~208,000</td>
+<td><a href="http://bigdave44.com/">Big Dave’s Crossword Blog</a></td>
+<td style="text-align: right;">~207,000</td>
 </tr>
 <tr class="even">
-<td>http://www.fifteensquared.net/</td>
-<td style="text-align: right;">~206,000</td>
+<td><a href="http://www.fifteensquared.net/">Fifteensquared</a></td>
+<td style="text-align: right;">~200,000</td>
 </tr>
 <tr class="odd">
-<td>https://times-xwd-times.livejournal.com/</td>
-<td style="text-align: right;">~97,000</td>
+<td><a href="https://times-xwd-times.livejournal.com/">Times for the Times</a></td>
+<td style="text-align: right;">~94,000</td>
 </tr>
 <tr class="even">
-<td>https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html</td>
+<td><a href="https://thehinducrosswordcorner.blogspot.com/">The Hindu Crossword Corner</a></td>
+<td style="text-align: right;">~67,000</td>
+</tr>
+<tr class="odd">
+<td><a href="https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html">Cru Cryptic Archive</a></td>
 <td style="text-align: right;">~7,000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Total</td>
-<td style="text-align: right;">~519,000</td>
+<td style="text-align: right;">~575,000</td>
 </tr>
 </tbody>
 </table>
@@ -100,9 +100,9 @@
 <p>Each row contains data in eight columns:</p>
 <table>
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 46%" />
-<col style="width: 38%" />
+<col style="width: 12%" />
+<col style="width: 44%" />
+<col style="width: 42%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -156,7 +156,7 @@
 </table>
 <h3 id="is-any-information-missing-from-individual-rows">Is any information missing from individual rows?</h3>
 <p>Yes.</p>
-<p>Firstly, less than 5% of all rows include a <code>puzzle_url</code>.</p>
+<p>Firstly, fewer than 5% of all rows include a <code>puzzle_url</code>.</p>
 <p>Secondly, some data may be missing or malformed due to data preprocessing errors (see <a href="/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">the “Are there any errors?” question</a> for more details). I unforutnately have not quantified what proportion of the dataset is missing or malformed.</p>
 <p>Finally, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
 <table>
