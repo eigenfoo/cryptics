@@ -149,24 +149,27 @@ def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
     definitions = []
     i = 0
 
-    num_raw_definitions = len(raw_definitions)
+    is_first_definition = True
     while raw_definitions:
         definition = raw_definitions.pop(0)
+
         # If definition is in clue, add to `definitions` at appropriate place.
         if definition.strip() in clues[i]:
             if len(definitions) > 0:
                 definitions[-1] = "/".join([definitions[-1], definition])
             else:
                 definitions.append(definition)
+            is_first_definition = False
+
         else:
             # Search for the next clue that contains this definition. Upon
             # finding one, handle it appropriately and stop looking.
             for j, clue in enumerate(clues[i + 1 :]):
                 if definition in clue:
                     if j == 0:
-                        if len(raw_definitions) == num_raw_definitions - 1:
+                        if is_first_definition:
                             # Edge case: if the first clue lacks a definition,
-                            # and the second clue has a definition.
+                            # but the second clue has a definition.
                             definitions.append("nan")
                         definitions.append(definition)
                         i += 1
@@ -174,6 +177,7 @@ def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
                         definitions.extend(j * ["nan"])
                         raw_definitions = [definition] + raw_definitions
                         i += j
+                    is_first_definition = False
                     break
 
     if len(definitions) < len(clues):
