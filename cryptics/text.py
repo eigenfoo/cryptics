@@ -151,8 +151,6 @@ def is_parsable_text_type_2(html):
         <= len(re.findall(r"\s+[0-9]+[a|d]?\.?\s+.*\([0-9, ]+\)", entry_content.text))
         # Around 64 bolded entries (definitions and answers)
         and 64 - 10 <= len(entry_content.find_all("b")) <= 64 + 10
-        # At least two h4 headers
-        and 2 <= len(entry_content.find_all("h4"))
     )
 
 
