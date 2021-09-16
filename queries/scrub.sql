@@ -5,8 +5,8 @@ CREATE TABLE new_clues (
     clue_number TEXT,
     puzzle_date TEXT,
     puzzle_name TEXT,
-    puzzle_url TEXT,
-    source_url TEXT NOT NULL
+    source_url TEXT NOT NULL,
+    source TEXT
 );
 INSERT INTO new_clues SELECT
     clue,
@@ -15,8 +15,8 @@ INSERT INTO new_clues SELECT
     clue_number,
     puzzle_date,
     puzzle_name,
-    puzzle_url,
-    source_url
+    source_url,
+    source
 FROM clues
 WHERE source NOT IN (
     'out_of_left_field',
@@ -25,6 +25,7 @@ WHERE source NOT IN (
 );
 DROP TABLE IF EXISTS clues;
 ALTER TABLE new_clues RENAME TO clues;
+CREATE INDEX clues_source_index ON clues ("source");
 
 CREATE TABLE metadata (
     key TEXT PRIMARY KEY,

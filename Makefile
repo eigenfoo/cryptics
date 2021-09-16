@@ -86,7 +86,6 @@ serve:
 		--template-dir templates/ \
 		--static static:static/ \
 		--metadata metadata.json \
-		--setting allow_facet off \
 		--setting suggest_facets off \
 		--setting allow_download on \
 		--setting max_csv_mb 0
