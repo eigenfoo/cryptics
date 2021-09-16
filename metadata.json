@@ -1,0 +1,16 @@
+{
+    "title": "Cryptic Crossword Clues Dataset",
+    "license": "Open Database License (ODbL) v1.0",
+    "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "about": "Datasheet",
+    "about_url": "/datasheet",
+    "databases": {
+        "clues": {
+            "tables": {
+                "clues": {
+                    "facets": ["source"]
+                }
+            }
+        }
+    }
+}
