@@ -133,6 +133,14 @@ def parse_text_type_1(html):
 
 
 def is_parsable_text_type_2(html):
+    """
+    Identifies if the text looks something like this:
+
+    ACROSS
+    1   Emotionally sensitive to mice running all over girl's house (8) EMPATHIC {EM{PAT}{H}IC*}
+    6   Network heads of many engineering start-ups harmonise (4) MESH Acrostic
+    9   Negligent Milan admits university's past pupils (6) ALUMNI {AL{U}MNI*}
+    """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
 
