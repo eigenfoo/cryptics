@@ -28,7 +28,7 @@ Currently the sources for clues are:
 - [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
 The data can be [viewed online](/clues/clues) and downloaded for free
-([CSV](https://cryptics.eigenfoo.xyz/clues/clues.csv?_stream=on&_size=max),
+([CSV](https://cryptics.eigenfoo.xyz/clues/clues.csv?_size=max),
 [JSON](/clues/clues.json), [SQLite](/clues.db),
 [advanced](/clues/clues#export)[^2]). Detailed documentation can be found on
 [the datasheet](/datasheet) and the source code for creating the dataset is
