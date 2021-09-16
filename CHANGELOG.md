@@ -3,6 +3,8 @@
 - Added Michael F. Gill's digital archive of _The New York Times_ cryptic
   crosswords.
 - Saving raw `.puz` files.
+- Add `source` column, drop `puzzle_url` columns.
+- Add facet over `source` column.
 
 # v2021.09.15
 

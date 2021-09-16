@@ -95,9 +95,9 @@
 <li>In particular, the blog must include at least the clues and answers of the crossword.</li>
 <li>Many blog posts from the sources are not about crosswords at all (e.g. they may be administrative announcements), and those that are may not include the clues, instead simply identifying clues by puzzle name and clue numbers. Several blogs’ early blog posts fit this description.</li>
 </ul></li>
-<li>The blog post must be parseable.
+<li>The blog post must be parsable.
 <ul>
-<li>As explained in <a href="/datasheet#collection-process">the Collection Process section</a>, the clues and answers are extracted from the raw HTML by a collection of parsing functions. If none of the parsing functions successfully return parsed clues, the raw HTML is deemed “unparseable” and is skipped.</li>
+<li>As explained in <a href="/datasheet#collection-process">the Collection Process section</a>, the clues and answers are extracted from the raw HTML by a collection of parsing functions. If none of the parsing functions successfully return parsed clues, the raw HTML is deemed “unparsable” and is skipped.</li>
 </ul></li>
 </ol>
 <h3 id="what-data-does-each-row-consist-of">What data does each row consist of?</h3>
@@ -147,22 +147,21 @@
 <td><code>Quick Cryptic 904</code></td>
 </tr>
 <tr class="odd">
-<td><code>puzzle_url</code></td>
-<td>If available, a URL to the puzzle itself</td>
-<td></td>
-</tr>
-<tr class="even">
 <td><code>source_url</code></td>
 <td>The URL of the blog post where this clue was scraped from</td>
 <td><code>https://times-xwd-times.livejournal.com/1799231.html</code></td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td>String indicating the blog this clue was sourced from</td>
+<td><code>times_xwd_times</code></td>
 </tr>
 </tbody>
 </table>
 <h3 id="is-any-information-missing-from-individual-rows">Is any information missing from individual rows?</h3>
 <p>Yes.</p>
-<p>Firstly, fewer than 5% of all rows include a <code>puzzle_url</code>.</p>
-<p>Secondly, some data may be missing or malformed due to data preprocessing errors (see <a href="/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">the “Are there any errors?” question</a> for more details). I unforutnately have not quantified what proportion of the dataset is missing or malformed.</p>
-<p>Finally, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
+<p>Firstly, some data may be missing or malformed due to data preprocessing errors (see <a href="/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">the “Are there any errors?” question</a> for more details). I unfortunately have not quantified what proportion of the dataset is missing or malformed.</p>
+<p>Secondly, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
 <table>
 <colgroup>
 <col style="width: 15%" />
@@ -178,14 +177,14 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>source</code></td>
-<td>String indicating the blog this clue was sourced from</td>
-<td><code>times_xwd_times</code></td>
-</tr>
-<tr class="even">
 <td><code>annotation</code></td>
 <td>Explanation and/or commentary on this clue by a blogger</td>
 <td><code>HANDS (labourers) arranged around SAW</code></td>
+</tr>
+<tr class="even">
+<td><code>puzzle_url</code></td>
+<td>If available, a URL to the puzzle itself</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>is_reviewed</code></td>
@@ -216,7 +215,7 @@
 <li>multi-word answers split across the <code>answer</code> and <code>annotation</code> columns</li>
 </ul>
 <h3 id="is-this-dataset-self-contained-or-does-it-link-to-or-otherwise-rely-on-external-resources-e.g.-websites-tweets-other-datasets">Is this dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?</h3>
-<p>Asides from the <code>puzzle_url</code>, the dataset is self-contained. Users are encouraged to ignore the <code>puzzle_url</code> column and treat the dataset as self-contained, as the <code>puzzle_url</code> column is sparse, does not bring much value and may be removed in a future version of the dataset.</p>
+<p>Asides from the <code>source_url</code> column, the dataset is self-contained. Users are encouraged use the <code>source_url</code> for manual lookups of the original source, e.g. for further context on a particular clue, or to validate that the source has been parsed correctly.</p>
 <h3 id="does-this-dataset-contain-data-that-might-be-considered-confidential">Does this dataset contain data that might be considered confidential?</h3>
 <p>No. All cryptic crossword clues have been published (either in newspapers or in online publications) and are not confidential.</p>
 <h3 id="does-this-dataset-contain-data-that-if-viewed-directly-might-be-offensive-insulting-threatening-or-might-otherwise-cause-anxiety">Does this dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety?</h3>
@@ -235,7 +234,7 @@
 </span></span>. This has uncovered a number of systematic errors, which can be corrected by either modifying the parsing code and re-parsing the saved HTML, or by simply running ad hoc SQL queries against the table of parsed clues. However, since it’s logistically infeasible to manually review all the clues, it’s admittedly difficult to see what further value human evaluation brings.</p>
 <h3 id="who-was-involved-in-the-data-collection-process-and-how-were-they-compensated">Who was involved in the data collection process and how were they compensated?</h3>
 <p>Since this dataset is the result of a side project in my free time, the only person involved in the data collection process was me, <a href="https://www.eigenfoo.xyz/">George Ho</a>. I was not compensated for this work.</p>
-<h3 id="over-what-timeframe-was-the-data-collected">Over what timeframe was the data collected?</h3>
+<h3 id="over-what-time-frame-was-the-data-collected">Over what time frame was the data collected?</h3>
 <p>The scraped blog posts cover crosswords published from January 2009 to September 2021: a twelve year period. New blog posts are being published daily and can be parsed to augment the dataset.</p>
 <h2 id="preprocessing-and-cleaning">Preprocessing and Cleaning</h2>
 <h3 id="was-any-preprocessingcleaning-of-the-data-done">Was any preprocessing/cleaning of the data done?</h3>

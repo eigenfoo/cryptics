@@ -77,12 +77,12 @@ order for a clue to be included, the following must be true:
      they may be administrative announcements), and those that are may not
      include the clues, instead simply identifying clues by puzzle name and
      clue numbers. Several blogs' early blog posts fit this description.
-3. The blog post must be parseable.
+3. The blog post must be parsable.
    * As explained in [the Collection Process
      section](/datasheet#collection-process), the clues and answers are
      extracted from the raw HTML by a collection of parsing functions. If none
      of the parsing functions successfully return parsed clues, the raw HTML is
-     deemed "unparseable" and is skipped.
+     deemed "unparsable" and is skipped.
 
 ### What data does each row consist of?
 
@@ -96,29 +96,27 @@ Each row contains data in eight columns:
 | `clue_number`    |                                                           | `17a`                                                  |
 | `puzzle_date`    | Date the puzzle was published                             | `2017-08-25`                                           |
 | `puzzle_name`    | Name of the publication and/or puzzle                     | `Quick Cryptic 904`                                    |
-| `puzzle_url`     | If available, a URL to the puzzle itself                  |                                                        |
 | `source_url`     | The URL of the blog post where this clue was scraped from | `https://times-xwd-times.livejournal.com/1799231.html` |
+| `source`         | String indicating the blog this clue was sourced from     | `times_xwd_times`                                      |
 
 ### Is any information missing from individual rows?
 
 Yes.
 
-Firstly, fewer than 5% of all rows include a `puzzle_url`.
-
-Secondly, some data may be missing or malformed due to data preprocessing
+Firstly, some data may be missing or malformed due to data preprocessing
 errors (see [the "Are there any errors?"
 question](/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset)
-for more details). I unforutnately have not quantified what proportion of the
+for more details). I unfortunately have not quantified what proportion of the
 dataset is missing or malformed.
 
-Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
+Secondly, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
 provides four more other columns, in addition to the eight provided in the
 dataset:
 
 | Column Name         | Description                                                  | Example                                                |
 |---------------------|--------------------------------------------------------------|--------------------------------------------------------|
-| `source`            | String indicating the blog this clue was sourced from        | `times_xwd_times`                                      |
 | `annotation`        | Explanation and/or commentary on this clue by a blogger      | `HANDS (labourers) arranged around SAW`                |
+| `puzzle_url`        | If available, a URL to the puzzle itself                     |                                                        |
 | `is_reviewed`       | If `1`, a human has reviewed the parsed clue for correctness | `1`                                                    |
 | `datetime_reviewed` | If the clue `is_reviewed`, the date and time it was          | `2021-08-01 16:06:19`                                  |
 
@@ -151,10 +149,10 @@ Machine errors may include:
 
 ### Is this dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?
 
-Asides from the `puzzle_url`, the dataset is self-contained. Users are
-encouraged to ignore the `puzzle_url` column and treat the dataset as
-self-contained, as the `puzzle_url` column is sparse, does not bring much value
-and may be removed in a future version of the dataset.
+Asides from the `source_url` column, the dataset is self-contained. Users are
+encouraged use the `source_url` for manual lookups of the original source, e.g.
+for further context on a particular clue, or to validate that the source has
+been parsed correctly.
 
 ### Does this dataset contain data that might be considered confidential?
 
@@ -214,7 +212,7 @@ Since this dataset is the result of a side project in my free time, the only
 person involved in the data collection process was me, [George
 Ho](https://www.eigenfoo.xyz/). I was not compensated for this work.
 
-### Over what timeframe was the data collected?
+### Over what time frame was the data collected?
 
 The scraped blog posts cover crosswords published from January 2009 to
 September 2021: a twelve year period. New blog posts are being published daily
