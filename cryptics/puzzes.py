@@ -17,6 +17,19 @@ def last_dirname_basename(path):
     )
 
 
+def insert_puz(source, path, puz_filename):
+    with open(puz_filename, "rb") as f:
+        puz_blob = f.read()
+
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO puz (source, path, puz, is_parsed, datetime_parsed) VALUES (?, ?, ?, 1, datetime('now'))",
+            (source, path, puz_blob)
+        )
+        conn.commit()
+
+
 def parse_puz(puz_filename):
     puzzle = puz.read(puz_filename)
     numbering = puzzle.clue_numbering()
@@ -94,8 +107,10 @@ if __name__ == "__main__":
     }
 
     for puz_filename in new_puz_filenames:
-        print(f"Parsing {puz_filename}")
+        print(f"Parsing and writing {puz_filename}...")
         data = parse_puz(puz_filename)
         data["source"] = args.source
         with sqlite3.connect("cryptics.sqlite3") as conn:
             data.to_sql(f"clues", conn, if_exists="append", index=False)
+
+        insert_puz(args.source, last_dirname_basename(puz_filename), puz_filename)
