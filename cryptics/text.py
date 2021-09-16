@@ -186,11 +186,15 @@ def parse_text_type_2(html):
         if clue_number is None:
             continue
 
-        enumeration = re.search(r"\([0-9,\- ]*\)", line)
-        clue = line[clue_number.end() : enumeration.end()].strip()
-        answer = re.search(r"^[A-Z\s\-]+\b", line[enumeration.end() :])
-        annotation = line[enumeration.end() + answer.end() :].strip()
-
+        try:
+            enumeration = re.search(r"\([0-9,\- ]*\)", line)
+            clue = line[clue_number.end() : enumeration.end()].strip()
+            answer = re.search(r"^[A-Z\s\-]+\b", line[enumeration.end() :])
+            annotation = line[enumeration.end() + answer.end() :].strip()
+        except AttributeError:
+            # One or more of the fields is missing. This could be due to a line
+            # like e.g. "21 See 14 (7)". Just skip it.
+            continue
 
         clue_number = clue_number.group()
         if not ("a" in clue_number or "d" in clue_number):
