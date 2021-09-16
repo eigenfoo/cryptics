@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS html (
 );
 CREATE TABLE IF NOT EXISTS puz (
     source TEXT,
-    url PRIMARY KEY,
+    path PRIMARY KEY,
     datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     puz BLOB,
     is_parsed BOOLEAN DEFAULT FALSE,
