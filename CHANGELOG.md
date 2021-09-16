@@ -1,3 +1,9 @@
+# Unreleased
+
+- Added Michael F. Gill's digital archive of _The New York Times_ cryptic
+  crosswords.
+- Saving raw `.puz` files.
+
 # v2021.09.15
 
 ## Data
