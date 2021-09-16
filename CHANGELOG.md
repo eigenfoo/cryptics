@@ -1,6 +1,12 @@
-# Unreleased
+# v2021.09.15
 
+## Data
+
+- Added [The Hindu Crossword
+  Corner](https://thehinducrosswordcorner.blogspot.com/) as a scraped blog,
+  which adds approximately 67,000 clues.
 - Deleted duplicate rows in the `clues` table.
+- Added clues scraped from blog posts published from previous release date.
 
 # v2021.09.12
 
