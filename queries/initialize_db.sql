@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS puz (
     source TEXT,
     url PRIMARY KEY,
     datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    puz TEXT,
+    puz BLOB,
     is_parsed BOOLEAN DEFAULT FALSE,
     datetime_parsed TIMESTAMP DEFAULT NULL
 );
