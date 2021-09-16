@@ -175,12 +175,10 @@ def parse_text_type_2(html):
     clues = []
     answers = []
     annotations = []
+    clue_direction = "a"
 
     for line in lines:
-        if line.lower() == "across":
-            clue_direction = "a"
-            continue
-        elif line.lower() == "down":
+        if line.lower() == "down":
             clue_direction = "d"
             continue
 
