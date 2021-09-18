@@ -1,10 +1,14 @@
-# Unreleased
+# v2021.09.18
+
+## Data
 
 - Added Michael F. Gill's digital archive of _The New York Times_ cryptic
   crosswords.
-- Saving raw `.puz` files.
-- Add `source` column, drop `puzzle_url` columns.
-- Add facet over `source` column.
+- Added National Post Cryptic Crossword Archive for Cox and Rathvon (a.k.a.
+  Hex) cryptic crosswords.
+- Allowed caching of raw `.puz` files.
+- Added `source` column, dropped `puzzle_url` columns.
+- Added facet over `source` column.
 
 # v2021.09.15
 
