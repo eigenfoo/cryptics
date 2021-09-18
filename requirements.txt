@@ -1,5 +1,6 @@
 beautifulsoup4
 datasette
+html5lib
 ipdb
 jupyter
 lxml
