@@ -49,6 +49,9 @@ def extract_puzzle_name(source_url, soup):
     elif "thehinducrosswordcorner" in source_url:
         title = soup.find("title").text
         puzzle_name = title.replace("THE HINDU CROSSWORD CORNER: ", "")
+    elif "natpostcryptic" in source_url:
+        title = soup.find("title").text
+        puzzle_name = title.replace("National Post Cryptic Crossword Forum: ", "")
     else:
         raise ValueError(f"Unknown source: {source_url}")
 
@@ -66,7 +69,7 @@ def extract_puzzle_date(source_url, soup):
             "div", attrs={"class": "asset-meta asset-entry-date"}
         )[0].text.strip()
         puzzle_date = dateutil.parser.parse(entry_date_div).strftime("%Y-%m-%d")
-    elif "thehinducrosswordcorner" in source_url:
+    elif "thehinducrosswordcorner" in source_url or "natpostcryptic" in source_url:
         date_header_h2 = soup.find_all("h2", "date-header")[0].text.strip()
         puzzle_date = dateutil.parser.parse(date_header_h2).strftime("%Y-%m-%d")
     else:
