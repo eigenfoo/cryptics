@@ -28,6 +28,10 @@ from cryptics.lists import (
     is_parsable_list_type_4,
     parse_list_type_4,
 )
+from cryptics.specials import (
+    is_parsable_special_type_1,
+    parse_special_type_1,
+)
 from cryptics.utils import (
     extract_puzzle_name,
     extract_puzzle_date,
