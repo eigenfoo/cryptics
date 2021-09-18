@@ -54,9 +54,10 @@ As of September 2021, the number of rows approximately break down as follows:
 | [Fifteensquared](http://www.fifteensquared.net/)                                                      |        ~200,000 |
 | [Times for the Times](https://times-xwd-times.livejournal.com/)                                       |         ~94,000 |
 | [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/)                           |         ~67,000 |
+| [National Post Cryptic Crossword Forum](https://natpostcryptic.blogspot.com/)                         |          ~8,000 |
 | [Cru Cryptic Archive](https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html) |          ~7,000 |
 | [The New York Times](https://www.nytimes.com/crosswords)                                              |          ~4,000 |
-| Total                                                                                                 |        ~580,000 |
+| Total                                                                                                 |        ~588,000 |
 
 ### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
 
