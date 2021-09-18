@@ -1,8 +1,9 @@
 import re
 
-import numpy as np
 import pandas as pd
 import bs4
+
+from cryptics.utils import extract_definitions
 
 
 DASHES = ["-", "—", "–", "–", "—"]
@@ -55,6 +56,11 @@ def parse_special_type_1(html):
         clue_numbers.append(clue_number.group())
         clues.append(delete_chars(clue, PUNCTUATION_IN_ANNOTATION))
 
+    # Save this for later - before we extract all the tables.
+    raw_definitions = [
+        tag for table in entry_content.find_all("table") for tag in table.find_all("u")
+    ]
+
     for table in entry_content.find_all("table"):
         table.extract()
 
@@ -83,7 +89,9 @@ def parse_special_type_1(html):
         answers.append(delete_chars(answer, PUNCTUATION_IN_ANSWERS))
         annotations.append(annotation.strip("".join(PUNCTUATION_IN_ANNOTATION + [" "])))
 
+    definitions = extract_definitions(soup, clues, raw_definitions=raw_definitions)
+
     return pd.DataFrame(
-        data=[clue_numbers, answers, clues, annotations],
-        index=["clue_number", "answer", "clue", "annotation"],
+        data=[clue_numbers, answers, clues, annotations, definitions],
+        index=["clue_number", "answer", "clue", "annotation", "definition"],
     ).T
