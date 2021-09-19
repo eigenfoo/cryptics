@@ -83,6 +83,7 @@ def try_parse(html, source_url):
         (is_parsable_list_type_4, parse_list_type_4),
         (is_parsable_text_type_1, parse_text_type_1),
         (is_parsable_text_type_2, parse_text_type_2),
+        (is_parsable_special_type_1, parse_special_type_1),
     ]
 
     for is_parsable_func, parse_func in parsers:
