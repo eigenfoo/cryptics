@@ -124,7 +124,7 @@ def parse_special_type_1(html):
                         answer, PUNCTUATION_IN_ANSWERS + list(string.whitespace)
                     )
                 )
-                > 15
+                > 15 + 10
             ):
                 continue
         except (StopIteration, AttributeError):
