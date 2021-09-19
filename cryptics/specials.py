@@ -9,7 +9,7 @@ from cryptics.utils import extract_definitions
 DASHES = ["-", "—", "–", "–", "—"]
 PUNCTUATION_IN_CLUE = list("/\\")
 PUNCTUATION_IN_ANNOTATION = DASHES + list("{}~*/\\")
-PUNCTUATION_IN_ANSWERS = DASHES + list("(){}|~*/\\_<")
+PUNCTUATION_IN_ANSWERS = DASHES + list("(){}|~*/\\_<'")
 
 
 def delete_chars(s, chars):
@@ -52,7 +52,7 @@ def parse_special_type_1(html):
     clue_number_and_clues = [
         a.text.strip()
         for a in entry_content.find_all(
-            "div", style="background-color: blue; line-height: 200%;"
+            "div", style=lambda s: "background-color:" in s if s is not None else None
         )
     ]
 
@@ -70,7 +70,7 @@ def parse_special_type_1(html):
     raw_definitions = [
         tag
         for table in entry_content.find_all(
-            "div", style="background-color: blue; line-height: 200%;"
+            "div", style=lambda s: "background-color:" in s if s is not None else None
         )
         for tag in table.find_all("u")
     ]
@@ -110,10 +110,15 @@ def parse_special_type_1(html):
             divider = next(m for m in matches if m is not None)
 
             answer = line[: divider.start()]
+            stripped_answer = delete_chars(
+                answer, PUNCTUATION_IN_ANSWERS + list(string.whitespace)
+            )
             annotation = line[divider.end() :]
             if (
                 not any([c.isalpha() for c in answer])
-                or not answer == answer.upper()
+                or sum([c.isupper() for c in stripped_answer])
+                <= len(stripped_answer)
+                - 5  # Occasionally there will be an answer like "M(E)ETS or ME(E)TS"
                 or len(
                     delete_chars(
                         answer, PUNCTUATION_IN_ANSWERS + list(string.whitespace)
