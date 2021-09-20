@@ -19,6 +19,28 @@ def delete_chars(s, chars):
 
 
 def is_parsable_special_type_1(html):
+    """
+    Identifies if the web page looks like this:
+
+    <div style="background-color: blue; line-height: 200%;">
+    <span style="color: white;"><b>1a   <u>WASP, in part</u>, // agitated Logan (5)</b></span></div>
+    <br/>
+    <b>ANGLO</b> — anagram (agitated) of LOGAN<br/>
+    <br/>
+
+    <div style="background-color: blue; line-height: 200%;">
+    <span style="color: white;"><b>9a   Stirred neat gin, // <u>feeding the kitty</u> (7)</b></span></div>
+    <br/>
+    <b>ANTEING*</b> — anagram (stirred) of NEAT GIN<br/>
+    <br/>
+
+    Examples:
+
+    - https://natpostcryptic.blogspot.com/2021/08/saturday-august-21-2021-cox-rathvon.html
+    - https://natpostcryptic.blogspot.com/2021/08/saturday-august-28-2021-cox-rathvon.html
+    - https://natpostcryptic.blogspot.com/2021/09/saturday-september-4-2020-cox-rathvon.html
+    """
+
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
     answers_and_annotations = [

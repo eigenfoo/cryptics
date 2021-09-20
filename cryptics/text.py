@@ -26,6 +26,11 @@ def is_parsable_text_type_1(html):
     2	Sweet complexion(7,3,5)
     PEACHES AND CREAM - DD
                         ...
+
+    Examples:
+    - https://times-xwd-times.livejournal.com/2550896.html
+    - https://times-xwd-times.livejournal.com/2566520.html
+    - https://times-xwd-times.livejournal.com/2566074.html
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
     asset_body = soup.find(
@@ -140,6 +145,12 @@ def is_parsable_text_type_2(html):
     1   Emotionally sensitive to mice running all over girl's house (8) EMPATHIC {EM{PAT}{H}IC*}
     6   Network heads of many engineering start-ups harmonise (4) MESH Acrostic
     9   Negligent Milan admits university's past pupils (6) ALUMNI {AL{U}MNI*}
+
+    Examples:
+
+    - https://thehinducrosswordcorner.blogspot.com/2021/07/no-13302-saturday-17-jul-2021-kriskross.html
+    - https://thehinducrosswordcorner.blogspot.com/2021/06/no-13278-saturday-19-jun-2021-kriskross.html
+    - https://thehinducrosswordcorner.blogspot.com/2021/08/no-13338-saturday-28-aug-2021-arden.html
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})

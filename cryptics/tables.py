@@ -33,7 +33,11 @@ def _is_parsable_table_type_1(table):
     35    NaN        NaN  EP (extended play "record") + ROB ("loot") hoarded by RATE ("rank")
     36      3      ADIOS                       Spanish Cheers run dropped from broadcasts (5)
     37    NaN        NaN             R (run, in cricket) dropped from (r)ADIOS ("broadcasts")
-                                             ...
+
+    Examples:
+    - https://www.fifteensquared.net/2021/05/20/financial-times-16790-by-leonidas/
+    - https://www.fifteensquared.net/2021/05/21/financial-times-16791-by-buccaneer/
+    - https://www.fifteensquared.net/2021/05/21/independent-10797-by-phi/
     """
     return all(
         [
@@ -146,6 +150,10 @@ def _is_parsable_table_type_2(table):
                                              ...
     15   Down      Down                                              Down
     16     2       UNDO   Found out concealing ... (4)Hidden in foUND Out
+
+    Example:
+
+    - https://www.fifteensquared.net/2021/05/17/guardian-28447-anto/
     """
     return all(
         [
@@ -249,6 +257,11 @@ def _is_parsable_table_type_3(table):
     17     Down      Down                  Down        Down      Down
     18  Clue No  Solution                  Clue  Definition       NaN
     19       1D    SAMPLE      Sperm donor’s...   S + AMPLE       NaN
+
+    Examples:
+
+    - http://www.fifteensquared.net/2021/05/22/independent-10798-by-alchemi-saturday-puzzle-22-may-2021/
+    - http://www.fifteensquared.net/2021/05/24/cyclops-702-gigantic-hiccup/
     """
     return all(
         [
@@ -333,6 +346,13 @@ def is_parsable_table_type_4(html):
 
 
 def _is_parsable_table_type_4(table):
+    """
+    Examples:
+
+    - https://www.fifteensquared.net/2020/09/06/azed-2516/
+    - https://www.fifteensquared.net/2020/09/02/independent-10574-eccles/
+    - https://www.fifteensquared.net/2020/09/08/independent-10579-kairos/
+    """
     return all(
         [
             # The first row is ["No", "Clue", "Wordplay", "Entry"]
@@ -444,6 +464,12 @@ def _is_parsable_table_type_5(table):
     2     NaN    MOHAWK - ...
     3       2     Small PO...
     4     NaN    SPOUSE - ...
+
+    Examples:
+
+    - https://times-xwd-times.livejournal.com/2565866.html
+    - https://times-xwd-times.livejournal.com/2558118.html
+    - https://times-xwd-times.livejournal.com/2561764.html
     """
     return all(
         [

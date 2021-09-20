@@ -30,6 +30,12 @@ def is_parsable_list_type_1(html):
      <br/>
      SUN (newspaper) round H (hotel)
     </p>
+
+    Examples:
+
+    - https://www.fifteensquared.net/2021/05/22/guardian-saturday-puzzle-28446-tramp/
+    - https://www.fifteensquared.net/2021/05/23/independent-on-sunday-1630-by-raich/
+    - https://www.fifteensquared.net/2021/05/19/guardian-28449-pasquale/
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
@@ -121,6 +127,11 @@ def is_parsable_list_type_2(html):
     <div class="fts-subgroup">
       <p><span style="color: #000000">An anagram (”when drunk’) of NEEDS A SLAP</span></p>
     </div>
+
+    Examples:
+    - https://www.fifteensquared.net/2021/05/20/independent-10796-by-tees/
+    - https://www.fifteensquared.net/2021/05/17/financial-times-16787-by-peto/
+    - https://www.fifteensquared.net/2021/06/02/guardian-28461-imogen/
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
@@ -218,6 +229,12 @@ def is_parsable_list_type_3(html):
       (<span style="color: #0000ff">to be …<span style="color: #000000">) </span></span>
       <strong><em><span style="color: blue">with a lisp</span></em></strong>, “youthful”(young).
     </p>
+
+    Examples:
+
+    - https://www.fifteensquared.net/2021/06/01/financial-times-16800-chalmie/
+    - https://www.fifteensquared.net/2021/05/21/guardian-cryptic-28451-puck/
+    - https://www.fifteensquared.net/2021/05/24/guardian-quiptic-1123-matilda/
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
@@ -306,6 +323,12 @@ def is_parsable_list_type_4(html):
         <b><span style="color: #2b00fe;">EGG BOX</span></b>
         {EGG}{BOX}
     </div>
+
+    Examples:
+
+    - https://thehinducrosswordcorner.blogspot.com/2021/09/no-13350-monday-13-sep-2021-kriskross.html
+    - https://thehinducrosswordcorner.blogspot.com/2021/09/the-sunday-crossword-no-3167-sunday-12.html
+    - https://thehinducrosswordcorner.blogspot.com/2021/09/no-13349-friday-10-sep-2021-afterdark.html
     """
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
