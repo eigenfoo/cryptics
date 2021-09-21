@@ -48,6 +48,9 @@ def parse_unparsed_html(sources: List[str], datetime_requested: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--populate-db", dest="populate_db", action="store_true")
+    parser.add_argument("--no-populate-db", dest="populate_db", action="store_false")
+    parser.set_defaults(populate_db=True)
     parser.add_argument("--sleep-interval", type=int)
     parser.add_argument(
         "--datetime-requested", type=str, default=datetime.now().strftime("%Y-%m-%d")
@@ -57,5 +60,7 @@ if __name__ == "__main__":
     with open("sitemaps.json") as f:
         sources = json.load(f).keys()
 
-    populate_db(sleep_interval=args.sleep_interval)
+    if args.populate_db:
+        populate_db(sleep_interval=args.sleep_interval)
+
     parse_unparsed_html(sources=sources, datetime_requested=args.datetime_requested)
