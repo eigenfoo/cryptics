@@ -94,13 +94,21 @@ Each row contains data in eight columns:
 
 Yes.
 
-Firstly, some data may be missing or malformed due to data preprocessing
-errors (see [the "Are there any errors?"
+Firstly, some data may be missing or malformed due to data preprocessing errors
+(see [the "Are there any errors?"
 question](/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset)
 for more details). I unfortunately have not quantified what proportion of the
 dataset is missing or malformed.
 
-Secondly, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
+Secondly, while the majority of the dataset is sourced from blogs which provide
+`definition`s and `annotation`s from bloggers, there are a few sources which
+are parsed directly from `.puz` files, which do not support such rich-form clue
+markup. Thus, clues from these sources are missing `definition`s and
+`annotation`s.  These sources are:
+[`cru_cryptics`](/clues/clues?source=cru_cryptics) and
+[`nytimes`](https://cryptics.eigenfoo.xyz/clues/clues?source=nytimes).
+
+Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
 provides four more other columns, in addition to the eight provided in the
 dataset:
 

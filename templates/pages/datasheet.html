@@ -7,7 +7,7 @@
   <meta name="generator" content="pandoc-markdown-css-theme" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="George Ho" />
-  <meta name="dcterms.date" content="2021-09-18" />
+  <meta name="dcterms.date" content="2021-09-21" />
   <meta name="description" content="A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives." />
   <title>Datasheet</title>
   <link rel="stylesheet" href="../../static/css/theme.css" />
@@ -25,7 +25,7 @@
 </nav>
 <h1 class="title">Datasheet</h1>
 <blockquote class="metadata">
-<p class="date "><time datetime="2021-09-18">Last updated 2021-09-18</time></p>
+<p class="date "><time datetime="2021-09-21">Last updated 2021-09-21</time></p>
 </blockquote>
 </header>
 
@@ -123,7 +123,8 @@
 <h3 id="is-any-information-missing-from-individual-rows">Is any information missing from individual rows?</h3>
 <p>Yes.</p>
 <p>Firstly, some data may be missing or malformed due to data preprocessing errors (see <a href="/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">the “Are there any errors?” question</a> for more details). I unfortunately have not quantified what proportion of the dataset is missing or malformed.</p>
-<p>Secondly, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
+<p>Secondly, while the majority of the dataset is sourced from blogs which provide <code>definition</code>s and <code>annotation</code>s from bloggers, there are a few sources which are parsed directly from <code>.puz</code> files, which do not support such rich-form clue markup. Thus, clues from these sources are missing <code>definition</code>s and <code>annotation</code>s. These sources are: <a href="/clues/clues?source=cru_cryptics"><code>cru_cryptics</code></a> and <a href="https://cryptics.eigenfoo.xyz/clues/clues?source=nytimes"><code>nytimes</code></a>.</p>
+<p>Finally, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
 <table>
 <colgroup>
 <col style="width: 15%" />
