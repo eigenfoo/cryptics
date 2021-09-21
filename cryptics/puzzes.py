@@ -25,7 +25,7 @@ def insert_puz(source, path, puz_filename):
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO puz (source, path, puz, is_parsed, datetime_parsed) VALUES (?, ?, ?, 1, datetime('now'))",
-            (source, path, puz_blob)
+            (source, path, puz_blob),
         )
         conn.commit()
 

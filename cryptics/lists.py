@@ -333,9 +333,8 @@ def is_parsable_list_type_4(html):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
     smallest_divs = get_smallest_divs(entry_content)
-    out = (
-        32 - 10 <= len(smallest_divs)
-        and 32 - 15 <= sum([bool(div.find_all("i")) for div in smallest_divs])
+    out = 32 - 10 <= len(smallest_divs) and 32 - 15 <= sum(
+        [bool(div.find_all("i")) for div in smallest_divs]
     )
     return out
 
