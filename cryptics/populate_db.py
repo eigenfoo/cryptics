@@ -94,7 +94,7 @@ def get_new_urls(source, sitemap_url):
     return new_urls
 
 
-if __name__ == "__main__":
+def populate_db(sleep_interval=20):
     with open("sitemaps.json") as f:
         sitemap_urls = json.load(f)
 
@@ -120,4 +120,8 @@ if __name__ == "__main__":
             except:
                 logging.error(f"Error inserting {url}")
 
-            time.sleep(20)
+            time.sleep(sleep_interval)
+
+
+if __name__ == "__main__":
+    populate_db()
