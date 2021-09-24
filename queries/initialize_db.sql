@@ -29,3 +29,13 @@ CREATE TABLE IF NOT EXISTS clues (
     datetime_reviewed TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (source_url) REFERENCES html (url)
 );
+CREATE TABLE IF NOT EXISTS indicators (
+    clue_rowid INT,
+    anagram TEXT,
+    container TEXT,
+    deletion TEXT,
+    hidden TEXT,
+    homophone TEXT,
+    reversal TEXT,
+    FOREIGN KEY (clue_rowid) REFERENCES clues (rowid)
+);
