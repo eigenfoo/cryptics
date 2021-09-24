@@ -116,7 +116,21 @@ def _parse_table_type_1(table, soup):
     clues_and_annotations = table[2].drop([across_index, down_index])
     clues = clues_and_annotations[::2].tolist()
     annotations = clues_and_annotations[1::2].tolist()
-    definitions = extract_definitions(soup, clues, table_type=1)
+
+    raw_definitions = [
+        tag.text
+        for tag in soup.find_all(
+            "span",
+            attrs={"style": (lambda s: "underline" in s if s is not None else False)},
+        )
+        + soup.find_all(
+            "span",
+            attrs={
+                "class": (lambda s: "fts-definition" in s if s is not None else False)
+            },
+        )
+    ]
+    definitions = extract_definitions(soup, clues, raw_definitions)
 
     out = pd.DataFrame(
         data=np.transpose(np.array([clue_numbers, answers, clues, annotations])),
@@ -228,7 +242,9 @@ def _parse_table_type_2(table, soup):
     table = table.drop(columns=["ClueAndAnnotation"])
 
     # Add definitions
-    definitions = extract_definitions(soup, table["clue"], table_type=2)
+    definitions = extract_definitions(
+        soup, table["clue"], [tag.text for tag in soup.find_all("u")]
+    )
     if definitions is not None:
         table["definition"] = definitions
 
@@ -433,7 +449,9 @@ def _parse_table_type_4(table, soup):
     table["annotation"] = table["annotation"] + " " + table["explanation"]
     table = table.drop(columns=["answer_with_explanation", "explanation"])
 
-    definitions = extract_definitions(soup, table["clue"], table_type=4)
+    definitions = extract_definitions(
+        soup, table["clue"], [tag.text for tag in soup.find_all("u")]
+    )
     if definitions is not None:
         table["definition"] = definitions
 
@@ -516,7 +534,20 @@ def _parse_table_type_5(table, table_html):
         for clue_number in table.iloc[:, 0].dropna().tolist()
     ]
     clues = table.iloc[::2, 1].tolist()
-    definitions = extract_definitions(table_html, clues, 5)
+    definitions = extract_definitions(
+        table_html,
+        clues,
+        [
+            tag.text
+            for tag in table_html.find_all("u")
+            + table_html.find_all(
+                "span",
+                attrs={
+                    "style": (lambda s: "underline" in s if s is not None else False)
+                },
+            )
+        ],
+    )
 
     def separate_answer_and_annotation(s):
         match = re.search("^[A-Z'\- ]+\s-\s", s.strip())

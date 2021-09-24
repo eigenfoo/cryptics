@@ -103,52 +103,7 @@ def extract_puzzle_url(soup):
     return None
 
 
-def extract_definitions(soup, clues, table_type=None, raw_definitions=None):
-    if table_type == raw_definitions:
-        msg = (
-            "Expected exactly one of `table_type` and `raw_definitions` to be non-None"
-        )
-        raise ValueError(msg)
-
-    if table_type == 1:
-        raw_definitions = [
-            tag.text
-            for tag in soup.find_all(
-                "span",
-                attrs={
-                    "style": (lambda s: "underline" in s if s is not None else False)
-                },
-            )
-            + soup.find_all(
-                "span",
-                attrs={
-                    "class": (
-                        lambda s: "fts-definition" in s if s is not None else False
-                    )
-                },
-            )
-        ]
-    elif table_type == 2 or table_type == 4:
-        raw_definitions = [tag.text for tag in soup.find_all("u")]
-    elif table_type == 5:
-        raw_definitions = [
-            tag.text
-            for tag in soup.find_all("u")
-            + soup.find_all(
-                "span",
-                attrs={
-                    "style": (lambda s: "underline" in s if s is not None else False)
-                },
-            )
-        ]
-    elif table_type is None:
-        if not isinstance(raw_definitions[0], str):
-            raw_definitions = [
-                raw_definition.text for raw_definition in raw_definitions
-            ]
-    else:
-        raise ValueError("`table_type` not recognized.")
-
+def extract_definitions(soup, clues, raw_definitions):
     definitions = []
     i = 0
 

@@ -129,7 +129,20 @@ def parse_text_type_1(html):
                 else:
                     break
 
-    definitions = extract_definitions(asset_body, clues, 5)
+    definitions = extract_definitions(
+        asset_body,
+        clues,
+        [
+            tag.text
+            for tag in soup.find_all("u")
+            + soup.find_all(
+                "span",
+                attrs={
+                    "style": (lambda s: "underline" in s if s is not None else False)
+                },
+            )
+        ],
+    )
 
     table = pd.DataFrame([clue_numbers, clues, definitions, answers, annotations]).T
     table.columns = ["clue_number", "clue", "definition", "answer", "annotation"]
@@ -222,9 +235,7 @@ def parse_text_type_2(html):
         answers.append(answer.group().strip())
         annotations.append(annotation)
 
-    definitions = extract_definitions(
-        entry_content, clues, raw_definitions=entry_content.find_all("b")
-    )
+    definitions = extract_definitions(entry_content, clues, entry_content.find_all("b"))
 
     return pd.DataFrame(
         data=np.transpose(
