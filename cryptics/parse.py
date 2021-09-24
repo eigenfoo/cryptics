@@ -62,7 +62,11 @@ def postprocess_data(data, html, source_url):
     data["clue_number"] = data["clue_number"].str.strip().replace(".", "")
 
     data["puzzle_name"] = extract_puzzle_name(source_url, soup)
-    data["puzzle_date"] = extract_puzzle_date(source_url, soup)
+    # Occasionally the puzzle date fails. Simply ignore it and move on.
+    try:
+        data["puzzle_date"] = extract_puzzle_date(source_url, soup)
+    except:
+        pass
     data["puzzle_url"] = extract_puzzle_url(soup)
     data["source_url"] = source_url
     return data
