@@ -4,14 +4,13 @@ import os
 import random
 import readline
 import sqlite3
-import time
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--source", type=str, nargs="?", default="times_xwd_times")
 parser.add_argument("--train", dest="train", action="store_true")
 parser.add_argument("--no-train", dest="train", action="store_false")
-parser.set_defaults(train=True)
+parser.set_defaults(train=False)
 parser.add_argument(
     "--where", type=str, default="definition != 'nan' AND NOT is_reviewed"
 )
@@ -65,16 +64,22 @@ if args.train:
     players = players.split()
     with open("scores.json", "r") as f:
         scores = json.load(f)
+else:
+    with open("todo.txt", "r") as f:
+        todo_rowids = f.read().split()
 
 
 while True:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
     with sqlite3.connect("cryptics.sqlite3") as conn:
+        if not args.train:
+            sql = f"SELECT rowid, * FROM clues WHERE rowid = '{todo_rowids.pop(0)}';"
+        else:
+            sql = f"SELECT rowid, * FROM clues WHERE source = '{args.source}' AND {args.where} ORDER BY RANDOM() LIMIT 1;"
+
         cursor = conn.cursor()
-        cursor.execute(
-            f"SELECT rowid, * FROM clues WHERE source = '{args.source}' AND {args.where} ORDER BY RANDOM() LIMIT 1;"
-        )
+        cursor.execute(sql)
         (
             row_id,
             source,
@@ -212,3 +217,10 @@ while True:
         WHERE rowid = ?;
         """
         cursor.execute(sql, (row_id,))
+
+    if not args.train:
+        # Delete first line of todo.txt
+        with open("todo.txt", "r") as f:
+            data = f.read().splitlines(True)
+        with open("todo.txt", "w") as f:
+            f.writelines(data[1:])
