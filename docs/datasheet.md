@@ -18,8 +18,8 @@ resource for cryptic crossword solvers and constructors - for example, one
 might use this dataset as a lookup table for answers, or to see how an answer
 has been clued in the past by other constructors.
 
-While there is prior art in datasets for cryptic crossword clue datasets
-([_Decrypting Cryptic Crosswords_ by Rozner et
+While there is prior art in datasets of cryptic crossword clues (most notably
+[_Decrypting Cryptic Crosswords_ by Rozner et
 al.](https://arxiv.org/abs/2104.08620) and [_Cryptonite_ by Efrat et
 al.](https://arxiv.org/abs/2103.01242)), to my knowledge this is the first such
 dataset that is at least as large as the research datasets, is openly
@@ -199,7 +199,7 @@ the blogger and machine errors from the parsing code, it's informative to
 manually look through a sample of the clues for any errors[^2]. This has
 uncovered a number of systematic errors, which can be corrected by either
 modifying the parsing code and re-parsing the saved HTML, or by simply running
-ad hoc SQL queries against the table of parsed clues. However, since it's
+_ad hoc_ SQL queries against the table of parsed clues. However, since it's
 logistically infeasible to manually review all the clues, it's admittedly
 difficult to see what further value human evaluation brings.
 
@@ -231,10 +231,11 @@ and searchable format.
 ### Is the software used to preprocess/clean the data available?
 
 [Yes, you can view it on GitHub.](https://github.com/eigenfoo/cryptics) The
-following four modules contain the preprocessing and cleaning code:
+following five modules contain the preprocessing and cleaning code:
 
 - [`cryptics/lists.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/lists.py)
 - [`cryptics/puzzes.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/puzzes.py)
+- [`cryptics/specials.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/specials.py)
 - [`cryptics/tables.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/tables.py)
 - [`cryptics/text.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/text.py)
 
