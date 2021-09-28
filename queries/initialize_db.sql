@@ -30,12 +30,12 @@ CREATE TABLE IF NOT EXISTS clues (
     FOREIGN KEY (source_url) REFERENCES html (url)
 );
 CREATE TABLE IF NOT EXISTS indicators (
-    clue_rowid INT,
-    anagram TEXT,
-    container TEXT,
-    deletion TEXT,
-    hidden TEXT,
-    homophone TEXT,
-    reversal TEXT,
+    clue_rowid INT PRIMARY KEY,
+    anagram TEXT DEFAULT '',
+    container TEXT DEFAULT '',
+    deletion TEXT DEFAULT '',
+    hidden TEXT DEFAULT '',
+    homophone TEXT DEFAULT '',
+    reversal TEXT DEFAULT '',
     FOREIGN KEY (clue_rowid) REFERENCES clues (rowid)
 );
