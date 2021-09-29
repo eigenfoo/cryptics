@@ -123,7 +123,10 @@ These four columns have been dropped prior to publication, either because they
 are redundant and of limited value, or to respect the copyright of the scraped
 blogs. While I believe it is fair use to republish the cryptic clues in a
 centralized, structured and searchable format[^1], the blogs hold the copyright
-to any annotations and commentary on the clues.
+to any annotations and commentary on the clues. Nevertheless, I am happy to
+share the full dataset on a case-by-case basis with non-commercial groups (e.g.
+academic research groups). Please [email me](mailto:george[&#230;]eigenfoo.xyz)
+to inquire.
 
 [^1]: a.k.a. a [_transformatively_](https://copyright.columbia.edu/basics/fair-use.html) different resource.
 
