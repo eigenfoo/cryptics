@@ -29,8 +29,13 @@ WHERE source NOT IN (
 DROP TABLE clues;
 ALTER TABLE new_clues RENAME TO clues;
 
--- To facilitate the Datasette facet
+ALTER TABLE indicators RENAME TO indicators_by_clue;
+ALTER TABLE indicators_unpivoted RENAME TO indicators;
+
+-- To facilitate Datasette facets
 CREATE INDEX clues_source_index ON clues ("source");
+CREATE INDEX indicators_wordplay_index ON indicators ("wordplay");
+CREATE INDEX indicators_by_clue_wordplay_index ON indicators_by_clue ("wordplay");
 
 CREATE TABLE metadata (
     key TEXT PRIMARY KEY,

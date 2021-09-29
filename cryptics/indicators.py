@@ -1,6 +1,7 @@
 import re
 import sqlite3
 from typing import Dict, List
+import pandas as pd
 from tqdm import tqdm
 
 
@@ -25,7 +26,9 @@ def find_and_write_indicators(
 ):
     for wordplay, regexes in indicator_regexes.items():
         for regex in regexes:
-            indicators = "/".join(re.findall(regex, annotation))
+            # FIXME: is it a good idea to indiscriminately .lower() like this?
+            # Perhaps I should only lower if I'm sure it's in titlecase?
+            indicators = "/".join([s.strip().lower() for s in re.findall(regex, annotation)])
             if indicators:
                 try:
                     write_cursor.execute(
@@ -39,15 +42,35 @@ def find_and_write_indicators(
                 )
 
 
+def unpivot_indicators_table():
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        df = pd.read_sql("SELECT * FROM indicators;", conn)
+
+    df = df.melt(id_vars=["clue_rowid"], var_name="wordplay", value_name="indicator")
+    df = df[df["indicator"].str.strip() != ""]
+    df = (
+        df.groupby(["wordplay", "indicator"])["clue_rowid"]
+        .agg(lambda group: ", ".join([f"[{s}](/clues/clues/{s})" for s in group]))
+        .to_frame()
+        .rename(columns={"clue_rowid": "clue_rowids"})
+        .reset_index()
+    )
+
+    with sqlite3.connect("cryptics.sqlite3") as conn:
+        df.to_sql("indicators_unpivoted", conn, if_exists="replace", index=False)
+
+
 if __name__ == "__main__":
     with sqlite3.connect("cryptics.sqlite3") as conn:
         read_cursor = conn.cursor()
         write_cursor = conn.cursor()
         read_cursor.execute("SELECT rowid, annotation FROM clues;")
 
-        for (row_id, annotation) in tqdm(read_cursor):
+        for (row_id, annotation) in tqdm(read_cursor, desc="Finding indicators"):
             if not annotation:
                 continue
             find_and_write_indicators(annotation, INDICATOR_REGEXES, write_cursor)
 
         conn.commit()
+
+    unpivot_indicators_table()

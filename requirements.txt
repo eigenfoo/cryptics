@@ -1,5 +1,6 @@
 beautifulsoup4
 datasette
+datasette-render-markdown
 html5lib
 ipdb
 jupyter
