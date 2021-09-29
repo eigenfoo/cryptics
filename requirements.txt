@@ -10,4 +10,5 @@ pandas
 puzpy
 requests
 sqlite-utils
+tqdm
 -e .
