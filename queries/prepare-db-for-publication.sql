@@ -19,12 +19,15 @@ INSERT INTO new_clues SELECT
     source
 FROM clues
 WHERE source NOT IN (
+    -- Sources to exclude
     'out_of_left_field',
     'square_pursuit',
     'the_browser'
 );
-DROP TABLE IF EXISTS clues;
+DROP TABLE clues;
 ALTER TABLE new_clues RENAME TO clues;
+
+-- To facilitate the Datasette facet
 CREATE INDEX clues_source_index ON clues ("source");
 
 CREATE TABLE metadata (

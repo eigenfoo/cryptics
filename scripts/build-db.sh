@@ -2,9 +2,9 @@
 
 set -eu -o pipefail
 
-rm -rf clues.sqlite3
+rm -f clues.sqlite3
 sqlite3 cryptics/cryptics.sqlite3 ".dump clues" | sqlite3 clues.sqlite3
-sqlite3 clues.sqlite3 ".read queries/scrub.sql"
+sqlite3 clues.sqlite3 ".read queries/prepare-db-for-publication.sql"
 sqlite3 clues.sqlite3 "
 INSERT INTO metadata (key, value)
 VALUES
@@ -12,5 +12,4 @@ VALUES
     ('last_built', '$(date)')
 "
 sqlite3 clues.sqlite3 "VACUUM;"
-
 sqlite-utils enable-fts clues.sqlite3 clues clue answer
