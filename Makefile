@@ -59,12 +59,12 @@ mypytypes:
 lint: blackstyle mypytypes  # Lint code using black and mypy.
 
 .PHONY: build
-build: clean build-db build-templates test-build  # Build SQLite database and documentation and test build.
+build: clean build-dbs build-templates test-build  # Build SQLite database and documentation and test build.
 
-build-db: clues.sqlite3
+build-dbs: clues.sqlite3 clues-annotated.sqlite3
 
 clues.sqlite3: cryptics/cryptics.sqlite3
-	bash scripts/build-db.sh
+	bash scripts/build-dbs.sh
 
 build-templates: templates/index.html $(STATIC_TARGETS)
 
