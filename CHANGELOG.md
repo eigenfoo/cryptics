@@ -1,3 +1,23 @@
+# Unreleased
+
+## Data
+
+- Added `indicators` and `indicators_by_clue` table.
+- Found indicators via regexes.
+
+# v2021.09.29
+
+## Data
+
+- Manually corrected several hundred rows.
+
+## Code
+
+- Added Clicky analytics to Datasette webpages.
+- Improved function docstrings.
+- Refactored `main.py` to both populate database with new blog posts and also
+  parse new blog posts.
+
 # v2021.09.18
 
 ## Data
