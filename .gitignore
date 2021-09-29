@@ -135,4 +135,5 @@ dmypy.json
 *.db
 *.sqlite
 *.sqlite3
-*.json
+cryptics/*.json
+cryptics/*.txt
