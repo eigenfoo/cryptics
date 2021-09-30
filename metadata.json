@@ -5,7 +5,7 @@
   "about": "Datasheet",
   "about_url": "/datasheet",
   "databases": {
-    "clues": {
+    "data": {
       "tables": {
         "clues": {
           "facets": [

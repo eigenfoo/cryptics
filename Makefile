@@ -61,9 +61,9 @@ lint: blackstyle mypytypes  # Lint code using black and mypy.
 .PHONY: build
 build: clean build-dbs build-templates test-build  # Build SQLite database and documentation and test build.
 
-build-dbs: clues.sqlite3 clues-annotated.sqlite3
+build-dbs: data.sqlite3 data-annotated.sqlite3
 
-clues.sqlite3: cryptics/cryptics.sqlite3
+data.sqlite3: cryptics/cryptics.sqlite3
 	bash scripts/build-dbs.sh
 
 build-templates: templates/index.html $(STATIC_TARGETS)
@@ -82,8 +82,9 @@ test-build:
 
 serve:
 	datasette \
-		--immutable clues.sqlite3 \
+		--immutable data.sqlite3 \
 		--template-dir templates/ \
+		--plugins-dir plugins/ \
 		--static static:static/ \
 		--metadata metadata.json \
 		--setting suggest_facets off \
@@ -96,7 +97,7 @@ deploy:  clean build  # Deploy Datasette project to Heroku.
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -vrf clues.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
+	rm -vrf data.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
 	find cryptics/ -type d -name "__pycache__" -exec rm -vrf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete

@@ -40,7 +40,7 @@ $endfor$
 &centerdot;
 <a href="/datasheet">Datasheet</a>
 &centerdot;
-<a href="/clues/clues">Data</a>
+<a href="/data">Data</a>
 </nav>
 <h1 class="title">$title$</h1>
 <blockquote class="metadata">
