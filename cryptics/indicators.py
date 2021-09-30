@@ -50,7 +50,7 @@ def unpivot_indicators_table():
     df = df[df["indicator"].str.strip() != ""]
     df = (
         df.groupby(["wordplay", "indicator"])["clue_rowid"]
-        .agg(lambda group: ", ".join([f"[{s}](/clues/clues/{s})" for s in group]))
+        .agg(lambda group: ", ".join([f"[{s}](/data/clues/{s})" for s in group]))
         .to_frame()
         .rename(columns={"clue_rowid": "clue_rowids"})
         .reset_index()
