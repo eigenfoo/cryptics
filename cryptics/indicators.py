@@ -12,7 +12,11 @@ INDICATOR_REGEXES = {
         r"contains \(([A-Z]?[a-z ]+)\)",
         r"containing \(([A-Z]?[a-z ]+)\)",
     ],
-    "deletion": [],
+    "insertion": [
+        r"contained in \(([A-Z]?[a-z ]+)\)",
+        r"inserted into \(([A-Z]?[a-z ]+)\)",
+    ],
+    "deletion": [r"deletion \(([A-Z]?[a-z ]+)\)"],
     "hidden": [r"hidden \(([A-Z]?[a-z ]+)\)"],
     "homophone": [r"homophone \(([A-Z]?[a-z ]+)\)", r"sounds like \(([A-Z]?[a-z ]+)\)"],
     "reversal": [r"reversal \(([A-Z]?[a-z ]+)\)"],

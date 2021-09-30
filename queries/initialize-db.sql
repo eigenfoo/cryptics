@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS indicators (
     deletion TEXT DEFAULT '',
     hidden TEXT DEFAULT '',
     homophone TEXT DEFAULT '',
+    insertion TEXT DEFAULT '',
     reversal TEXT DEFAULT '',
     FOREIGN KEY (clue_rowid) REFERENCES clues (rowid)
 );
