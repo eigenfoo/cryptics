@@ -39,8 +39,12 @@ $endfor$
 <a href="/">Home</a>
 &centerdot;
 <a href="/datasheet">Datasheet</a>
+&#8258;
+<a href="/data">All Data</a>
 &centerdot;
-<a href="/data">Data</a>
+<a href="/data/clues">Clues</a>
+&centerdot;
+<a href="/data/indicators">Indicators</a>
 </nav>
 <h1 class="title">$title$</h1>
 <blockquote class="metadata">
