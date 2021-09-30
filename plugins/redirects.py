@@ -7,7 +7,7 @@ from datasette.utils.asgi import Response
 @hookimpl
 def register_routes():
     return [
-        # TODO: /clues/clues -> /data/clues
+        # TODO: /clues/clues -> /data/clues (?)
         (
             # E.g. /clues/clues/123 -> /data/clues/123
             r"^/clues/clues/(?P<rowid>[0-9]+)$",
