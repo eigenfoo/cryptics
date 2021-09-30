@@ -47,7 +47,7 @@ of cryptic crosswords (for more details, see [the Collection Process
 section](/datasheet#collection-process)).
 
 For a breakdown of the number of clues from each source, please see the
-[`source` facet on the `clues` table](/clues/clues).
+[`source` facet on the `clues` table](/data/clues).
 
 ### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
 
@@ -105,8 +105,8 @@ Secondly, while the majority of the dataset is sourced from blogs which provide
 are parsed directly from `.puz` files, which do not support such rich-form clue
 markup. Thus, clues from these sources are missing `definition`s and
 `annotation`s.  These sources are:
-[`cru_cryptics`](/clues/clues?source=cru_cryptics) and
-[`nytimes`](https://cryptics.eigenfoo.xyz/clues/clues?source=nytimes).
+[`cru_cryptics`](/data/clues?source=cru_cryptics) and
+[`nytimes`](https://cryptics.eigenfoo.xyz/data/clues?source=nytimes).
 
 Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
 provides four more other columns, in addition to the eight provided in the

@@ -31,14 +31,13 @@ Currently the sources for clues are:
 
 [^2]: `.puz` files were provided courtesy of [Michael F. Gill](https://bbtp.net/). As of August 2021, [_The New York Times_ no longer supports `.puz` files](https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html).
 
-The data can be [viewed online](/clues/clues) and downloaded for free
-([CSV](https://cryptics.eigenfoo.xyz/clues/clues.csv?_size=max),
-[JSON](/clues/clues.json), [SQLite](/clues.db),
-[advanced](/clues/clues#export)[^3]). Detailed documentation can be found on
-[the datasheet](/datasheet) and the source code for creating the dataset is
-[available on GitHub](https://github.com/eigenfoo/cryptics).
+The data can be [viewed online](/data/clues) and downloaded for free
+([CSV](/data/clues.csv?_size=max), [JSON](/data/clues.json),
+[SQLite](/data.db), [advanced](/data/clues#export)[^3]). Detailed documentation
+can be found on [the datasheet](/datasheet) and the source code for creating
+the dataset is [available on GitHub](https://github.com/eigenfoo/cryptics).
 
-[^3]: The CSV request will only return the first 1000 rows, [click here](/clues/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
+[^3]: The CSV request will only return the first 1000 rows, [click here](/data/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
 
 Send all comments, suggestions and complaints to
 [george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz).
