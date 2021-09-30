@@ -7,9 +7,10 @@ from datasette.utils.asgi import Response
 @hookimpl
 def register_routes():
     return [
+        # TODO: /clues/clues -> /data/clues
         (
             # E.g. /clues/clues/123 -> /data/clues/123
-            r"^/clues/clues/(?P<rowid>[^\.]+)$",
+            r"^/clues/clues/(?P<rowid>[0-9]+)$",
             lambda request: Response.redirect(
                 "/data/clues/{rowid}".format(**request.url_vars), status=301
             ),
@@ -18,7 +19,7 @@ def register_routes():
             # E.g. /clues/clues?x=foo&y=bar -> /data/clues?x=foo&y=bar 
             r"^/clues/clues$",
             lambda request: Response.redirect(
-                "/data/clues/"
+                "/data/clues"
                 + (("?" + request.query_string) if request.query_string else ""),
                 status=301,
             ),
