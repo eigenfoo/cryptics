@@ -5,6 +5,10 @@
 - Added `indicators` and `indicators_by_clue` table.
 - Found indicators via regexes.
 
+## Code
+
+- Renamed database from `clues` to `data`. Added appropriate URL redirects.
+
 # v2021.09.29
 
 ## Data
