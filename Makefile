@@ -80,7 +80,8 @@ templates/pages/%.html: docs/%.md template.html5 scripts/build-template.sh
 test-build:
 	bash scripts/test-build.sh
 
-serve:
+.PHONY: serve
+serve:  # Serve Datasette locally.
 	datasette \
 		--immutable data.sqlite3 \
 		--template-dir templates/ \
@@ -97,7 +98,7 @@ deploy:  clean build  # Deploy Datasette project to Heroku.
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -vrf data.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
+	rm -vrf data.sqlite3 data-annotated.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
 	find cryptics/ -type d -name "__pycache__" -exec rm -vrf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
