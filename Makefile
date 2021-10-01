@@ -31,7 +31,7 @@ conda:  # Set up a conda environment for development.
 .PHONY: venv
 venv:  # Set up a Python virtual environment for development.
 	@printf "Creating Python virtual environment...\n"
-	rm -vrf venv/
+	rm -rf venv/
 	${PYTHON} -m venv venv/
 	source venv/bin/activate
 	${PIP} install -U pip
@@ -102,7 +102,7 @@ deploy:  clean build  # Deploy Datasette project to Heroku.
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -vrf data.sqlite3 data-annotated.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
-	find cryptics/ -type d -name "__pycache__" -exec rm -vrf {} +
+	rm -rf data.sqlite3 data-annotated.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
+	find cryptics/ -type d -name "__pycache__" -exec rm -rf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
