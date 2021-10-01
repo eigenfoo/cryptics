@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("--populate-db", dest="populate_db", action="store_true")
     parser.add_argument("--no-populate-db", dest="populate_db", action="store_false")
     parser.set_defaults(populate_db=True)
-    parser.add_argument("--sleep-interval", type=int, default=1)
+    parser.add_argument("--sleep-interval", type=int, default=20)
     parser.add_argument(
         "--datetime-requested", type=str, default=datetime.now().strftime("%Y-%m-%d")
     )
