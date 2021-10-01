@@ -34,7 +34,9 @@ def find_and_write_indicators(
         for regex in regexes:
             # FIXME: is it a good idea to indiscriminately .lower() like this?
             # Perhaps I should only lower if I'm sure it's in titlecase?
-            indicators = "/".join([s.strip().lower() for s in re.findall(regex, annotation)])
+            indicators = "/".join(
+                [s.strip().lower() for s in re.findall(regex, annotation)]
+            )
             if indicators:
                 try:
                     write_cursor.execute(
