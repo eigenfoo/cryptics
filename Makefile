@@ -67,7 +67,7 @@ build: clean build-dbs build-templates test-build  # Build database and document
 
 build-dbs: data.sqlite3 data-annotated.sqlite3
 
-data.sqlite3: cryptics/cryptics.sqlite3
+data.sqlite3: cryptics.sqlite3
 	bash scripts/build-dbs.sh
 
 build-templates: templates/index.html $(STATIC_TARGETS)
