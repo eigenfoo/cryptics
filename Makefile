@@ -58,6 +58,10 @@ mypytypes:
 .PHONY: lint
 lint: blackstyle mypytypes  # Lint code using black and mypy.
 
+.PHONY: update
+update:  # Update
+	python cryptics/main.py
+
 .PHONY: build
 build: clean build-dbs build-templates test-build  # Build SQLite database and documentation and test build.
 

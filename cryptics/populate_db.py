@@ -8,6 +8,8 @@ from typing import List
 import requests
 import bs4
 
+from cryptics.config import SITEMAPS, SQLITE_DATABASE
+
 
 logging.basicConfig(level=logging.INFO)
 headers = {
@@ -48,7 +50,7 @@ def get_new_urls_from_nested_sitemaps(
 
 
 def get_new_urls(source, sitemap_url):
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT url FROM html WHERE source = '{source}';")
         known_urls = cursor.fetchall()
@@ -94,11 +96,8 @@ def get_new_urls(source, sitemap_url):
     return new_urls
 
 
-def populate_db(sleep_interval=20):
-    with open("sitemaps.json") as f:
-        sitemap_urls = json.load(f)
-
-    for source, sitemap_url in sitemap_urls.items():
+def populate_db(sources, sleep_interval=20):
+    for source, sitemap_url in sources.items():
         logging.info(f"Populating from {source}...")
         new_urls = get_new_urls(source, sitemap_url)
         logging.info(f"Found {len(new_urls)} new urls.")
@@ -112,7 +111,7 @@ def populate_db(sleep_interval=20):
                     logging.error(f"Response not OK for {url}")
                     continue
 
-                with sqlite3.connect("cryptics.sqlite3") as conn:
+                with sqlite3.connect(SQLITE_DATABASE) as conn:
                     cursor = conn.cursor()
                     sql = f"INSERT INTO html (source, url, html) VALUES (?, ?, ?)"
                     cursor.execute(sql, (source, url, response.text))
@@ -124,4 +123,4 @@ def populate_db(sleep_interval=20):
 
 
 if __name__ == "__main__":
-    populate_db()
+    populate_db(sources=SITEMAPS)

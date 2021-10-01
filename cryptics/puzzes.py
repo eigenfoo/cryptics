@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 import puz
 
+from cryptics.config import SQLITE_DATABASE
+
 
 def last_dirname_basename(path):
     return os.path.join(
@@ -22,7 +24,7 @@ def insert_puz(source, path, puz_filename):
     with open(puz_filename, "rb") as f:
         puz_blob = f.read()
 
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO puz (source, path, puz, is_parsed, datetime_parsed) VALUES (?, ?, ?, 1, datetime('now'))",
@@ -95,7 +97,7 @@ if __name__ == "__main__":
     parser.add_argument("--source", type=str, required=True)
     args = parser.parse_args()
 
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT DISTINCT source_url FROM clues;")
         known_urls = cursor.fetchall()
@@ -111,7 +113,7 @@ if __name__ == "__main__":
         logging.info(f"Parsing and writing {puz_filename}...")
         data = parse_puz(puz_filename)
         data["source"] = args.source
-        with sqlite3.connect("cryptics.sqlite3") as conn:
+        with sqlite3.connect(SQLITE_DATABASE) as conn:
             data.to_sql(f"clues", conn, if_exists="append", index=False)
 
         insert_puz(args.source, last_dirname_basename(puz_filename), puz_filename)
