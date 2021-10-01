@@ -52,6 +52,8 @@ def unpivot_indicators_table():
 
     df = df.melt(id_vars=["clue_rowid"], var_name="wordplay", value_name="indicator")
     df = df[df["indicator"].str.strip() != ""]
+    df["indicator"] = df["indicator"].apply(lambda s: s.split("/"))
+    df = df.explode("indicator")
     df = (
         df.groupby(["wordplay", "indicator"])["clue_rowid"]
         .agg(lambda group: ", ".join([f"[{s}](/data/clues/{s})" for s in group]))
