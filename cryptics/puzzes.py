@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 import pathlib
 import sqlite3
@@ -107,7 +108,7 @@ if __name__ == "__main__":
     }
 
     for puz_filename in new_puz_filenames:
-        print(f"Parsing and writing {puz_filename}...")
+        logging.info(f"Parsing and writing {puz_filename}...")
         data = parse_puz(puz_filename)
         data["source"] = args.source
         with sqlite3.connect("cryptics.sqlite3") as conn:

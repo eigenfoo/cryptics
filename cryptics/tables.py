@@ -227,8 +227,6 @@ def _parse_table_type_2(table, soup):
 
     def separate_clue_and_annotation(s):
         match = re.search("\([0-9,\- ]+(?:[\w\.]+)?\)", s)
-        if match is None:
-            print(s)
         clue = s[: match.end()].strip()
         annotation = s[match.end() :].strip()
         return clue, annotation

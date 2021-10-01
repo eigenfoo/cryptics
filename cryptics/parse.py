@@ -1,4 +1,5 @@
 import bs4
+import logging
 
 from cryptics.text import (
     is_parsable_text_type_1,
@@ -46,7 +47,7 @@ def try_to_parse_as(html, is_parsable_func, parse_func):
         return None
 
     if is_parseable:
-        print(f"Parsing using {parse_func.__name__}")
+        logging.info(f"Parsing using {parse_func.__name__}")
         return parse_func(html)
 
 
