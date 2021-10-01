@@ -1,8 +1,10 @@
 import sqlite3
 
+from cryptics.config import SQLITE_DATABASE
+
 
 def query_and_print(prompt, sql):
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(sql)
         (output,) = cursor.fetchone()
@@ -10,7 +12,7 @@ def query_and_print(prompt, sql):
 
 
 if __name__ == "__main__":
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT DISTINCT source FROM clues;")
         sources = sorted([source for (source,) in cursor.fetchall()])

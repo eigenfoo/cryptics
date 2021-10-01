@@ -5,6 +5,8 @@ import random
 import readline
 import sqlite3
 
+from cryptics.config import SQLITE_DATABASE
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--source", type=str, nargs="?", default="times_xwd_times")
@@ -72,7 +74,7 @@ else:
 while True:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         if not args.train:
             sql = f"SELECT rowid, * FROM clues WHERE rowid = '{todo_rowids.pop(0)}';"
         else:
@@ -166,7 +168,7 @@ while True:
         definition = maybe_edit(" Definition", definition)
         annotation = maybe_edit(" Annotation", annotation)
         clue_number = maybe_edit("Clue Number", clue_number)
-        with sqlite3.connect("cryptics.sqlite3") as conn:
+        with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             sql = f"""
             UPDATE clues
@@ -197,7 +199,7 @@ while True:
                 ),
             )
     elif user_input.strip() == "d":
-        with sqlite3.connect("cryptics.sqlite3") as conn:
+        with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             sql = f"""
             DELETE FROM clues
@@ -208,7 +210,7 @@ while True:
     elif user_input.strip() == "s":
         continue
 
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         sql = f"""
         UPDATE clues

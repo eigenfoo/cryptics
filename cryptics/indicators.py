@@ -4,6 +4,8 @@ from typing import Dict, List
 import pandas as pd
 from tqdm import tqdm
 
+from cryptics.config import SQLITE_DATABASE
+
 
 INDICATOR_REGEXES = {
     "anagram": [r"anagram \(([A-Z]?[a-z ]+)\)"],
@@ -32,7 +34,9 @@ def find_and_write_indicators(
         for regex in regexes:
             # FIXME: is it a good idea to indiscriminately .lower() like this?
             # Perhaps I should only lower if I'm sure it's in titlecase?
-            indicators = "/".join([s.strip().lower() for s in re.findall(regex, annotation)])
+            indicators = "/".join(
+                [s.strip().lower() for s in re.findall(regex, annotation)]
+            )
             if indicators:
                 try:
                     write_cursor.execute(
@@ -47,7 +51,7 @@ def find_and_write_indicators(
 
 
 def unpivot_indicators_table():
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         df = pd.read_sql("SELECT * FROM indicators;", conn)
 
     df = df.melt(id_vars=["clue_rowid"], var_name="wordplay", value_name="indicator")
@@ -62,12 +66,12 @@ def unpivot_indicators_table():
         .reset_index()
     )
 
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         df.to_sql("indicators_unpivoted", conn, if_exists="replace", index=False)
 
 
 if __name__ == "__main__":
-    with sqlite3.connect("cryptics.sqlite3") as conn:
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
         read_cursor = conn.cursor()
         write_cursor = conn.cursor()
         read_cursor.execute("SELECT rowid, annotation FROM clues;")
