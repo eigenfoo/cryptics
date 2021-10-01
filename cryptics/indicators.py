@@ -8,7 +8,11 @@ from cryptics.config import SQLITE_DATABASE
 
 
 INDICATOR_REGEXES = {
-    "anagram": [r"anagram \(([A-Z]?[a-z ]+)\)"],
+    "anagram": [
+        r"anagram \(([A-Z]?[a-z ]+)\)",
+        r"anagram of \(([A-Z]?[a-z ]+)\)",
+        r"anagrammed \(([A-Z]?[a-z ]+)\)",
+    ],
     "container": [
         r"contain \(([A-Z]?[a-z ]+)\)",
         r"contains \(([A-Z]?[a-z ]+)\)",
@@ -17,26 +21,45 @@ INDICATOR_REGEXES = {
     "insertion": [
         r"contained in \(([A-Z]?[a-z ]+)\)",
         r"inserted into \(([A-Z]?[a-z ]+)\)",
+        r"within \(([A-Z]?[a-z ]+)\)",
     ],
-    "deletion": [r"deletion \(([A-Z]?[a-z ]+)\)"],
-    "hidden": [r"hidden \(([A-Z]?[a-z ]+)\)"],
-    "homophone": [r"homophone \(([A-Z]?[a-z ]+)\)", r"sounds like \(([A-Z]?[a-z ]+)\)"],
-    "reversal": [r"reversal \(([A-Z]?[a-z ]+)\)"],
+    "deletion": [
+        r"deleted \(([A-Z]?[a-z ]+)\)",
+        r"deletion \(([A-Z]?[a-z ]+)\)",
+        r"removed \(([A-Z]?[a-z ]+)\)",
+    ],
+    "hidden": [
+        r"hidden \(([A-Z]?[a-z ]+)\)",
+        r"hidden in \(([A-Z]?[a-z ]+)\)",
+    ],
+    "homophone": [
+        r"homophone \(([A-Z]?[a-z ]+)\)",
+        r"sound like \(([A-Z]?[a-z ]+)\)",
+        r"sounds like \(([A-Z]?[a-z ]+)\)",
+    ],
+    "reversal": [
+        r"reversing \(([A-Z]?[a-z ]+)\)",
+        r"reversal \(([A-Z]?[a-z ]+)\)",
+        r"reverse \(([A-Z]?[a-z ]+)\)",
+        r"reversed \(([A-Z]?[a-z ]+)\)",
+    ],
 }
 
 
 def find_and_write_indicators(
     annotation: str,
     indicator_regexes: Dict[str, List[str]],
+    clue: str,
     write_cursor: sqlite3.Cursor,
 ):
     for wordplay, regexes in indicator_regexes.items():
         for regex in regexes:
-            # FIXME: is it a good idea to indiscriminately .lower() like this?
-            # Perhaps I should only lower if I'm sure it's in titlecase?
-            indicators = "/".join(
-                [s.strip().lower() for s in re.findall(regex, annotation)]
-            )
+            indicators = [
+                s.strip().lower()
+                for s in re.findall(regex, annotation)
+                if s.strip().lower() in clue.lower()
+            ]
+            indicators = "/".join(indicators)
             if indicators:
                 try:
                     write_cursor.execute(
@@ -74,12 +97,12 @@ if __name__ == "__main__":
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         read_cursor = conn.cursor()
         write_cursor = conn.cursor()
-        read_cursor.execute("SELECT rowid, annotation FROM clues;")
+        read_cursor.execute("SELECT rowid, clue, annotation FROM clues;")
 
-        for (row_id, annotation) in tqdm(read_cursor, desc="Finding indicators"):
+        for (row_id, clue, annotation) in tqdm(read_cursor, desc="Finding indicators"):
             if not annotation:
                 continue
-            find_and_write_indicators(annotation, INDICATOR_REGEXES, write_cursor)
+            find_and_write_indicators(annotation, INDICATOR_REGEXES, clue, write_cursor)
 
         conn.commit()
 
