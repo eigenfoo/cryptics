@@ -45,6 +45,8 @@ $endfor$
 <a href="/data/clues">Clues</a>
 &centerdot;
 <a href="/data/indicators">Indicators</a>
+&centerdot;
+<a href="/data/charades">Charades</a>
 </nav>
 <h1 class="title">$title$</h1>
 <blockquote class="metadata">
