@@ -87,8 +87,7 @@ def find_and_write_charades(
         charades = [
             (clue_row_id, charade.strip(), answer.strip())
             for (answer, charade) in re.findall(regex, annotation)
-            if charade.strip().lower() in clue.lower()
-            and answer.isupper()
+            if charade.strip().lower() in clue.lower() and answer.isupper()
         ]
         if charades:
             sql = "INSERT INTO charades (clue_rowid, charade, answer) VALUES (?, ?, ?);"
@@ -140,11 +139,17 @@ if __name__ == "__main__":
         conn.commit()
 
         read_cursor.execute("SELECT rowid, clue, annotation FROM clues;")
-        for (clue_row_id, clue, annotation) in tqdm(read_cursor, desc="Finding indicators"):
+        for (clue_row_id, clue, annotation) in tqdm(
+            read_cursor, desc="Finding indicators"
+        ):
             if not annotation:
                 continue
-            find_and_write_indicators(clue_row_id, clue, annotation, INDICATOR_REGEXES, write_cursor)
-            find_and_write_charades(clue_row_id, clue, annotation, CHARADE_REGEXES, write_cursor)
+            find_and_write_indicators(
+                clue_row_id, clue, annotation, INDICATOR_REGEXES, write_cursor
+            )
+            find_and_write_charades(
+                clue_row_id, clue, annotation, CHARADE_REGEXES, write_cursor
+            )
         conn.commit()
 
     unpivot_indicators_table()
