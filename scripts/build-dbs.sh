@@ -27,7 +27,7 @@ sqlite3 cryptics.sqlite3 ".dump clues" | sqlite3 data-annotated.sqlite3
 sqlite3 cryptics.sqlite3 ".dump indicators" | sqlite3 data-annotated.sqlite3
 sqlite3 cryptics.sqlite3 ".dump indicators_unpivoted" | sqlite3 data-annotated.sqlite3
 sqlite3 cryptics.sqlite3 ".dump charades" | sqlite3 data-annotated.sqlite3
-sqlite3 cryptics.sqlite3 ".dump charades_unpivoted" | sqlite3 data.sqlite3
+sqlite3 cryptics.sqlite3 ".dump charades_unpivoted" | sqlite3 data-annotated.sqlite3
 sqlite3 data-annotated.sqlite3 ".read queries/prepare-db-for-sharing.sql"
 sqlite3 data-annotated.sqlite3 "
 INSERT INTO metadata (key, value)
