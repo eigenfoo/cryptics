@@ -232,9 +232,9 @@ Ho](https://www.eigenfoo.xyz/). I was not compensated for this work.
 
 ### Over what time frame was the data collected?
 
-The scraped blog posts cover crosswords published from January 2009 to
-September 2021: a twelve year period. New blog posts are being published daily
-and can be parsed to augment the dataset.
+The scraped blog posts cover crosswords published from January 2009 to October
+2021: a twelve year period. New blog posts are being published daily and can be
+parsed to augment the dataset.
 
 ## Preprocessing and Cleaning
 

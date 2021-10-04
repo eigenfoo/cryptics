@@ -13,12 +13,11 @@ archives.
 The project scrapes several blogs and digital archives for cryptic crosswords.
 Out of these collected web pages, the clues, answers, clue numbers, blogger's
 explanation and commentary, puzzle title and publication date are all parsed
-and extracted into a tabular dataset. The result (as of September 2021) is
-**over half a million clues from cryptic crosswords over the past twelve
-years**.
+and extracted into a tabular dataset. The result (as of October 2021) is **over
+half a million clues from cryptic crosswords over the past twelve years**.
 
 Two other datasets are subsequently derived from the clues - wordplay
-indicators and charades (a.k.a.  substitutions). All told, the derived datasets
+indicators and charades (a.k.a. substitutions). All told, the derived datasets
 contain **over ten thousand wordplay indicators** and **over sixty thousand
 charades**.
 
