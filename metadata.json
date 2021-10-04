@@ -26,9 +26,6 @@
       }
     }
   },
-  "extra_js_urls": [
-    "//static.getclicky.com/101332895.js"
-  ],
   "plugins": {
     "datasette-render-markdown": {
       "columns": ["clue_rowids"]
