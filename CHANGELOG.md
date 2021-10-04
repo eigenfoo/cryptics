@@ -1,9 +1,9 @@
-# Unreleased
+# v2021.10.04
 
 ## Data
 
-- Added `indicators` and `indicators_by_clue` table.
-- Found indicators via regexes.
+- Added `indicators`, `indicators_by_clue`, `charades` and `charades_by_clue`
+  tables. All indicators and charades are identified via regexes.
 
 ## Code
 
