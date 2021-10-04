@@ -4,7 +4,7 @@ from typing import Dict, List
 import pandas as pd
 from tqdm import tqdm
 
-from cryptics.config import SQLITE_DATABASE
+from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 
 
 INDICATOR_REGEXES = {
@@ -45,11 +45,14 @@ INDICATOR_REGEXES = {
     ],
 }
 
+CHARADE_REGEXES = [r"([A-Z][A-Z ]+)\s?\(([A-Z]?[a-z ]+)\)"]
+
 
 def find_and_write_indicators(
+    clue_row_id: int,
+    clue: str,
     annotation: str,
     indicator_regexes: Dict[str, List[str]],
-    clue: str,
     write_cursor: sqlite3.Cursor,
 ):
     for wordplay, regexes in indicator_regexes.items():
@@ -63,20 +66,38 @@ def find_and_write_indicators(
             if indicators:
                 try:
                     write_cursor.execute(
-                        f"INSERT INTO indicators (clue_rowid) VALUES ({row_id});"
+                        f"INSERT INTO indicators (clue_rowid) VALUES ({clue_row_id});"
                     )
                 except sqlite3.IntegrityError:
                     pass
                 write_cursor.execute(
                     f"UPDATE indicators SET {wordplay} = ? WHERE clue_rowid = ?;",
-                    (indicators, row_id),
+                    (indicators, clue_row_id),
                 )
+
+
+def find_and_write_charades(
+    clue_row_id: int,
+    clue: str,
+    annotation: str,
+    charade_regexes: List[str],
+    write_cursor: sqlite3.Cursor,
+):
+    for regex in charade_regexes:
+        charades = [
+            (clue_row_id, charade.strip(), answer.strip())
+            for (answer, charade) in re.findall(regex, annotation)
+            if charade.strip().lower() in clue.lower()
+            and answer.isupper()
+        ]
+        if charades:
+            sql = "INSERT INTO charades (clue_rowid, charade, answer) VALUES (?, ?, ?);"
+            write_cursor.executemany(sql, charades)
 
 
 def unpivot_indicators_table():
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         df = pd.read_sql("SELECT * FROM indicators;", conn)
-
     df = df.melt(id_vars=["clue_rowid"], var_name="wordplay", value_name="indicator")
     df = df[df["indicator"].str.strip() != ""]
     df["indicator"] = df["indicator"].apply(lambda s: s.split("/"))
@@ -88,22 +109,43 @@ def unpivot_indicators_table():
         .rename(columns={"clue_rowid": "clue_rowids"})
         .reset_index()
     )
-
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         df.to_sql("indicators_unpivoted", conn, if_exists="replace", index=False)
+
+
+def unpivot_charades_table():
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
+        df = pd.read_sql("SELECT * FROM charades;", conn)
+    df = (
+        df.groupby(["charade", "answer"])["clue_rowid"]
+        .agg(lambda group: ", ".join([f"[{s}](/data/clues/{s})" for s in group]))
+        .to_frame()
+        .rename(columns={"clue_rowid": "clue_rowids"})
+        .reset_index()
+    )
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
+        df.to_sql("charades_unpivoted", conn, if_exists="replace", index=False)
 
 
 if __name__ == "__main__":
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         read_cursor = conn.cursor()
         write_cursor = conn.cursor()
-        read_cursor.execute("SELECT rowid, clue, annotation FROM clues;")
 
-        for (row_id, clue, annotation) in tqdm(read_cursor, desc="Finding indicators"):
+        write_cursor.execute("DROP TABLE IF EXISTS charades;")
+        write_cursor.execute("DROP TABLE IF EXISTS indicators;")
+        with open(INITIALIZE_DB_SQL, "r") as f:
+            sql = f.read()
+        write_cursor.executescript(sql)
+        conn.commit()
+
+        read_cursor.execute("SELECT rowid, clue, annotation FROM clues;")
+        for (clue_row_id, clue, annotation) in tqdm(read_cursor, desc="Finding indicators"):
             if not annotation:
                 continue
-            find_and_write_indicators(annotation, INDICATOR_REGEXES, clue, write_cursor)
-
+            find_and_write_indicators(clue_row_id, clue, annotation, INDICATOR_REGEXES, write_cursor)
+            find_and_write_charades(clue_row_id, clue, annotation, CHARADE_REGEXES, write_cursor)
         conn.commit()
 
     unpivot_indicators_table()
+    unpivot_charades_table()
