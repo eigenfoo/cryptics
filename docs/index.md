@@ -4,11 +4,9 @@ author-meta: George Ho
 description-meta: A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives.
 ---
 
-`cryptics.eigenfoo.xyz` is a dataset of cryptic crossword clues[^1], collected
-from various blogs and publicly available digital archives. I originally
-started this project to practice my web scraping and data engineering skills,
-but as it's evolved I hope it can be a resource to solvers and constructors of
-cryptic crosswords.
+`cryptics.eigenfoo.xyz` is a dataset of cryptic crossword[^1] clues, indicators
+and charades, collected from various blogs and publicly available digital
+archives.
 
 [^1]: If you're new to cryptic crosswords, rejoice! A whole new world awaits you! _The New Yorker_ has [an excellent introduction to cryptic crosswords](https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword), and Matt Gritzmacher has [a daily newsletter with links to crosswords](https://crosswordlinks.substack.com/).
 
@@ -17,7 +15,12 @@ Out of these collected web pages, the clues, answers, clue numbers, blogger's
 explanation and commentary, puzzle title and publication date are all parsed
 and extracted into a tabular dataset. The result (as of September 2021) is
 **over half a million clues from cryptic crosswords over the past twelve
-years**, which makes for a rich and peculiar dataset.
+years**.
+
+Two other datasets are subsequently derived from the clues - wordplay
+indicators and charades (a.k.a.  substitutions). All told, the derived datasets
+contain **over ten thousand wordplay indicators** and **over sixty thousand
+charades**.
 
 Currently the sources for clues are:
 

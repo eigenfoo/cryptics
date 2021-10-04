@@ -8,6 +8,12 @@ Following Gebru et al.'s recommendations in [_Datasheets for
 Datasets_](https://arxiv.org/abs/1803.09010), I provide this datasheet as
 detailed documentation for this dataset.
 
+This datasheet mostly documents the [clues dataset](/data/clues), which should
+be considered the primary dataset. The [indicators](/data/indicators) and
+[charades](/data/charades) datasets are derived from the clues dataset, and
+are described in the [Collection Process
+section](/datasheet#collection-process)).
+
 ## Motivation
 
 ### Why was this dataset created?
@@ -182,7 +188,7 @@ crosswords](https://www.theguardian.com/crosswords/crossword-blog/2013/dec/18/cr
 
 ### How was the data associated with each row acquired? What mechanisms or procedures were used to collect the data?
 
-The data collection process breaks down into roughly three parts.
+The data collection process breaks down into roughly four parts.
 
 The first part is simply scraping all the web pages and writing the HTML to a
 SQLite table to avoid re-requesting them. Web scraping was done using the
@@ -207,6 +213,16 @@ logistically infeasible to manually review all the clues, it's admittedly
 difficult to see what further value human evaluation brings.
 
 [^2]: I've gamified this with a CLI "cryptic clue practice tool" ([`review.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/review.py)), which displays a random clue, allows the user to ask for crossing letters as hints, prompts the user for the answer, and prompts the user to review and edit the clue if necessary.
+
+The fourth part is to run each parsed annotation through a series of regular
+expressions to extract any indicators or charades that have been identified by
+the blogger in the annotation. It's important to note that not all clues have
+annotations, and of those that do, not all of them clearly identify indicators
+and charades clearly enough to be extracted using a regular expression. In
+other words, regular expressions are high-precision, low-recall methods of
+identifying indicators and charades. Thus, these derived datasets should not be
+considered comprehensive - an indicator is not guaranteed to appear in the
+indicators dataset just because it appears in a clue in the clues dataset.
 
 ### Who was involved in the data collection process and how were they compensated?
 
