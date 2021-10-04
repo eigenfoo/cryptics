@@ -30,6 +30,9 @@ ALTER TABLE new_clues RENAME TO clues;
 ALTER TABLE indicators RENAME TO indicators_by_clue;
 ALTER TABLE indicators_unpivoted RENAME TO indicators;
 
+ALTER TABLE charades RENAME TO charades_by_clue;
+ALTER TABLE charades_unpivoted RENAME TO charades;
+
 -- To facilitate Datasette facets
 CREATE INDEX clues_source_index ON clues ("source");
 CREATE INDEX indicators_wordplay_index ON indicators ("wordplay");

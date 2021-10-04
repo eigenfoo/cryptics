@@ -40,3 +40,9 @@ CREATE TABLE IF NOT EXISTS indicators (
     reversal TEXT DEFAULT '',
     FOREIGN KEY (clue_rowid) REFERENCES clues (rowid)
 );
+CREATE TABLE IF NOT EXISTS charades (
+    clue_rowid INT,
+    charade TEXT DEFAULT '',
+    answer TEXT DEFAULT '',
+    FOREIGN KEY (clue_rowid) REFERENCES clues (rowid)
+);

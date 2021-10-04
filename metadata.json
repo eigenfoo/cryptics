@@ -19,6 +19,9 @@
         },
         "indicators_by_clue": {
           "hidden": true
+        },
+        "charades_by_clue": {
+          "hidden": true
         }
       }
     }
