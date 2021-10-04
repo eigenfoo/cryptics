@@ -61,6 +61,7 @@ lint: blackstyle mypytypes  # Lint code using black and mypy.
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
 	python cryptics/main.py --sleep-interval=1
+	python cryptics/indicators.py
 
 .PHONY: build
 build: clean build-dbs build-templates test-build  # Build database and documentation for publication.
