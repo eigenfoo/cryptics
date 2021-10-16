@@ -67,16 +67,19 @@ if args.train:
     with open("scores.json", "r") as f:
         scores = json.load(f)
 else:
-    with open("todo.txt", "r") as f:
-        todo_rowids = f.read().split()
+    if os.path.exists("todo.txt"):
+        with open("todo.txt", "r") as f:
+            todo_rowids = f.read().split()
+    else:
+        todo_rowids = None
 
 
 while True:
     os.system("cls" if os.name == "nt" else "clear")
     print(2 * "\n")
     with sqlite3.connect(SQLITE_DATABASE) as conn:
-        if not args.train:
-            sql = f"SELECT rowid, * FROM clues WHERE rowid = '{todo_rowids.pop(0)}';"
+        if not args.train and todo_rowids is not None:
+                sql = f"SELECT rowid, * FROM clues WHERE rowid = '{todo_rowids.pop(0)}';"
         else:
             sql = f"SELECT rowid, * FROM clues WHERE source = '{args.source}' AND {args.where} ORDER BY RANDOM() LIMIT 1;"
 
@@ -220,7 +223,7 @@ while True:
         """
         cursor.execute(sql, (row_id,))
 
-    if not args.train:
+    if not args.train and os.path.exists("todo.txt"):
         # Delete first line of todo.txt
         with open("todo.txt", "r") as f:
             data = f.read().splitlines(True)
