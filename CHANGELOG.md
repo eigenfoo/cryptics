@@ -1,3 +1,17 @@
+# v2021.10.16
+
+## Data
+
+- Changed source of Cru Cryptics from [The New York Times' archive
+  page](https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html)
+  to [William I. Johnston's archive](https://theworld.com/~wij/puzzles/cru/).
+  Thanks to Michael F. Gill for pointing this out!
+- Added clues scraped from blog posts published from previous release date.
+
+## Code
+
+- Fixed some minor bugs with `review.py`
+
 # v2021.10.04
 
 ## Data
