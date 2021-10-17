@@ -53,12 +53,7 @@ def parse_puz(puz_filename):
     clue_numbers = [str(clue["num"]) + "a" for clue in numbering.across] + [
         str(clue["num"]) + "d" for clue in numbering.down
     ]
-    puzzle_dates = [
-        datetime.fromtimestamp(pathlib.Path(puz_filename).stat().st_ctime).strftime(
-            "%Y-%m-%d"
-        )
-        for _ in range(len(clues))
-    ]
+    puzzle_dates = [None for _ in range(len(clues))]
     puzzle_names = [puzzle.title for _ in range(len(clues))]
     puzzle_urls = [None for _ in range(len(clues))]
     source_urls = [last_dirname_basename(puz_filename) for _ in range(len(clues))]
