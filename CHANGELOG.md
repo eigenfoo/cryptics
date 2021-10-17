@@ -6,6 +6,7 @@
   page](https://archive.nytimes.com/www.nytimes.com/premium/xword/cryptic-archive.html)
   to [William I. Johnston's archive](https://theworld.com/~wij/puzzles/cru/).
   Thanks to Michael F. Gill for pointing this out!
+- Remove erroneous `puzzle_date`s from clues parsed from `.puz` files.
 - Added clues scraped from blog posts published from previous release date.
 
 ## Code
