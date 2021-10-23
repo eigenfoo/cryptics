@@ -376,7 +376,9 @@ def parse_list_type_4(html):
         answers.append(answer.group().strip())
         annotations.append(annotation)
 
-    definitions = extract_definitions(entry_content, clues, entry_content.find_all("i"))
+    definitions = extract_definitions(
+        entry_content, clues, [tag.text for tag in entry_content.find_all("i")]
+    )
 
     out = pd.DataFrame(
         data=np.transpose(np.array([clue_numbers, answers, clues, annotations])),
