@@ -235,7 +235,9 @@ def parse_text_type_2(html):
         answers.append(answer.group().strip())
         annotations.append(annotation)
 
-    definitions = extract_definitions(entry_content, clues, entry_content.find_all("b"))
+    definitions = extract_definitions(
+        entry_content, clues, [tag.text for tag in entry_content.find_all("b")]
+    )
 
     return pd.DataFrame(
         data=np.transpose(
