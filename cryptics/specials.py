@@ -90,7 +90,7 @@ def parse_special_type_1(html):
         clues.append(delete_chars(clue, PUNCTUATION_IN_CLUE))
 
     raw_definitions = [
-        tag
+        tag.text
         for table in entry_content.find_all(
             "div", style=lambda s: "background-color:" in s if s is not None else None
         )
