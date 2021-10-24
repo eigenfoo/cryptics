@@ -1,3 +1,16 @@
+# v2021.10.24
+
+## Data
+
+- Added one-off CSV dump of `cru_cryptics` three PDF puzzles, courtesy of
+  [Michael F. Gill](https://bbtp.net/).
+- Added clues scraped from blog posts published from previous release date.
+
+## Code
+
+- Fixed `raw_definitions` in several parsing functions; re-ran on unparsed blog
+  posts.
+
 # v2021.10.16
 
 ## Data
