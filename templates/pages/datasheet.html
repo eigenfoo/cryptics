@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<script async src="//static.getclicky.com/101332895.js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101332895ns.gif" /></p></noscript>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc-markdown-css-theme" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="George Ho" />
+  <meta name="dcterms.date" content="2021-10-24" />
+  <meta name="description" content="A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives." />
+  <title>Datasheet</title>
+  <link rel="stylesheet" href="../../static/css/theme.css" />
+  <link rel="stylesheet" href="../../static/css/skylighting-solarized-theme.css" />
+</head>
+<body>
+
+<header>
+<nav>
+<a href="/">Home</a>
+&centerdot;
+<a href="/datasheet">Datasheet</a>
+&#8258;
+<a href="/data">All Data</a>
+&centerdot;
+<a href="/data/clues">Clues</a>
+&centerdot;
+<a href="/data/indicators">Indicators</a>
+&centerdot;
+<a href="/data/charades">Charades</a>
+</nav>
+<h1 class="title">Datasheet</h1>
+<blockquote class="metadata">
+<p class="date "><time datetime="2021-10-24">Last updated 2021-10-24</time></p>
+</blockquote>
+</header>
+
+
+<main>
+<p>Following Gebru et al.’s recommendations in <a href="https://arxiv.org/abs/1803.09010"><em>Datasheets for Datasets</em></a>, I provide this datasheet as detailed documentation for this dataset.</p>
+<p>This datasheet mostly documents the <a href="/data/clues">clues dataset</a>, which should be considered the primary dataset. The <a href="/data/indicators">indicators</a> and <a href="/data/charades">charades</a> datasets are derived from the clues dataset, and are described in the <a href="/datasheet#collection-process">Collection Process section</a>).</p>
+<h2 id="motivation">Motivation</h2>
+<h3 id="why-was-this-dataset-created">Why was this dataset created?</h3>
+<p>This dataset was originally a project for me to practice my webscraping and data processing skills. Since then, it has evolved to become a potential resource for cryptic crossword solvers and constructors - for example, one might use this dataset as a lookup table for answers, or to see how an answer has been clued in the past by other constructors.</p>
+<p>While there is prior art in datasets of cryptic crossword clues (most notably <a href="https://arxiv.org/abs/2104.08620"><em>Decrypting Cryptic Crosswords</em> by Rozner et al.</a> and <a href="https://arxiv.org/abs/2103.01242"><em>Cryptonite</em> by Efrat et al.</a>), to my knowledge this is the first such dataset that is at least as large as the research datasets, is openly accessible, and potentially includes annotations for each clue (however, see the answer to the <a href="/datasheet#is-any-information-missing-from-individual-rows">“Is any information missing?” question</a>).</p>
+<h3 id="who-created-this-dataset-and-on-whose-behalf-who-funded-the-creation-of-this-dataset">Who created this dataset and on whose behalf? Who funded the creation of this dataset?</h3>
+<p>This dataset was created by me, <a href="https://www.eigenfoo.xyz">George Ho</a>, as a side project in my free time. No expenses have been incurred, so the question of funding is moot.</p>
+<h2 id="composition">Composition</h2>
+<h3 id="what-do-the-rows-that-comprise-this-dataset-represent">What do the rows that comprise this dataset represent?</h3>
+<p>Each row represents one clue from a published cryptic crossword. The crossword grid itself is not saved.</p>
+<h3 id="how-many-rows-are-there-in-total-of-each-type-if-appropriate">How many rows are there in total (of each type, if appropriate)?</h3>
+<p>Clues are sourced from three cryptic crossword blogs and a few online archives of cryptic crosswords (for more details, see <a href="/datasheet#collection-process">the Collection Process section</a>).</p>
+<p>For a breakdown of the number of clues from each source, please see the <a href="/data/clues"><code>source</code> facet on the <code>clues</code> table</a>.</p>
+<h3 id="does-this-dataset-contain-all-possible-rows-or-is-it-a-sample-not-necessarily-random-of-rows-from-a-larger-set">Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?</h3>
+<p>The dataset covers a large portion of the scraped blog posts, and may thus be considered exhaustive (or nearly so) for the covered sources.</p>
+<p>However, there are many reasons why a clue may not appear in the dataset - in order for a clue to be included, the following must be true:</p>
+<ol type="1">
+<li>The crossword must be covered by a blog.
+<ul>
+<li>The three blogs cover exclusively British newspapers. As such, the resulting dataset is heavy in British jargon, such as slang, idioms or names of British towns or royalty.</li>
+</ul></li>
+<li>The blog must publish a blog post.
+<ul>
+<li>In particular, the blog must include at least the clues and answers of the crossword.</li>
+<li>Many blog posts from the sources are not about crosswords at all (e.g. they may be administrative announcements), and those that are may not include the clues, instead simply identifying clues by puzzle name and clue numbers. Several blogs’ early blog posts fit this description.</li>
+</ul></li>
+<li>The blog post must be parsable.
+<ul>
+<li>As explained in <a href="/datasheet#collection-process">the Collection Process section</a>, the clues and answers are extracted from the raw HTML by a collection of parsing functions. If none of the parsing functions successfully return parsed clues, the raw HTML is deemed “unparsable” and is skipped.</li>
+</ul></li>
+</ol>
+<h3 id="what-data-does-each-row-consist-of">What data does each row consist of?</h3>
+<p>Each row contains data in eight columns:</p>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 44%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column Name</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>clue</code></td>
+<td></td>
+<td><code>Labourers going around spotted tools (8)</code></td>
+</tr>
+<tr class="even">
+<td><code>answer</code></td>
+<td></td>
+<td><code>HANDSAWS</code></td>
+</tr>
+<tr class="odd">
+<td><code>definition</code></td>
+<td></td>
+<td><code>tools</code></td>
+</tr>
+<tr class="even">
+<td><code>clue_number</code></td>
+<td></td>
+<td><code>17a</code></td>
+</tr>
+<tr class="odd">
+<td><code>puzzle_date</code></td>
+<td>Date the puzzle was published</td>
+<td><code>2017-08-25</code></td>
+</tr>
+<tr class="even">
+<td><code>puzzle_name</code></td>
+<td>Name of the publication and/or puzzle</td>
+<td><code>Quick Cryptic 904</code></td>
+</tr>
+<tr class="odd">
+<td><code>source_url</code></td>
+<td>The URL of the blog post where this clue was scraped from</td>
+<td><code>https://times-xwd-times.livejournal.com/1799231.html</code></td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td>String indicating the blog this clue was sourced from</td>
+<td><code>times_xwd_times</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="is-any-information-missing-from-individual-rows">Is any information missing from individual rows?</h3>
+<p>Yes.</p>
+<p>Firstly, some data may be missing or malformed due to data preprocessing errors (see <a href="/datasheet#are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">the “Are there any errors?” question</a> for more details). I unfortunately have not quantified what proportion of the dataset is missing or malformed.</p>
+<p>Secondly, while the majority of the dataset is sourced from blogs which provide <code>definition</code>s and <code>annotation</code>s from bloggers, there are a few sources which are parsed directly from <code>.puz</code> files, which do not support such rich-form clue markup. Thus, clues from these sources are missing <code>definition</code>s and <code>annotation</code>s. These sources are: <a href="/data/clues?source=cru_cryptics"><code>cru_cryptics</code></a> and <a href="https://cryptics.eigenfoo.xyz/data/clues?source=nytimes"><code>nytimes</code></a>.</p>
+<p>Finally, the <a href="https://github.com/eigenfoo/cryptics/">source code on GitHub</a> provides four more other columns, in addition to the eight provided in the dataset:</p>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 44%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column Name</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>annotation</code></td>
+<td>Explanation and/or commentary on this clue by a blogger</td>
+<td><code>HANDS (labourers) arranged around SAW</code></td>
+</tr>
+<tr class="even">
+<td><code>puzzle_url</code></td>
+<td>If available, a URL to the puzzle itself</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>is_reviewed</code></td>
+<td>If <code>1</code>, a human has reviewed the parsed clue for correctness</td>
+<td><code>1</code></td>
+</tr>
+<tr class="even">
+<td><code>datetime_reviewed</code></td>
+<td>If the clue <code>is_reviewed</code>, the date and time it was</td>
+<td><code>2021-08-01 16:06:19</code></td>
+</tr>
+</tbody>
+</table>
+<p>These four columns have been dropped prior to publication, either because they are redundant and of limited value, or to respect the copyright of the scraped blogs. While I believe it is fair use to republish the cryptic clues in a centralized, structured and searchable format<span class="sidenote-wrapper"><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"/><span class="sidenote">a.k.a. a <a href="https://copyright.columbia.edu/basics/fair-use.html"><em>transformatively</em></a> different resource.<br />
+<br />
+</span></span>, the blogs hold the copyright to any annotations and commentary on the clues. Nevertheless, I am happy to share the full dataset on a case-by-case basis with non-commercial groups (e.g. academic research groups). Please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">email me</a> to inquire.</p>
+<h3 id="are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">Are there any errors, sources of noise, or redundancies in this dataset?</h3>
+<p>Yes. As described in <a href="/datasheet#collection-process">the Collection Process section</a>, errors may be introduced in the dataset through human error by the blogger, or through machine error by the parsing code.</p>
+<p>Human errors may include:</p>
+<ul>
+<li>missing enumerations (i.e. the clue does not specify the number of letters in the answer)</li>
+<li>mismatched parentheses or braces</li>
+<li>typos</li>
+</ul>
+<p>Machine errors may include:</p>
+<ul>
+<li>missing or redundant definitions</li>
+<li>multi-word answers split across the <code>answer</code> and <code>annotation</code> columns</li>
+</ul>
+<h3 id="is-this-dataset-self-contained-or-does-it-link-to-or-otherwise-rely-on-external-resources-e.g.-websites-tweets-other-datasets">Is this dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?</h3>
+<p>Asides from the <code>source_url</code> column, the dataset is self-contained. Users are encouraged use the <code>source_url</code> for manual lookups of the original source, e.g. for further context on a particular clue, or to validate that the source has been parsed correctly.</p>
+<h3 id="does-this-dataset-contain-data-that-might-be-considered-confidential">Does this dataset contain data that might be considered confidential?</h3>
+<p>No. All cryptic crossword clues have been published (either in newspapers or in online publications) and are not confidential.</p>
+<h3 id="does-this-dataset-contain-data-that-if-viewed-directly-might-be-offensive-insulting-threatening-or-might-otherwise-cause-anxiety">Does this dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety?</h3>
+<p>Not to my knowledge, no. These clues are published in widely syndicated newspapers and online publications, and are thus unlikely to contain offensive content. Nevertheless, it is possible.</p>
+<p>One complication is that identifying offensive content is difficult, particularly for cryptic crosswords: even if the answer itself is not an offensive word, the wordplay may involve words or logic that may be offensive. This is best explained by quoting a <a href="https://www.theguardian.com/crosswords/crossword-blog/2013/dec/18/cryptic-crosswords-too-rude-for-americans-puzzle">Guardian article on cryptic crosswords</a>:</p>
+<blockquote>
+<p>Even puzzles that appear innocent may have something suggestive squirrelled away, as with an early Guardian grid by the setter Paul, which contained, without further comment, the entries HORSEMEN, WIDOW TWANKEY, CHARDONNAY, SCUNTHORPE, HOT WATER and, of course, MISHIT.</p>
+</blockquote>
+<h2 id="collection-process">Collection Process</h2>
+<h3 id="how-was-the-data-associated-with-each-row-acquired-what-mechanisms-or-procedures-were-used-to-collect-the-data">How was the data associated with each row acquired? What mechanisms or procedures were used to collect the data?</h3>
+<p>The data collection process breaks down into roughly four parts.</p>
+<p>The first part is simply scraping all the web pages and writing the HTML to a SQLite table to avoid re-requesting them. Web scraping was done using the Python <code>requests</code> library.</p>
+<p>The second part is a collection of functions that each take the scraped HTML and attempt to parse out the data using <code>beautifulsoup</code> and <code>pandas</code>. Since blog posts are written by a small team of individual bloggers - many of whom stick with a particular blog post template - there are only a small number (less than a dozen) of distinct “types” of blog posts, from an HTML parsing perspective. Accordingly, there are around a dozen functions, which are called successively until one of them doesn’t crash and returns a table of parsed clues. This parsed table then gets written to SQLite.</p>
+<p>The third part is human evaluation of the clues. Between the human errors from the blogger and machine errors from the parsing code, it’s informative to manually look through a sample of the clues for any errors<span class="sidenote-wrapper"><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">I’ve gamified this with a CLI “cryptic clue practice tool” (<a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/review.py"><code>review.py</code></a>), which displays a random clue, allows the user to ask for crossing letters as hints, prompts the user for the answer, and prompts the user to review and edit the clue if necessary.<br />
+<br />
+</span></span>. This has uncovered a number of systematic errors, which can be corrected by either modifying the parsing code and re-parsing the saved HTML, or by simply running <em>ad hoc</em> SQL queries against the table of parsed clues. However, since it’s logistically infeasible to manually review all the clues, it’s admittedly difficult to see what further value human evaluation brings.</p>
+<p>The fourth part is to run each parsed annotation through a series of regular expressions to extract any indicators or charades that have been identified by the blogger in the annotation. It’s important to note that not all clues have annotations, and of those that do, not all of them clearly identify indicators and charades clearly enough to be extracted using a regular expression. In other words, regular expressions are high-precision, low-recall methods of identifying indicators and charades. Thus, these derived datasets should not be considered comprehensive - an indicator is not guaranteed to appear in the indicators dataset just because it appears in a clue in the clues dataset.</p>
+<h3 id="who-was-involved-in-the-data-collection-process-and-how-were-they-compensated">Who was involved in the data collection process and how were they compensated?</h3>
+<p>Since this dataset is the result of a side project in my free time, the only person involved in the data collection process was me, <a href="https://www.eigenfoo.xyz/">George Ho</a>. I was not compensated for this work.</p>
+<h3 id="over-what-time-frame-was-the-data-collected">Over what time frame was the data collected?</h3>
+<p>The scraped blog posts cover crosswords published from January 2009 to October 2021: a twelve year period. New blog posts are being published daily and can be parsed to augment the dataset.</p>
+<h2 id="preprocessing-and-cleaning">Preprocessing and Cleaning</h2>
+<h3 id="was-any-preprocessingcleaning-of-the-data-done">Was any preprocessing/cleaning of the data done?</h3>
+<p>Yes. As described in <a href="/datasheet#collection-process">the Collection Process section</a>, the raw HTML is “preprocessed” by parsing the unstructured HTML into a structured table of clues and answers. This parsing is the main value proposition of this dataset over the raw blog posts, and the clues and answers are now presented in a centralized, structured and searchable format.</p>
+<h3 id="is-the-software-used-to-preprocessclean-the-data-available">Is the software used to preprocess/clean the data available?</h3>
+<p><a href="https://github.com/eigenfoo/cryptics">Yes, you can view it on GitHub.</a> The following five modules contain the preprocessing and cleaning code:</p>
+<ul>
+<li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/lists.py"><code>cryptics/lists.py</code></a></li>
+<li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/puzzes.py"><code>cryptics/puzzes.py</code></a></li>
+<li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/specials.py"><code>cryptics/specials.py</code></a></li>
+<li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/tables.py"><code>cryptics/tables.py</code></a></li>
+<li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/text.py"><code>cryptics/text.py</code></a></li>
+</ul>
+<h3 id="was-the-raw-data-saved-in-addition-to-the-preprocessedcleaned-data-e.g.-to-support-unanticipated-future-uses">Was the raw data saved in addition to the preprocessed/cleaned data (e.g. to support unanticipated future uses)?</h3>
+<p>Yes. As described in <a href="/datasheet#collection-process">the Collection Process section</a>, the raw HTML for the blog posts have been saved to avoid requesting them multiple times. However, the raw HTML is not published, due to size constraints.</p>
+<p>Please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">email me</a> if you’d like to receive the raw HTML data. Alternatively, you can simply rerun the open source <a href="https://github.com/eigenfoo/cryptics"><code>cryptics</code></a> library to recreate the dataset yourself.</p>
+<h2 id="uses">Uses</h2>
+<h3 id="has-this-dataset-been-used-for-any-tasks-already-is-there-a-repository-that-links-to-any-or-all-papers-or-systems-that-use-this-dataset">Has this dataset been used for any tasks already? Is there a repository that links to any or all papers or systems that use this dataset?</h3>
+<p>The most immediate use case is for cryptic crossword constructors and solvers, both as a lookup table for answers and also to see how an answer has been clued in the past by other constructors.</p>
+<p>Beyond that though, I am unaware of other uses for the dataset. If you are using it, please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">let me know</a>!</p>
+<h2 id="distribution">Distribution</h2>
+<h3 id="how-will-this-dataset-will-be-distributed-e.g.-tarball-on-website-api-github">How will this dataset will be distributed (e.g., tarball on website, API, GitHub)?</h3>
+<p>The dataset is published online using <a href="https://datasette.io/">Datasette</a>. For more information, please watch Simon Willison’s <a href="https://youtu.be/7kDFBnXaw-c">introduction to Datasette on YouTube</a>.</p>
+<h3 id="is-this-dataset-distributed-under-a-copyright-or-other-intellectual-property-ip-license-andor-under-applicable-terms-of-use-tou">Is this dataset distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?</h3>
+<p>Yes. This dataset is made available under the <a href="http://opendatacommons.org/licenses/odbl/1.0/">Open Database License</a>. A human-readable summary is <a href="https://opendatacommons.org/licenses/odbl/summary/">available here</a>. Any rights in individual contents of the database are licensed under the <a href="http://opendatacommons.org/licenses/dbcl/1.0/">Database Contents License</a>.</p>
+<h3 id="have-any-third-parties-imposed-ip-based-or-other-restrictions-on-the-data">Have any third parties imposed IP-based or other restrictions on the data?</h3>
+<p>No.</p>
+<h2 id="maintenance">Maintenance</h2>
+<h3 id="who-is-supportinghostingmaintaining-this-dataset">Who is supporting/hosting/maintaining this dataset?</h3>
+<p>Me, <a href="https://www.eigenfoo.xyz/">George Ho</a>.</p>
+<h3 id="how-can-the-ownercuratormanager-of-this-dataset-be-contacted">How can the owner/curator/manager of this dataset be contacted?</h3>
+<p>I can be reached via <a href="mailto:george%5Bæ%5Deigenfoo.xyz">email</a>.</p>
+<h3 id="is-there-an-erratum">Is there an erratum?</h3>
+<p>No, but there is a <a href="https://github.com/eigenfoo/cryptics/blob/main/CHANGELOG.md"><code>CHANGELOG.md</code> in the GitHub repository</a>, which is similar enough.</p>
+<h3 id="will-this-dataset-be-updated-e.g.-to-correct-labeling-errors-add-new-rows-delete-rows">Will this dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?</h3>
+<p>Yes. There is no set schedule for releases of new versions of the data. Updates will most likely entail:</p>
+<ul>
+<li>adding new rows from new blog posts</li>
+<li>correcting parsing errors (described above), either by overwriting the row or deleting it entirely</li>
+</ul>
+<h3 id="will-older-versions-of-this-dataset-continue-to-be-supportedhostedmaintained">Will older versions of this dataset continue to be supported/hosted/maintained?</h3>
+<p>No. Unfortunately, I currently have neither the time nor inclination to support, host or maintain previous versions of the dataset. I am open to changing my mind: please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">reach out</a> if you suspect you can convince me otherwise.</p>
+<h3 id="if-others-want-to-extendaugmentbuild-oncontribute-to-this-dataset-is-there-a-mechanism-for-them-to-do-so">If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?</h3>
+<p>Yes. Please <a href="https://github.com/eigenfoo/cryptics/issues">raise an issue on GitHub</a> if you have a specific issue in mind. Otherwise, reach out to me <a href="mailto:george%5Bæ%5Deigenfoo.xyz">via email</a>.</p>
+</main>
+
+<script>
+;(function() {
+  // Non-essential if user has JavaScript off. Just makes checkboxes look nicer.
+  var selector = '.task-list > li > input[type="checkbox"]';
+  var checkboxes = document.querySelectorAll(selector);
+  Array.from(checkboxes).forEach((checkbox) => {
+    var wasChecked = checkbox.checked;
+    checkbox.disabled = false;
+    checkbox.addEventListener('click', (ev) => {ev.target.checked = wasChecked});
+  });
+})();
+</script>
+</body>
+</html>

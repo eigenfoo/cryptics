@@ -1,9 +1,7 @@
 import argparse
 import logging
 import os
-import pathlib
 import sqlite3
-from datetime import datetime
 from glob import glob
 
 import numpy as np
@@ -48,14 +46,14 @@ def parse_puz(puz_filename):
         )
         for clue in numbering.down
     ]
-    definitions = [None for _ in range(len(clues))]
-    annotations = [None for _ in range(len(clues))]
+    definitions = range(len(clues)) * [None]
+    annotations = range(len(clues)) * [None]
     clue_numbers = [str(clue["num"]) + "a" for clue in numbering.across] + [
         str(clue["num"]) + "d" for clue in numbering.down
     ]
-    puzzle_dates = [None for _ in range(len(clues))]
+    puzzle_dates = range(len(clues)) * [None]
     puzzle_names = [puzzle.title for _ in range(len(clues))]
-    puzzle_urls = [None for _ in range(len(clues))]
+    puzzle_urls = range(len(clues)) * [None]
     source_urls = [last_dirname_basename(puz_filename) for _ in range(len(clues))]
 
     return pd.DataFrame(
