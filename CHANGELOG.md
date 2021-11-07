@@ -1,3 +1,10 @@
+# v2021.11.07
+
+## Data
+
+- Added a daily "update-deploy" job to scrape new blog posts, parse their clues
+  and publish the latest dataset.
+
 # v2021.10.24
 
 ## Data
