@@ -44,7 +44,7 @@
 <p>This dataset was originally a project for me to practice my webscraping and data processing skills. Since then, it has evolved to become a potential resource for cryptic crossword solvers and constructors - for example, one might use this dataset as a lookup table for answers, or to see how an answer has been clued in the past by other constructors.</p>
 <p>While there is prior art in datasets of cryptic crossword clues (most notably <a href="https://arxiv.org/abs/2104.08620"><em>Decrypting Cryptic Crosswords</em> by Rozner et al.</a> and <a href="https://arxiv.org/abs/2103.01242"><em>Cryptonite</em> by Efrat et al.</a>), to my knowledge this is the first such dataset that is at least as large as the research datasets, is openly accessible, and potentially includes annotations for each clue (however, see the answer to the <a href="/datasheet#is-any-information-missing-from-individual-rows">“Is any information missing?” question</a>).</p>
 <h3 id="who-created-this-dataset-and-on-whose-behalf-who-funded-the-creation-of-this-dataset">Who created this dataset and on whose behalf? Who funded the creation of this dataset?</h3>
-<p>This dataset was created by me, <a href="https://www.eigenfoo.xyz">George Ho</a>, as a side project in my free time. No expenses have been incurred, so the question of funding is moot.</p>
+<p>This dataset was created by me, <a href="https://www.eigenfoo.xyz">George Ho</a>, as a side project in my free time. All expenses (approximately $5 USD per month for server costs) have been borne by me personally.</p>
 <h2 id="composition">Composition</h2>
 <h3 id="what-do-the-rows-that-comprise-this-dataset-represent">What do the rows that comprise this dataset represent?</h3>
 <p>Each row represents one clue from a published cryptic crossword. The crossword grid itself is not saved.</p>
@@ -202,7 +202,7 @@
 <h3 id="who-was-involved-in-the-data-collection-process-and-how-were-they-compensated">Who was involved in the data collection process and how were they compensated?</h3>
 <p>Since this dataset is the result of a side project in my free time, the only person involved in the data collection process was me, <a href="https://www.eigenfoo.xyz/">George Ho</a>. I was not compensated for this work.</p>
 <h3 id="over-what-time-frame-was-the-data-collected">Over what time frame was the data collected?</h3>
-<p>The scraped blog posts cover crosswords published from January 2009 to October 2021: a twelve year period. New blog posts are being published daily and can be parsed to augment the dataset.</p>
+<p>The scraped blog posts cover crosswords published from January 2009 to October 2021: a twelve year period. New blog posts are published daily and are parsed to augment the dataset (see the <a href="#will-this-dataset-be-updated-eg-to-correct-labeling-errors-add-new-rows-delete-rows">“Will this dataset be updated?”</a> question).</p>
 <h2 id="preprocessing-and-cleaning">Preprocessing and Cleaning</h2>
 <h3 id="was-any-preprocessingcleaning-of-the-data-done">Was any preprocessing/cleaning of the data done?</h3>
 <p>Yes. As described in <a href="/datasheet#collection-process">the Collection Process section</a>, the raw HTML is “preprocessed” by parsing the unstructured HTML into a structured table of clues and answers. This parsing is the main value proposition of this dataset over the raw blog posts, and the clues and answers are now presented in a centralized, structured and searchable format.</p>
@@ -237,13 +237,10 @@
 <h3 id="is-there-an-erratum">Is there an erratum?</h3>
 <p>No, but there is a <a href="https://github.com/eigenfoo/cryptics/blob/main/CHANGELOG.md"><code>CHANGELOG.md</code> in the GitHub repository</a>, which is similar enough.</p>
 <h3 id="will-this-dataset-be-updated-e.g.-to-correct-labeling-errors-add-new-rows-delete-rows">Will this dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?</h3>
-<p>Yes. There is no set schedule for releases of new versions of the data. Updates will most likely entail:</p>
-<ul>
-<li>adding new rows from new blog posts</li>
-<li>correcting parsing errors (described above), either by overwriting the row or deleting it entirely</li>
-</ul>
+<p>Yes, the dataset is updated daily: every day at 2am UTC, new blog posts are scraped, parsed and published.</p>
+<p>There are also occasional updates which are not published on a set schedule. These updates may entail corrections to parsing errors (either by overwriting the row or deleting it entirely), the inclusion of new blogs or other sources of clues, or other ad-hoc modifications to the data.</p>
 <h3 id="will-older-versions-of-this-dataset-continue-to-be-supportedhostedmaintained">Will older versions of this dataset continue to be supported/hosted/maintained?</h3>
-<p>No. Unfortunately, I currently have neither the time nor inclination to support, host or maintain previous versions of the dataset. I am open to changing my mind: please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">reach out</a> if you suspect you can convince me otherwise.</p>
+<p>No. Unfortunately, I currently have neither the time nor inclination to support, host or maintain previous versions of the dataset.</p>
 <h3 id="if-others-want-to-extendaugmentbuild-oncontribute-to-this-dataset-is-there-a-mechanism-for-them-to-do-so">If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?</h3>
 <p>Yes. Please <a href="https://github.com/eigenfoo/cryptics/issues">raise an issue on GitHub</a> if you have a specific issue in mind. Otherwise, reach out to me <a href="mailto:george%5Bæ%5Deigenfoo.xyz">via email</a>.</p>
 <section class="footnotes" role="doc-endnotes">

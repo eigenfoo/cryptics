@@ -235,7 +235,7 @@ Ho](https://www.eigenfoo.xyz/). I was not compensated for this work.
 The scraped blog posts cover crosswords published from January 2009 to October
 2021: a twelve year period. New blog posts are published daily and are parsed
 to augment the dataset (see the ["Will this dataset be
-updated?"](#will-this-dataset-be-updated-eg-to-correct-labeling-errors-add-new-rows-delete-rows)
+updated?"](#will-this-dataset-be-updated-e.g.-to-correct-labeling-errors-add-new-rows-delete-rows)
 question).
 
 ## Preprocessing and Cleaning
@@ -325,10 +325,10 @@ is similar enough.
 Yes, the dataset is updated daily: every day at 2am UTC, new blog posts are
 scraped, parsed and published.
 
-There are also ad-hoc updates which are not published on a set schedule. These
-updates may entail corrections to parsing errors (either by overwriting the row
-or deleting it entirely), the inclusion of new blogs or other sources of clues,
-or other ad-hoc modifications to the data.
+There are also occasional updates which are not published on a set schedule.
+These updates may entail corrections to parsing errors (either by overwriting
+the row or deleting it entirely), the inclusion of new blogs or other sources
+of clues, or other ad-hoc modifications to the data.
 
 ### Will older versions of this dataset continue to be supported/hosted/maintained?
 
