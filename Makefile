@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = help
 
-PYTHON := python
+PYTHON := python3
 PIP := pip
 CONDA := conda
 SHELL := bash
@@ -52,7 +52,7 @@ blackstyle:
 .PHONY: mypytypes
 mypytypes:
 	@printf "Checking code type signatures with mypy...\n"
-	python -m mypy --ignore-missing-imports cryptics/
+	${PYTHON} -m mypy --ignore-missing-imports cryptics/
 	@printf "\033[1;34mMypy passes!\033[0m\n\n"
 
 .PHONY: lint
@@ -60,8 +60,9 @@ lint: blackstyle mypytypes  # Lint code using black and mypy.
 
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
-	python cryptics/main.py --sleep-interval=1
-	python cryptics/indicators.py
+	git pull origin main
+	${PYTHON} cryptics/main.py --sleep-interval=1
+	${PYTHON} cryptics/indicators.py
 
 .PHONY: build
 build: clean build-dbs build-templates test-build  # Build database and documentation for publication.
