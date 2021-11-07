@@ -36,8 +36,8 @@ question](/datasheet#is-any-information-missing-from-individual-rows)).
 ### Who created this dataset and on whose behalf? Who funded the creation of this dataset?
 
 This dataset was created by me, [George Ho](https://www.eigenfoo.xyz), as a
-side project in my free time. No expenses have been incurred, so the question
-of funding is moot.
+side project in my free time. All expenses (approximately $5 USD per month for
+server costs) have been borne by me personally.
 
 ## Composition
 
@@ -233,8 +233,10 @@ Ho](https://www.eigenfoo.xyz/). I was not compensated for this work.
 ### Over what time frame was the data collected?
 
 The scraped blog posts cover crosswords published from January 2009 to October
-2021: a twelve year period. New blog posts are being published daily and can be
-parsed to augment the dataset.
+2021: a twelve year period. New blog posts are published daily and are parsed
+to augment the dataset (see the ["Will this dataset be
+updated?"](#will-this-dataset-be-updated-eg-to-correct-labeling-errors-add-new-rows-delete-rows)
+question).
 
 ## Preprocessing and Cleaning
 
@@ -320,19 +322,18 @@ is similar enough.
 
 ### Will this dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?
 
-Yes. There is no set schedule for releases of new versions of the data. Updates
-will most likely entail:
+Yes, the dataset is updated daily: every day at 2am UTC, new blog posts are
+scraped, parsed and published.
 
-- adding new rows from new blog posts
-- correcting parsing errors (described above), either by overwriting the row or
-  deleting it entirely
+There are also ad-hoc updates which are not published on a set schedule. These
+updates may entail corrections to parsing errors (either by overwriting the row
+or deleting it entirely), the inclusion of new blogs or other sources of clues,
+or other ad-hoc modifications to the data.
 
 ### Will older versions of this dataset continue to be supported/hosted/maintained?
 
 No. Unfortunately, I currently have neither the time nor inclination to
-support, host or maintain previous versions of the dataset. I am open to
-changing my mind: please [reach out](mailto:george[&#230;]eigenfoo.xyz) if you
-suspect you can convince me otherwise.
+support, host or maintain previous versions of the dataset.
 
 ### If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?
 
