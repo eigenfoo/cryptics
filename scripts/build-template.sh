@@ -56,7 +56,6 @@ pandoc \
   --metadata date="`date +%F`" \
   --katex \
   --from markdown+tex_math_single_backslash \
-  --filter pandoc-sidenote \
   --to html5+smart \
   --template=template \
   --css="$css_rel_path/theme.css" \
