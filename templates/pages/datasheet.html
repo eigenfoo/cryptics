@@ -7,7 +7,7 @@
   <meta name="generator" content="pandoc-markdown-css-theme" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="George Ho" />
-  <meta name="dcterms.date" content="2021-11-05" />
+  <meta name="dcterms.date" content="2021-11-07" />
   <meta name="description" content="A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives." />
   <title>Datasheet</title>
   <link rel="stylesheet" href="../../static/css/theme.css" />
@@ -31,7 +31,7 @@
 </nav>
 <h1 class="title">Datasheet</h1>
 <blockquote class="metadata">
-<p class="date "><time datetime="2021-11-05">Last updated 2021-11-05</time></p>
+<p class="date "><time datetime="2021-11-07">Last updated 2021-11-07</time></p>
 </blockquote>
 </header>
 
@@ -168,9 +168,7 @@
 </tr>
 </tbody>
 </table>
-<p>These four columns have been dropped prior to publication, either because they are redundant and of limited value, or to respect the copyright of the scraped blogs. While I believe it is fair use to republish the cryptic clues in a centralized, structured and searchable format<span class="sidenote-wrapper"><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"/><span class="sidenote">a.k.a. a <a href="https://copyright.columbia.edu/basics/fair-use.html"><em>transformatively</em></a> different resource.<br />
-<br />
-</span></span>, the blogs hold the copyright to any annotations and commentary on the clues. Nevertheless, I am happy to share the full dataset on a case-by-case basis with non-commercial groups (e.g. academic research groups). Please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">email me</a> to inquire.</p>
+<p>These four columns have been dropped prior to publication, either because they are redundant and of limited value, or to respect the copyright of the scraped blogs. While I believe it is fair use to republish the cryptic clues in a centralized, structured and searchable format<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, the blogs hold the copyright to any annotations and commentary on the clues. Nevertheless, I am happy to share the full dataset on a case-by-case basis with non-commercial groups (e.g. academic research groups). Please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">email me</a> to inquire.</p>
 <h3 id="are-there-any-errors-sources-of-noise-or-redundancies-in-this-dataset">Are there any errors, sources of noise, or redundancies in this dataset?</h3>
 <p>Yes. As described in <a href="/datasheet#collection-process">the Collection Process section</a>, errors may be introduced in the dataset through human error by the blogger, or through machine error by the parsing code.</p>
 <p>Human errors may include:</p>
@@ -199,9 +197,7 @@
 <p>The data collection process breaks down into roughly four parts.</p>
 <p>The first part is simply scraping all the web pages and writing the HTML to a SQLite table to avoid re-requesting them. Web scraping was done using the Python <code>requests</code> library.</p>
 <p>The second part is a collection of functions that each take the scraped HTML and attempt to parse out the data using <code>beautifulsoup</code> and <code>pandas</code>. Since blog posts are written by a small team of individual bloggers - many of whom stick with a particular blog post template - there are only a small number (less than a dozen) of distinct “types” of blog posts, from an HTML parsing perspective. Accordingly, there are around a dozen functions, which are called successively until one of them doesn’t crash and returns a table of parsed clues. This parsed table then gets written to SQLite.</p>
-<p>The third part is human evaluation of the clues. Between the human errors from the blogger and machine errors from the parsing code, it’s informative to manually look through a sample of the clues for any errors<span class="sidenote-wrapper"><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">I’ve gamified this with a CLI “cryptic clue practice tool” (<a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/review.py"><code>review.py</code></a>), which displays a random clue, allows the user to ask for crossing letters as hints, prompts the user for the answer, and prompts the user to review and edit the clue if necessary.<br />
-<br />
-</span></span>. This has uncovered a number of systematic errors, which can be corrected by either modifying the parsing code and re-parsing the saved HTML, or by simply running <em>ad hoc</em> SQL queries against the table of parsed clues. However, since it’s logistically infeasible to manually review all the clues, it’s admittedly difficult to see what further value human evaluation brings.</p>
+<p>The third part is human evaluation of the clues. Between the human errors from the blogger and machine errors from the parsing code, it’s informative to manually look through a sample of the clues for any errors<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. This has uncovered a number of systematic errors, which can be corrected by either modifying the parsing code and re-parsing the saved HTML, or by simply running <em>ad hoc</em> SQL queries against the table of parsed clues. However, since it’s logistically infeasible to manually review all the clues, it’s admittedly difficult to see what further value human evaluation brings.</p>
 <p>The fourth part is to run each parsed annotation through a series of regular expressions to extract any indicators or charades that have been identified by the blogger in the annotation. It’s important to note that not all clues have annotations, and of those that do, not all of them clearly identify indicators and charades clearly enough to be extracted using a regular expression. In other words, regular expressions are high-precision, low-recall methods of identifying indicators and charades. Thus, these derived datasets should not be considered comprehensive - an indicator is not guaranteed to appear in the indicators dataset just because it appears in a clue in the clues dataset.</p>
 <h3 id="who-was-involved-in-the-data-collection-process-and-how-were-they-compensated">Who was involved in the data collection process and how were they compensated?</h3>
 <p>Since this dataset is the result of a side project in my free time, the only person involved in the data collection process was me, <a href="https://www.eigenfoo.xyz/">George Ho</a>. I was not compensated for this work.</p>
@@ -250,6 +246,13 @@
 <p>No. Unfortunately, I currently have neither the time nor inclination to support, host or maintain previous versions of the dataset. I am open to changing my mind: please <a href="mailto:george%5Bæ%5Deigenfoo.xyz">reach out</a> if you suspect you can convince me otherwise.</p>
 <h3 id="if-others-want-to-extendaugmentbuild-oncontribute-to-this-dataset-is-there-a-mechanism-for-them-to-do-so">If others want to extend/augment/build on/contribute to this dataset, is there a mechanism for them to do so?</h3>
 <p>Yes. Please <a href="https://github.com/eigenfoo/cryptics/issues">raise an issue on GitHub</a> if you have a specific issue in mind. Otherwise, reach out to me <a href="mailto:george%5Bæ%5Deigenfoo.xyz">via email</a>.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>a.k.a. a <a href="https://copyright.columbia.edu/basics/fair-use.html"><em>transformatively</em></a> different resource.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>I’ve gamified this with a CLI “cryptic clue practice tool” (<a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/review.py"><code>review.py</code></a>), which displays a random clue, allows the user to ask for crossing letters as hints, prompts the user for the answer, and prompts the user to review and edit the clue if necessary.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 </main>
 
 <script>
