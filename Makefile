@@ -71,7 +71,7 @@ build-dbs: data.sqlite3 data-annotated.sqlite3
 data.sqlite3: cryptics.sqlite3
 	bash scripts/build-dbs.sh
 
-build-templates: templates/index.html $(STATIC_TARGETS)
+build-templates: $(STATIC_TARGETS)
 
 # Generalized rule: how to build a .html file from each .md
 # Note: you will need pandoc 2 or greater for this to work
