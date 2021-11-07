@@ -53,7 +53,7 @@ css_rel_path="$("$realpath" "static/css/" --relative-to "$dest_dir")"
 
 pandoc \
   -s \
-  --metadata date="`date +%F`" \
+  --metadata date="`git log -1 --format="%at" | xargs -I{} date -d @{} +"%Y-%m-%d"`" \
   --katex \
   --from markdown+tex_math_single_backslash \
   --to html5+smart \
