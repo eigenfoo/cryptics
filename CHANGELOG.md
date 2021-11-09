@@ -1,3 +1,10 @@
+# v2021.11.08
+
+## Code
+
+- Added `robots.txt` at https://cryptics.eigenfoo.xyz/robots.txt
+- Added `sitemap.xml` at https://cryptics.eigenfoo.xyz/sitemap.xml
+
 # v2021.11.07
 
 ## Data
