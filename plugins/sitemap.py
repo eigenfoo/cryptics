@@ -4,9 +4,6 @@ from datasette.utils.asgi import Response
 
 ROBOTS_TXT = """
 Sitemap: https://cryptics.eigenfoo.xyz/sitemap.xml
-
-User-agent: *
-Disallow: /data
 """.strip()
 
 SITEMAP_XML = """
