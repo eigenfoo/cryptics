@@ -35,7 +35,7 @@ question](/datasheet#is-any-information-missing-from-individual-rows)).
 
 ### Who created this dataset and on whose behalf? Who funded the creation of this dataset?
 
-This dataset was created by me, [George Ho](https://www.eigenfoo.xyz), as a
+This dataset was created by me, [George Ho](https://www.georgeho.org), as a
 side project in my free time. All expenses (approximately $5 USD per month for
 server costs) have been borne by me personally.
 
@@ -131,7 +131,7 @@ blogs. While I believe it is fair use to republish the cryptic clues in a
 centralized, structured and searchable format[^1], the blogs hold the copyright
 to any annotations and commentary on the clues. Nevertheless, I am happy to
 share the full dataset on a case-by-case basis with non-commercial groups (e.g.
-academic research groups). Please [email me](mailto:george[&#230;]eigenfoo.xyz)
+academic research groups). Please [email me](mailto:hello[&#230;]georgeho.org)
 to inquire.
 
 [^1]: a.k.a. a [_transformatively_](https://copyright.columbia.edu/basics/fair-use.html) different resource.
@@ -228,7 +228,7 @@ indicators dataset just because it appears in a clue in the clues dataset.
 
 Since this dataset is the result of a side project in my free time, the only
 person involved in the data collection process was me, [George
-Ho](https://www.eigenfoo.xyz/). I was not compensated for this work.
+Ho](https://www.georgeho.org). I was not compensated for this work.
 
 ### Over what time frame was the data collected?
 
@@ -267,7 +267,7 @@ section](/datasheet#collection-process), the raw HTML for the blog posts have
 been saved to avoid requesting them multiple times. However, the raw HTML is
 not published, due to size constraints.
 
-Please [email me](mailto:george[&#230;]eigenfoo.xyz) if you'd like to receive
+Please [email me](mailto:hello[&#230;]georgeho.org) if you'd like to receive
 the raw HTML data. Alternatively, you can simply rerun the open source
 [`cryptics`](https://github.com/eigenfoo/cryptics) library to recreate the
 dataset yourself.
@@ -281,7 +281,7 @@ both as a lookup table for answers and also to see how an answer has been clued
 in the past by other constructors.
 
 Beyond that though, I am unaware of other uses for the dataset. If you are
-using it, please [let me know](mailto:george[&#230;]eigenfoo.xyz)!
+using it, please [let me know](mailto:hello[&#230;]georgeho.org)!
 
 ## Distribution
 
@@ -308,11 +308,11 @@ No.
 
 ### Who is supporting/hosting/maintaining this dataset?
 
-Me, [George Ho](https://www.eigenfoo.xyz/).
+Me, [George Ho](https://www.georgeho.org).
 
 ### How can the owner/curator/manager of this dataset be contacted?
 
-I can be reached via [email](mailto:george[&#230;]eigenfoo.xyz).
+I can be reached via [email](mailto:hello[&#230;]georgeho.org).
 
 ### Is there an erratum?
 
@@ -340,4 +340,4 @@ support, host or maintain previous versions of the dataset.
 Yes. Please [raise an issue on
 GitHub](https://github.com/eigenfoo/cryptics/issues) if you have a specific
 issue in mind. Otherwise,  reach out to me [via
-email](mailto:george[&#230;]eigenfoo.xyz).
+email](mailto:hello[&#230;]georgeho.org).

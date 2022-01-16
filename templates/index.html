@@ -7,7 +7,7 @@
   <meta name="generator" content="pandoc-markdown-css-theme" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="George Ho" />
-  <meta name="dcterms.date" content="2021-11-07" />
+  <meta name="dcterms.date" content="2021-11-08" />
   <meta name="description" content="A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives." />
   <title>A Dataset of Cryptic Crossword Clues</title>
   <link rel="stylesheet" href="../static/css/theme.css" />
@@ -31,13 +31,13 @@
 </nav>
 <h1 class="title">A Dataset of Cryptic Crossword Clues</h1>
 <blockquote class="metadata">
-<p class="date "><time datetime="2021-11-07">Last updated 2021-11-07</time></p>
+<p class="date "><time datetime="2021-11-08">Last updated 2021-11-08</time></p>
 </blockquote>
 </header>
 
 
 <main>
-<p><code>cryptics.eigenfoo.xyz</code> is a dataset of cryptic crossword<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> clues, indicators and charades, collected from various blogs and publicly available digital archives.</p>
+<p><code>cryptics.eigenfoo.xyz</code> is a dataset of cryptic crossword<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> clues, indicators and charades, collected from various blogs and publicly available digital archives.</p>
 <p>The project scrapes several blogs and digital archives for cryptic crosswords. Out of these collected web pages, the clues, answers, clue numbers, blogger’s explanation and commentary, puzzle title and publication date are all parsed and extracted into a tabular dataset. The result is <strong>over half a million clues from cryptic crosswords over the past twelve years</strong>.</p>
 <p>Two other datasets are subsequently derived from the clues - wordplay indicators and charades (a.k.a. substitutions). All told, the derived datasets contain <strong>over ten thousand wordplay indicators</strong> and <strong>over sixty thousand charades</strong>.</p>
 <p>Currently the sources for clues are:</p>
@@ -47,19 +47,19 @@
 <li>🇬🇧 <a href="https://www.fifteensquared.net/">Fifteensquared</a> (<em>Financial Times</em>, <em>The Guardian</em>, <em>The Independent</em>)</li>
 <li>🇮🇳 <a href="https://thehinducrosswordcorner.blogspot.com/">The Hindu Crossword Corner</a> (<em>The Hindu</em>)</li>
 <li>🇨🇦 <a href="https://natpostcryptic.blogspot.com/">National Post Cryptic Crossword Forum</a> (<em>National Post</em>)</li>
-<li>🇺🇸 <a href="https://www.nytimes.com/crosswords"><em>The New York Times</em></a> <code>.puz</code> archive<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> (<em>The New York Times</em>)</li>
+<li>🇺🇸 <a href="https://www.nytimes.com/crosswords"><em>The New York Times</em></a> <code>.puz</code> archive<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> (<em>The New York Times</em>)</li>
 <li>🇬🇧 <a href="https://times-xwd-times.livejournal.com/">Times for the Times</a> (<em>The Times</em> of London)</li>
 </ul>
-<p>The data can be <a href="/data/clues">viewed online</a> and downloaded for free (<a href="/data/clues.csv?_size=max">CSV</a>, <a href="/data/clues.json">JSON</a>, <a href="/data.db">SQLite</a>, <a href="/data/clues#export">advanced</a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>). Detailed documentation can be found on <a href="/datasheet">the datasheet</a> and the source code for creating the dataset is <a href="https://github.com/eigenfoo/cryptics">available on GitHub</a>.</p>
-<p>Send all comments, suggestions and complaints to <a href="mailto:george%5Bæ%5Deigenfoo.xyz">george[æ]eigenfoo.xyz</a>.</p>
+<p>The data can be <a href="/data/clues">viewed online</a> and downloaded for free (<a href="/data/clues.csv?_size=max">CSV</a>, <a href="/data/clues.json">JSON</a>, <a href="/data.db">SQLite</a>, <a href="/data/clues#export">advanced</a><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>). Detailed documentation can be found on <a href="/datasheet">the datasheet</a> and the source code for creating the dataset is <a href="https://github.com/eigenfoo/cryptics">available on GitHub</a>.</p>
+<p>Send all comments, suggestions and complaints to <a href="mailto:hello%5Bæ%5Dgeorgeho.org">hello[æ]georgeho.org</a>.</p>
 <p>Please share and enjoy!</p>
-<p>~ <a href="https://www.eigenfoo.xyz/">George Ho</a></p>
-<section class="footnotes" role="doc-endnotes">
+<p>~ <a href="https://www.georgeho.org/">George Ho</a></p>
+<section class="footnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p>If you’re new to cryptic crosswords, rejoice! A whole new world awaits you! <em>The New Yorker</em> has <a href="https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword">an excellent introduction to cryptic crosswords</a>, and Matt Gritzmacher has <a href="https://crosswordlinks.substack.com/">a daily newsletter with links to crosswords</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p><code>.puz</code> files were provided courtesy of <a href="https://bbtp.net/">Michael F. Gill</a>. As of August 2021, <a href="https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html"><em>The New York Times</em> no longer supports <code>.puz</code> files</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p>The CSV request will only return the first 1000 rows, <a href="/data/clues.csv?_stream=on&amp;_size=max">click here</a> to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>If you’re new to cryptic crosswords, rejoice! A whole new world awaits you! <em>The New Yorker</em> has <a href="https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/reintroducing-the-new-yorkers-cryptic-crossword">an excellent introduction to cryptic crosswords</a>, and Matt Gritzmacher has <a href="https://crosswordlinks.substack.com/">a daily newsletter with links to crosswords</a>.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><code>.puz</code> files were provided courtesy of <a href="https://bbtp.net/">Michael F. Gill</a>. As of August 2021, <a href="https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html"><em>The New York Times</em> no longer supports <code>.puz</code> files</a>.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>The CSV request will only return the first 1000 rows, <a href="/data/clues.csv?_stream=on&amp;_size=max">click here</a> to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.<a href="#fnref3" class="footnote-back">↩</a></p></li>
 </ol>
 </section>
 </main>

@@ -1,3 +1,14 @@
+# v2022.01.16
+
+## Data
+
+- Removed daily "update-deploy" job (from `v2021.11.07`). The dataset will once
+  again be updated only manually by me.
+
+## Documentation
+
+- Updated contact email.
+
 # v2021.11.08
 
 ## Code

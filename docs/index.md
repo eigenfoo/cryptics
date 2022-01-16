@@ -42,8 +42,8 @@ the dataset is [available on GitHub](https://github.com/eigenfoo/cryptics).
 [^3]: The CSV request will only return the first 1000 rows, [click here](/data/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
 
 Send all comments, suggestions and complaints to
-[george[&#230;]eigenfoo.xyz](mailto:george[&#230;]eigenfoo.xyz).
+[hello[&#230;]georgeho.org](mailto:hello[&#230;]georgeho.org).
 
 Please share and enjoy!
 
-\~ [George Ho](https://www.eigenfoo.xyz/)
+\~ [George Ho](https://www.georgeho.org/)
