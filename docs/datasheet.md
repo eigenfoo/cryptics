@@ -1,7 +1,7 @@
 ---
 title: Datasheet
 author-meta: George Ho
-description-meta: A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives.
+description-meta: A dataset of cryptic crossword clues, collected from various blogs and digital archives.
 ---
 
 Following Gebru et al.'s recommendations in [_Datasheets for

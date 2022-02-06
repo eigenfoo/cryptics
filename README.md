@@ -1,7 +1,7 @@
 # [`cryptics.georgeho.org`](https://cryptics.georgeho.org/)
 
 > `cryptics.georgeho.org` is a dataset of cryptic crossword clues, collected from
-> various blogs and publicly available digital archives.
+> various blogs and digital archives.
 
 This repository contains:
 
