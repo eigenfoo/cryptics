@@ -322,13 +322,14 @@ is similar enough.
 
 ### Will this dataset be updated (e.g., to correct labeling errors, add new rows, delete rows)?
 
-Yes, the dataset is updated daily: every day at 2am UTC, new blog posts are
-scraped, parsed and published.
+Yes, the dataset is updated to include newly published blog posts and crosswords.
+This process is done manually on no set schedule.
 
-There are also occasional updates which are not published on a set schedule.
-These updates may entail corrections to parsing errors (either by overwriting
-the row or deleting it entirely), the inclusion of new blogs or other sources
-of clues, or other ad-hoc modifications to the data.
+Additionally, there are other occasional updates (again, not on any set schedule).
+These updates may entail
+corrections to parsing errors (either by overwriting the row or deleting it entirely),
+the inclusion of new blogs or other sources of clues,
+or other ad-hoc modifications to the data.
 
 ### Will older versions of this dataset continue to be supported/hosted/maintained?
 
