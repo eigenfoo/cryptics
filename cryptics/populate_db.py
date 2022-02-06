@@ -13,7 +13,7 @@ from cryptics.config import SITEMAPS, SQLITE_DATABASE
 
 logging.basicConfig(level=logging.INFO)
 headers = {
-    "User-Agent": "cryptics.eigenfoo.xyz bot (https://cryptics.eigenfoo.xyz/)",
+    "User-Agent": "cryptics.georgeho.org bot (https://cryptics.georgeho.org/)",
     "Accept-Encoding": "gzip",
 }
 

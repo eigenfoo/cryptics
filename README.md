@@ -1,6 +1,6 @@
-# [`cryptics.eigenfoo.xyz`](https://cryptics.eigenfoo.xyz/)
+# [`cryptics.georgeho.org`](https://cryptics.georgeho.org/)
 
-> `cryptics.eigenfoo.xyz` is a dataset of cryptic crossword clues, collected from
+> `cryptics.georgeho.org` is a dataset of cryptic crossword clues, collected from
 > various blogs and publicly available digital archives.
 
 This repository contains:
@@ -17,7 +17,7 @@ This repository contains:
   [`queries`](https://github.com/eigenfoo/cryptics/tree/main/queries) to
   publish and deploy the Datasette instance.
 
-For more information, please see [`cryptics.eigenfoo.xyz`](https://cryptics.eigenfoo.xyz/).
+For more information, please see [`cryptics.georgeho.org`](https://cryptics.georgeho.org/).
 
 ## License
 
@@ -36,7 +36,7 @@ is licensed under the [MIT License](https://mit-license.org/).
 
 ## Colophon
 
-`cryptics.eigenfoo.xyz` is written in Python and run on a mix of [Digital Ocean
+`cryptics.georgeho.org` is written in Python and run on a mix of [Digital Ocean
 Droplets (Basic Plan)](https://www.digitalocean.com/products/droplets/)  and a
 personal MacBook Pro.
 

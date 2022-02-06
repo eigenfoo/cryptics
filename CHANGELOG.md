@@ -1,3 +1,11 @@
+# v2022.02.06
+
+## Data
+
+- Added clues scraped from blog posts published from previous release date.
+- Migrated domain from `cryptics.eigenfoo.xyz` to `cryptics.georgeho.org`. All
+  URLs should automatically redirect.
+
 # v2022.01.16
 
 ## Data

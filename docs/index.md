@@ -4,7 +4,7 @@ author-meta: George Ho
 description-meta: A dataset of cryptic crossword clues, collected from various blogs and publicly available digital archives.
 ---
 
-`cryptics.eigenfoo.xyz` is a dataset of cryptic crossword[^1] clues, indicators
+`cryptics.georgeho.org` is a dataset of cryptic crossword[^1] clues, indicators
 and charades, collected from various blogs and publicly available digital
 archives.
 

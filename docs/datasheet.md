@@ -112,7 +112,7 @@ are parsed directly from `.puz` files, which do not support such rich-form clue
 markup. Thus, clues from these sources are missing `definition`s and
 `annotation`s.  These sources are:
 [`cru_cryptics`](/data/clues?source=cru_cryptics) and
-[`nytimes`](https://cryptics.eigenfoo.xyz/data/clues?source=nytimes).
+[`nytimes`](https://cryptics.georgeho.org/data/clues?source=nytimes).
 
 Finally, the [source code on GitHub](https://github.com/eigenfoo/cryptics/)
 provides four more other columns, in addition to the eight provided in the

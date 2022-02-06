@@ -11,7 +11,7 @@ setup(
     version="0.0.0",
     url="https://github.com/eigenfoo/cryptics",
     author="George Ho",
-    author_email="george[æ]eigenfoo.xyz",
+    author_email="hello[æ]georgeho.org",
     description=DESCRIPTION,
     packages=find_packages(),
 )
