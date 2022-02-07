@@ -6,6 +6,11 @@
 - Migrated domain from `cryptics.eigenfoo.xyz` to `cryptics.georgeho.org`. All
   URLs should automatically redirect.
 
+## Documentation
+
+- Updated documentation to reflect new domain and manual update schedule (from
+  `v2022.01.16`).
+
 # v2022.01.16
 
 ## Data
