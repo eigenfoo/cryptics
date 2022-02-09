@@ -30,5 +30,6 @@
     "datasette-render-markdown": {
       "columns": ["clue_rowids"]
     }
-  }
+  },
+  "extra_js_urls": ["https://static.getclicky.com/101353273.js"]
 }
