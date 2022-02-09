@@ -10,7 +10,6 @@ SHELL := bash
 .DELETE_ON_ERROR:
 MAKEFLAGS += --no-builtin-rules
 
-STATIC_SOURCES := docs/index.md docs/datasheet.md
 STATIC_TARGETS := templates/index.html templates/pages/datasheet.html
 
 .PHONY: help
@@ -60,6 +59,7 @@ lint: blackstyle mypytypes  # Lint code using black and mypy.
 
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
+	bash scripts/populate-new-yorker.sh
 	${PYTHON} cryptics/main.py --sleep-interval=1
 	${PYTHON} cryptics/indicators.py
 
@@ -103,7 +103,7 @@ deploy:  clean build  # Deploy Datasette project to Heroku.
 
 .PHONY: clean
 clean:  # Clean project directories.
-	rm -rf data.sqlite3 data-annotated.sqlite3 templates/ cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
+	rm -rf data.sqlite3 data-annotated.sqlite3 $(STATIC_TARGETS) cryptics.egg-info/ pip-wheel-metadata/ __pycache__/
 	find cryptics/ -type d -name "__pycache__" -exec rm -rf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
