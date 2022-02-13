@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc-markdown-css-theme" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="George Ho" />
-  <meta name="dcterms.date" content="2022-02-08" />
+  <meta name="dcterms.date" content="2022-02-12" />
   <meta name="description" content="A dataset of cryptic crossword clues, collected from various blogs and digital archives." />
   <title>Datasheet</title>
   <link rel="stylesheet" href="../../static/css/theme.css" />
@@ -29,7 +29,7 @@
 </nav>
 <h1 class="title">Datasheet</h1>
 <blockquote class="metadata">
-<p class="date "><time datetime="2022-02-08">Last updated 2022-02-08</time></p>
+<p class="date "><time datetime="2022-02-12">Last updated 2022-02-12</time></p>
 </blockquote>
 </header>
 
@@ -39,30 +39,30 @@
 <p>This datasheet mostly documents the <a href="/data/clues">clues dataset</a>, which should be considered the primary dataset. The <a href="/data/indicators">indicators</a> and <a href="/data/charades">charades</a> datasets are derived from the clues dataset, and are described in the <a href="/datasheet#collection-process">Collection Process section</a>).</p>
 <h2 id="motivation">Motivation</h2>
 <h3 id="why-was-this-dataset-created">Why was this dataset created?</h3>
-<p>This dataset was originally a project for me to practice my webscraping and data processing skills. Since then, it has evolved to become a potential resource for cryptic crossword solvers and constructors - for example, one might use this dataset as a lookup table for answers, or to see how an answer has been clued in the past by other constructors.</p>
+<p>This dataset was originally a project for me to practice my webscraping and data processing skills. Since then, it has evolved to become a resource for cryptic crossword solvers and constructors - for example, one might use this dataset as a lookup table for answers, or to see how an answer has been clued in the past by other constructors.</p>
 <p>While there is prior art in datasets of cryptic crossword clues (most notably <a href="https://arxiv.org/abs/2104.08620"><em>Decrypting Cryptic Crosswords</em> by Rozner et al.</a> and <a href="https://arxiv.org/abs/2103.01242"><em>Cryptonite</em> by Efrat et al.</a>), to my knowledge this is the first such dataset that is at least as large as the research datasets, is openly accessible, and potentially includes annotations for each clue (however, see the answer to the <a href="/datasheet#is-any-information-missing-from-individual-rows">“Is any information missing?” question</a>).</p>
 <h3 id="who-created-this-dataset-and-on-whose-behalf-who-funded-the-creation-of-this-dataset">Who created this dataset and on whose behalf? Who funded the creation of this dataset?</h3>
-<p>This dataset was created by me, <a href="https://www.georgeho.org">George Ho</a>, as a side project in my free time. All expenses (approximately $5 USD per month for server costs) have been borne by me personally.</p>
+<p>This dataset was created by me, <a href="https://www.georgeho.org">George Ho</a>, as a side project in my free time. All expenses have been borne by me personally.</p>
 <h2 id="composition">Composition</h2>
 <h3 id="what-do-the-rows-that-comprise-this-dataset-represent">What do the rows that comprise this dataset represent?</h3>
 <p>Each row represents one clue from a published cryptic crossword. The crossword grid itself is not saved.</p>
 <h3 id="how-many-rows-are-there-in-total-of-each-type-if-appropriate">How many rows are there in total (of each type, if appropriate)?</h3>
-<p>Clues are sourced from three cryptic crossword blogs and a few online archives of cryptic crosswords (for more details, see <a href="/datasheet#collection-process">the Collection Process section</a>).</p>
+<p>Clues are sourced from cryptic crossword blogs and digital archives (for more details, see <a href="/datasheet#collection-process">the Collection Process section</a>).</p>
 <p>For a breakdown of the number of clues from each source, please see the <a href="/data/clues"><code>source</code> facet on the <code>clues</code> table</a>.</p>
 <h3 id="does-this-dataset-contain-all-possible-rows-or-is-it-a-sample-not-necessarily-random-of-rows-from-a-larger-set">Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?</h3>
-<p>The dataset covers a large portion of the scraped blog posts, and may thus be considered exhaustive (or nearly so) for the covered sources.</p>
+<p>The dataset covers a large portion of the scraped blogs and digital archives, and may thus be considered exhaustive (or nearly so) for the covered sources.</p>
 <p>However, there are many reasons why a clue may not appear in the dataset - in order for a clue to be included, the following must be true:</p>
 <ol type="1">
-<li>The crossword must be covered by a blog.
+<li>The crossword must be covered by a blog, or included in a digital archive.
 <ul>
 <li>The three blogs cover exclusively British newspapers. As such, the resulting dataset is heavy in British jargon, such as slang, idioms or names of British towns or royalty.</li>
 </ul></li>
-<li>The blog must publish a blog post.
+<li>The blog must publish a blog post (of course, this does not apply to crosswords included in digital archives).
 <ul>
 <li>In particular, the blog must include at least the clues and answers of the crossword.</li>
 <li>Many blog posts from the sources are not about crosswords at all (e.g. they may be administrative announcements), and those that are may not include the clues, instead simply identifying clues by puzzle name and clue numbers. Several blogs’ early blog posts fit this description.</li>
 </ul></li>
-<li>The blog post must be parsable.
+<li>The blog post or archived crossword must be parsable.
 <ul>
 <li>As explained in <a href="/datasheet#collection-process">the Collection Process section</a>, the clues and answers are extracted from the raw HTML by a collection of parsing functions. If none of the parsing functions successfully return parsed clues, the raw HTML is deemed “unparsable” and is skipped.</li>
 </ul></li>
@@ -193,20 +193,21 @@
 <h2 id="collection-process">Collection Process</h2>
 <h3 id="how-was-the-data-associated-with-each-row-acquired-what-mechanisms-or-procedures-were-used-to-collect-the-data">How was the data associated with each row acquired? What mechanisms or procedures were used to collect the data?</h3>
 <p>The data collection process breaks down into roughly four parts.</p>
-<p>The first part is simply scraping all the web pages and writing the HTML to a SQLite table to avoid re-requesting them. Web scraping was done using the Python <code>requests</code> library.</p>
+<p>The first part is simply indexing all the web pages and digital archives, and writing the HTML to a SQLite table to avoid re-requesting them. Web scraping was done using the Python <code>requests</code> library.</p>
 <p>The second part is a collection of functions that each take the scraped HTML and attempt to parse out the data using <code>beautifulsoup</code> and <code>pandas</code>. Since blog posts are written by a small team of individual bloggers - many of whom stick with a particular blog post template - there are only a small number (less than a dozen) of distinct “types” of blog posts, from an HTML parsing perspective. Accordingly, there are around a dozen functions, which are called successively until one of them doesn’t crash and returns a table of parsed clues. This parsed table then gets written to SQLite.</p>
 <p>The third part is human evaluation of the clues. Between the human errors from the blogger and machine errors from the parsing code, it’s informative to manually look through a sample of the clues for any errors<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. This has uncovered a number of systematic errors, which can be corrected by either modifying the parsing code and re-parsing the saved HTML, or by simply running <em>ad hoc</em> SQL queries against the table of parsed clues. However, since it’s logistically infeasible to manually review all the clues, it’s admittedly difficult to see what further value human evaluation brings.</p>
 <p>The fourth part is to run each parsed annotation through a series of regular expressions to extract any indicators or charades that have been identified by the blogger in the annotation. It’s important to note that not all clues have annotations, and of those that do, not all of them clearly identify indicators and charades clearly enough to be extracted using a regular expression. In other words, regular expressions are high-precision, low-recall methods of identifying indicators and charades. Thus, these derived datasets should not be considered comprehensive - an indicator is not guaranteed to appear in the indicators dataset just because it appears in a clue in the clues dataset.</p>
 <h3 id="who-was-involved-in-the-data-collection-process-and-how-were-they-compensated">Who was involved in the data collection process and how were they compensated?</h3>
 <p>Since this dataset is the result of a side project in my free time, the only person involved in the data collection process was me, <a href="https://www.georgeho.org">George Ho</a>. I was not compensated for this work.</p>
 <h3 id="over-what-time-frame-was-the-data-collected">Over what time frame was the data collected?</h3>
-<p>The scraped blog posts cover crosswords published from January 2009 to October 2021: a twelve year period. New blog posts are published daily and are parsed to augment the dataset (see the <a href="#will-this-dataset-be-updated-e.g.-to-correct-labeling-errors-add-new-rows-delete-rows">“Will this dataset be updated?”</a> question).</p>
+<p>The scraped blog posts cover crosswords published from January 2009. New blog posts are published daily and are parsed to augment the dataset (see the <a href="#will-this-dataset-be-updated-e.g.-to-correct-labeling-errors-add-new-rows-delete-rows">“Will this dataset be updated?”</a> question).</p>
 <h2 id="preprocessing-and-cleaning">Preprocessing and Cleaning</h2>
 <h3 id="was-any-preprocessingcleaning-of-the-data-done">Was any preprocessing/cleaning of the data done?</h3>
 <p>Yes. As described in <a href="/datasheet#collection-process">the Collection Process section</a>, the raw HTML is “preprocessed” by parsing the unstructured HTML into a structured table of clues and answers. This parsing is the main value proposition of this dataset over the raw blog posts, and the clues and answers are now presented in a centralized, structured and searchable format.</p>
 <h3 id="is-the-software-used-to-preprocessclean-the-data-available">Is the software used to preprocess/clean the data available?</h3>
 <p><a href="https://github.com/eigenfoo/cryptics">Yes, you can view it on GitHub.</a> The following five modules contain the preprocessing and cleaning code:</p>
 <ul>
+<li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/jsons.py"><code>cryptics/jsons.py</code></a></li>
 <li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/lists.py"><code>cryptics/lists.py</code></a></li>
 <li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/puzzes.py"><code>cryptics/puzzes.py</code></a></li>
 <li><a href="https://github.com/eigenfoo/cryptics/blob/main/cryptics/specials.py"><code>cryptics/specials.py</code></a></li>

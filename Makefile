@@ -60,6 +60,7 @@ lint: blackstyle mypytypes  # Lint code using black and mypy.
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
 	bash scripts/populate-new-yorker.sh
+	${PYTHON} cryptics/jsons.py
 	${PYTHON} cryptics/main.py --sleep-interval=1
 	${PYTHON} cryptics/indicators.py
 

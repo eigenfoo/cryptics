@@ -19,10 +19,10 @@ section](/datasheet#collection-process)).
 ### Why was this dataset created?
 
 This dataset was originally a project for me to practice my webscraping and
-data processing skills. Since then, it has evolved to become a potential
-resource for cryptic crossword solvers and constructors - for example, one
-might use this dataset as a lookup table for answers, or to see how an answer
-has been clued in the past by other constructors.
+data processing skills. Since then, it has evolved to become a resource for
+cryptic crossword solvers and constructors - for example, one might use this
+dataset as a lookup table for answers, or to see how an answer has been clued
+in the past by other constructors.
 
 While there is prior art in datasets of cryptic crossword clues (most notably
 [_Decrypting Cryptic Crosswords_ by Rozner et
@@ -36,8 +36,7 @@ question](/datasheet#is-any-information-missing-from-individual-rows)).
 ### Who created this dataset and on whose behalf? Who funded the creation of this dataset?
 
 This dataset was created by me, [George Ho](https://www.georgeho.org), as a
-side project in my free time. All expenses (approximately $5 USD per month for
-server costs) have been borne by me personally.
+side project in my free time. All expenses have been borne by me personally.
 
 ## Composition
 
@@ -48,33 +47,33 @@ grid itself is not saved.
 
 ### How many rows are there in total (of each type, if appropriate)?
 
-Clues are sourced from three cryptic crossword blogs and a few online archives
-of cryptic crosswords (for more details, see [the Collection Process
-section](/datasheet#collection-process)).
+Clues are sourced from cryptic crossword blogs and digital archives (for more
+details, see [the Collection Process section](/datasheet#collection-process)).
 
 For a breakdown of the number of clues from each source, please see the
 [`source` facet on the `clues` table](/data/clues).
 
 ### Does this dataset contain all possible rows or is it a sample (not necessarily random) of rows from a larger set?
 
-The dataset covers a large portion of the scraped blog posts, and may thus be
-considered exhaustive (or nearly so) for the covered sources.
+The dataset covers a large portion of the scraped blogs and digital archives,
+and may thus be considered exhaustive (or nearly so) for the covered sources.
 
 However, there are many reasons why a clue may not appear in the dataset - in
 order for a clue to be included, the following must be true:
 
-1. The crossword must be covered by a blog.
+1. The crossword must be covered by a blog, or included in a digital archive.
    * The three blogs cover exclusively British newspapers. As such, the
      resulting dataset is heavy in British jargon, such as slang, idioms or
      names of British towns or royalty.
-2. The blog must publish a blog post.
+2. The blog must publish a blog post (of course, this does not apply to
+   crosswords included in digital archives).
    * In particular, the blog must include at least the clues and answers of the
      crossword.
    * Many blog posts from the sources are not about crosswords at all (e.g.
      they may be administrative announcements), and those that are may not
      include the clues, instead simply identifying clues by puzzle name and
      clue numbers. Several blogs' early blog posts fit this description.
-3. The blog post must be parsable.
+3. The blog post or archived crossword must be parsable.
    * As explained in [the Collection Process
      section](/datasheet#collection-process), the clues and answers are
      extracted from the raw HTML by a collection of parsing functions. If none
@@ -190,9 +189,9 @@ crosswords](https://www.theguardian.com/crosswords/crossword-blog/2013/dec/18/cr
 
 The data collection process breaks down into roughly four parts.
 
-The first part is simply scraping all the web pages and writing the HTML to a
-SQLite table to avoid re-requesting them. Web scraping was done using the
-Python `requests` library.
+The first part is simply indexing all the web pages and digital archives, and
+writing the HTML to a SQLite table to avoid re-requesting them. Web scraping
+was done using the Python `requests` library.
 
 The second part is a collection of functions that each take the scraped HTML
 and attempt to parse out the data using `beautifulsoup` and `pandas`. Since
@@ -232,9 +231,9 @@ Ho](https://www.georgeho.org). I was not compensated for this work.
 
 ### Over what time frame was the data collected?
 
-The scraped blog posts cover crosswords published from January 2009 to October
-2021: a twelve year period. New blog posts are published daily and are parsed
-to augment the dataset (see the ["Will this dataset be
+The scraped blog posts cover crosswords published from January 2009. New blog
+posts are published daily and are parsed to augment the dataset (see the ["Will
+this dataset be
 updated?"](#will-this-dataset-be-updated-e.g.-to-correct-labeling-errors-add-new-rows-delete-rows)
 question).
 
@@ -254,6 +253,7 @@ and searchable format.
 [Yes, you can view it on GitHub.](https://github.com/eigenfoo/cryptics) The
 following five modules contain the preprocessing and cleaning code:
 
+- [`cryptics/jsons.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/jsons.py)
 - [`cryptics/lists.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/lists.py)
 - [`cryptics/puzzes.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/puzzes.py)
 - [`cryptics/specials.py`](https://github.com/eigenfoo/cryptics/blob/main/cryptics/specials.py)

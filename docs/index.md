@@ -33,6 +33,7 @@ Currently the sources for clues are:
 - 🇮🇳 [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/) (_The Hindu_)
 - 🇨🇦 [National Post Cryptic Crossword Forum](https://natpostcryptic.blogspot.com/) (_National Post_)
 - 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^3] (_The New York Times_)
+- 🇺🇸 [_The New Yorker_](https://www.newyorker.com/crossword-puzzles-and-games)
 - 🇬🇧 [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
 [^3]: `.puz` files were provided courtesy of [Michael F. Gill](https://bbtp.net/). As of August 2021, [_The New York Times_ no longer supports `.puz` files](https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html).
