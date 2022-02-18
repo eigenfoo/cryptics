@@ -87,7 +87,7 @@ def find_and_write_charades(
         charades = [
             (clue_row_id, charade.strip(), answer.strip())
             for (answer, charade) in re.findall(regex, annotation)
-            if charade.strip().lower() in clue.lower() and answer.isupper()
+            if charade.strip() and charade.strip().lower() in clue.lower() and answer.isupper()
         ]
         if charades:
             sql = "INSERT INTO charades (clue_rowid, charade, answer) VALUES (?, ?, ?);"

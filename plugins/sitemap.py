@@ -9,13 +9,13 @@ Sitemap: https://cryptics.georgeho.org/sitemap.xml
 SITEMAP_XML = """
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://cryptics.georgeho.org/data/charades</loc></url>
+  <url><loc>https://cryptics.georgeho.org</loc></url>
+  <url><loc>https://cryptics.georgeho.org/datasheet</loc></url>
+  <url><loc>https://cryptics.georgeho.org/data</loc></url>
   <url><loc>https://cryptics.georgeho.org/data/clues</loc></url>
   <url><loc>https://cryptics.georgeho.org/data/indicators</loc></url>
+  <url><loc>https://cryptics.georgeho.org/data/charades</loc></url>
   <url><loc>https://cryptics.georgeho.org/data/metadata</loc></url>
-  <url><loc>https://cryptics.georgeho.org/data</loc></url>
-  <url><loc>https://cryptics.georgeho.org/datasheet</loc></url>
-  <url><loc>https://cryptics.georgeho.org</loc></url>
 </urlset>
 """.strip()
 
