@@ -9,43 +9,46 @@ from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 
 INDICATOR_REGEXES = {
     "anagram": [
-        r"anagram \(([A-Z]?[a-z ]+)\)",
-        r"anagram of \(([A-Z]?[a-z ]+)\)",
-        r"anagrammed \(([A-Z]?[a-z ]+)\)",
+        r"anagram\s*\(([A-Z]?[a-z ]+)\)",
+        r"anagram\s+of\s*\(([A-Z]?[a-z ]+)\)",
+        r"anagrammed\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "container": [
-        r"contain \(([A-Z]?[a-z ]+)\)",
-        r"contains \(([A-Z]?[a-z ]+)\)",
-        r"containing \(([A-Z]?[a-z ]+)\)",
+        r"contain\s*\(([A-Z]?[a-z ]+)\)",
+        r"contains\s*\(([A-Z]?[a-z ]+)\)",
+        r"containing\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "insertion": [
-        r"contained in \(([A-Z]?[a-z ]+)\)",
-        r"inserted into \(([A-Z]?[a-z ]+)\)",
-        r"within \(([A-Z]?[a-z ]+)\)",
+        r"contained in\s*\(([A-Z]?[a-z ]+)\)",
+        r"inserted into\s*\(([A-Z]?[a-z ]+)\)",
+        r"within\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "deletion": [
-        r"deleted \(([A-Z]?[a-z ]+)\)",
-        r"deletion \(([A-Z]?[a-z ]+)\)",
-        r"removed \(([A-Z]?[a-z ]+)\)",
+        r"deleted\s*\(([A-Z]?[a-z ]+)\)",
+        r"deletion\s*\(([A-Z]?[a-z ]+)\)",
+        r"removed\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "hidden": [
-        r"hidden \(([A-Z]?[a-z ]+)\)",
-        r"hidden in \(([A-Z]?[a-z ]+)\)",
+        r"hidden\s*\(([A-Z]?[a-z ]+)\)",
+        r"hidden\s+in\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "homophone": [
-        r"homophone \(([A-Z]?[a-z ]+)\)",
-        r"sound like \(([A-Z]?[a-z ]+)\)",
-        r"sounds like \(([A-Z]?[a-z ]+)\)",
+        r"homophone\s*\(([A-Z]?[a-z ]+)\)",
+        r"sound\s+like\s*\(([A-Z]?[a-z ]+)\)",
+        r"sounds\s+like\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "reversal": [
-        r"reversing \(([A-Z]?[a-z ]+)\)",
-        r"reversal \(([A-Z]?[a-z ]+)\)",
-        r"reverse \(([A-Z]?[a-z ]+)\)",
-        r"reversed \(([A-Z]?[a-z ]+)\)",
+        r"reversing\s*\(([A-Z]?[a-z ]+)\)",
+        r"reversal\s*\(([A-Z]?[a-z ]+)\)",
+        r"reverse\s*\(([A-Z]?[a-z ]+)\)",
+        r"reversed\s*\(([A-Z]?[a-z ]+)\)",
     ],
 }
 
-CHARADE_REGEXES = [r"([A-Z][A-Z ]+)\s?\(([A-Z]?[a-z ]+)\)"]
+CHARADE_REGEXES = [
+    r"([A-Z][A-Z ]+)\s*\(=?([A-Z]?[a-z ]+)\)",  # THIS (=that)
+    r"([A-Z][A-Z ]+)\s*=\s*\"([A-Z]?[a-z ]+)\"",  # THIS="that"
+]
 
 
 def find_and_write_indicators(
@@ -140,7 +143,7 @@ if __name__ == "__main__":
 
         read_cursor.execute("SELECT rowid, clue, annotation FROM clues;")
         for (clue_row_id, clue, annotation) in tqdm(
-            read_cursor, desc="Finding indicators"
+            read_cursor, desc="Finding indicators and charades"
         ):
             if not annotation:
                 continue
