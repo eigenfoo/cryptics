@@ -23,7 +23,7 @@ are parsed and extracted into a tabular dataset.
 The result is **over half a million clues from cryptic crosswords over the past twelve years**.
 
 Two other datasets are subsequently derived from the clues - wordplay indicators and charades (a.k.a. substitutions).
-All told, the derived datasets contain **over ten thousand wordplay indicators** and **over sixty thousand charades**.
+All told, the derived datasets contain **over twelve thousand wordplay indicators** and **over sixty thousand charades**.
 
 Currently the sources for clues are:
 
@@ -32,7 +32,7 @@ Currently the sources for clues are:
 - 🇬🇧 [Fifteensquared](https://www.fifteensquared.net/) (_Financial Times_, _The Guardian_, _The Independent_)
 - 🇮🇳 [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/) (_The Hindu_)
 - 🇨🇦 [National Post Cryptic Crossword Forum](https://natpostcryptic.blogspot.com/) (_National Post_)
-- 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^3] (_The New York Times_)
+- 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^3]
 - 🇺🇸 [_The New Yorker_](https://www.newyorker.com/crossword-puzzles-and-games)
 - 🇬🇧 [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 

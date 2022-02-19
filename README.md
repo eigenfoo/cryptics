@@ -1,7 +1,7 @@
-# [`cryptics.georgeho.org`](https://cryptics.georgeho.org/)
+# A Dataset of Cryptic Crossword Clues
 
-> `cryptics.georgeho.org` is a dataset of cryptic crossword clues, collected from
-> various blogs and digital archives.
+> `cryptics.georgeho.org` is a dataset of cryptic crossword clues,
+> collected from various blogs and digital archives.
 
 This repository contains:
 
@@ -21,28 +21,22 @@ For more information, please see [`cryptics.georgeho.org`](https://cryptics.geor
 
 ## License
 
-This dataset is made available under the [Open Database
-License](http://opendatacommons.org/licenses/odbl/1.0/). A human-readable
-summary is [available
-here](https://opendatacommons.org/licenses/odbl/summary/). Any rights in
-individual contents of the database are licensed under the [Database Contents
-License](http://opendatacommons.org/licenses/dbcl/1.0/).
+This dataset is made available under the [Open Database License](http://opendatacommons.org/licenses/odbl/1.0/).
+A human-readable summary is [available here](https://opendatacommons.org/licenses/odbl/summary/).
+Any rights in individual contents of the database are licensed under the [Database Contents License](http://opendatacommons.org/licenses/dbcl/1.0/).
 
-HTML and CSS code was modified from
-[`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme),
-which is licensed under the [Blue Oak Model
-License](https://blueoakcouncil.org/license/1.0.0). The remainder of the code
-is licensed under the [MIT License](https://mit-license.org/).
+HTML and CSS code was modified from [`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme),
+which is licensed under the [Blue Oak Model License](https://blueoakcouncil.org/license/1.0.0).
+The remainder of the code is licensed under the [MIT License](https://mit-license.org/).
 
 ## Colophon
 
-`cryptics.georgeho.org` is written in Python and run on a mix of [Digital Ocean
-Droplets (Basic Plan)](https://www.digitalocean.com/products/droplets/)  and a
-personal MacBook Pro.
+`cryptics.georgeho.org` is written in a mix of Python, Bash and SQL
+and is run on my personal laptop.
 
-The data is published using [Datasette](https://datasette.io/) and deployed on
-[Heroku (Free Web Dyno)](https://dashboard.heroku.com/apps). Datasette has been
-remarkably easy to work with and a pleasure to use.
+The data is published using [Datasette](https://datasette.io/)
+and deployed on a [Heroku Free Web Dyno](https://dashboard.heroku.com/apps).
+Datasette has been remarkably easy to work with and a pleasure to use.
 
 The documentation is a static site adapted from
 [`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme).
