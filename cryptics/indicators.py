@@ -9,39 +9,31 @@ from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 
 INDICATOR_REGEXES = {
     "anagram": [
-        r"anagram\s*\(([A-Z]?[a-z ]+)\)",
-        r"anagram\s+of\s*\(([A-Z]?[a-z ]+)\)",
-        r"anagrammed\s*\(([A-Z]?[a-z ]+)\)",
+        r"anagram(?:med|ming|\sof)?\s*\(([A-Z]?[a-z ]+)\)"
     ],
     "container": [
-        r"contain\s*\(([A-Z]?[a-z ]+)\)",
-        r"contains\s*\(([A-Z]?[a-z ]+)\)",
-        r"containing\s*\(([A-Z]?[a-z ]+)\)",
+        r"contain(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",
+        r"hold(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "insertion": [
-        r"contained in\s*\(([A-Z]?[a-z ]+)\)",
-        r"inserted into\s*\(([A-Z]?[a-z ]+)\)",
+        r"contained(?:\sin|\sby)?\s*\(([A-Z]?[a-z ]+)\)",
+        r"inserted(?:\sin|\sinto)?\s*\(([A-Z]?[a-z ]+)\)",
         r"within\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "deletion": [
-        r"deleted\s*\(([A-Z]?[a-z ]+)\)",
-        r"deletion\s*\(([A-Z]?[a-z ]+)\)",
-        r"removed\s*\(([A-Z]?[a-z ]+)\)",
+        r"delet(?:e|ed|ion|ing)\s*\(([A-Z]?[a-z ]+)\)",
+        r"remov(?:al|e|ed|ing)?\s*\(([A-Z]?[a-z ]+)\)",
+        r"without\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "hidden": [
-        r"hidden\s*\(([A-Z]?[a-z ]+)\)",
-        r"hidden\s+in\s*\(([A-Z]?[a-z ]+)\)",
+        r"hidden(?:\sin|\sinside)?\s*\(([A-Z]?[a-z ]+)\)"
     ],
     "homophone": [
         r"homophone\s*\(([A-Z]?[a-z ]+)\)",
-        r"sound\s+like\s*\(([A-Z]?[a-z ]+)\)",
-        r"sounds\s+like\s*\(([A-Z]?[a-z ]+)\)",
+        r"sounds?\slike\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "reversal": [
-        r"reversing\s*\(([A-Z]?[a-z ]+)\)",
-        r"reversal\s*\(([A-Z]?[a-z ]+)\)",
-        r"reverse\s*\(([A-Z]?[a-z ]+)\)",
-        r"reversed\s*\(([A-Z]?[a-z ]+)\)",
+        r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)"
     ],
 }
 
