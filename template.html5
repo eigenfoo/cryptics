@@ -103,7 +103,5 @@ $endif$
 $for(include-after)$
 $include-after$
 $endfor$
-<script async src="//static.getclicky.com/101353273.js"></script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101353273ns.gif" /></p></noscript>
 </body>
 </html>
