@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-START_DATE='2021/06/27'  # The date The New Yorker published the first cryptic crossword.
+START_DATE='2021/06/27'  # The date The New Yorker published their first cryptic crossword.
 TODAY=$(date +%Y/%m/%d)
 
 sunday=${START_DATE}
