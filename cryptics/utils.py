@@ -1,6 +1,10 @@
-import re
 import dateutil
+import re
+from typing import List
+
+import bs4
 import numpy as np
+import requests
 
 
 PUZZLE_URL_REGEXES = [
@@ -10,6 +14,50 @@ PUZZLE_URL_REGEXES = [
     "^https?://www.thetimes.co.uk/puzzles/.+",
     "^https?://puzzles.telegraph.co.uk/.+",
 ]
+
+
+def get_new_urls_from_sitemap(sitemap_url: str, known_urls: List[str], headers):
+    response = requests.get(sitemap_url, headers=headers)
+    soup = bs4.BeautifulSoup(response.text, "lxml")
+    urls = {url.text for url in soup.find_all("loc")}
+    new_urls = list(urls - known_urls)
+    return new_urls
+
+
+def get_new_urls_from_nested_sitemaps(
+    sitemap_url: str, nested_sitemap_regex: str, known_urls: List[str], headers
+):
+    response = requests.get(sitemap_url, headers=headers)
+    soup = bs4.BeautifulSoup(response.text, "lxml")
+    nested_sitemaps = list(
+        reversed(
+            [
+                sitemap.text
+                for sitemap in soup.find_all("loc")
+                if re.search(nested_sitemap_regex, sitemap.text)
+            ]
+        )
+    )
+
+    new_urls = []
+    for nested_sitemap_url in nested_sitemaps:
+        new_urls_ = get_new_urls_from_sitemap(nested_sitemap_url, known_urls, headers)
+        new_urls.extend(new_urls_)
+
+    return new_urls
+
+
+def filter_saturday_urls(urls):
+    """
+    Hex (a.k.a. Emily Cox & Henry Rathvon) only publish a cryptic in the
+    National Post on Saturdays. On all other days, the blog reviews other
+    cryptics (usually The Daily Telegraph, for which we have bigdave44).
+    """
+    return [
+        url
+        for url in urls
+        if any([s in url.lower() for s in ["saturday", "cox", "rathvon"]])
+    ]
 
 
 def get_smallest_divs(soup):

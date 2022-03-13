@@ -6,8 +6,8 @@ from datetime import datetime
 from typing import List
 
 from cryptics.parse import try_parse
-from cryptics.populate_db import populate_db
-from cryptics.config import SITEMAPS, SQLITE_DATABASE
+from cryptics.scrape_blogs import scrape_blogs
+from cryptics.config import BLOG_SOURCES, SQLITE_DATABASE
 
 
 def parse_unparsed_html(sources: List[str], datetime_requested: str):
@@ -49,16 +49,18 @@ def parse_unparsed_html(sources: List[str], datetime_requested: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--populate-db", dest="populate_db", action="store_true")
-    parser.add_argument("--no-populate-db", dest="populate_db", action="store_false")
-    parser.set_defaults(populate_db=True)
+    parser.add_argument("--scrape", dest="scrape", action="store_true")
+    parser.add_argument("--no-scrape", dest="scrape", action="store_false")
+    parser.set_defaults(scrape=True)
     parser.add_argument("--sleep-interval", type=int, default=20)
     parser.add_argument(
         "--datetime-requested", type=str, default=datetime.now().strftime("%Y-%m-%d")
     )
     args = parser.parse_args()
 
-    if args.populate_db:
-        populate_db(sources=SITEMAPS, sleep_interval=args.sleep_interval)
+    if args.scrape:
+        scrape_blogs(sources=BLOG_SOURCES, sleep_interval=args.sleep_interval)
 
-    parse_unparsed_html(sources=SITEMAPS, datetime_requested=args.datetime_requested)
+    parse_unparsed_html(
+        sources=BLOG_SOURCES, datetime_requested=args.datetime_requested
+    )
