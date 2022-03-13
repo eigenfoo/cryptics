@@ -7,15 +7,6 @@ import numpy as np
 import requests
 
 
-PUZZLE_URL_REGEXES = [
-    "^https?://www.theguardian.com/crosswords/.+",
-    "^https?://puzzles.independent.co.uk/games/cryptic-crossword-independent/.+",
-    "^https?://www.ft.com/content/.+",
-    "^https?://www.thetimes.co.uk/puzzles/.+",
-    "^https?://puzzles.telegraph.co.uk/.+",
-]
-
-
 def get_new_urls_from_sitemap(sitemap_url: str, known_urls: List[str], headers):
     response = requests.get(sitemap_url, headers=headers)
     soup = bs4.BeautifulSoup(response.text, "lxml")
@@ -47,7 +38,7 @@ def get_new_urls_from_nested_sitemaps(
     return new_urls
 
 
-def filter_saturday_urls(urls):
+def filter_saturday_urls(urls: List[str]):
     """
     Hex (a.k.a. Emily Cox & Henry Rathvon) only publish a cryptic in the
     National Post on Saturdays. On all other days, the blog reviews other
@@ -75,58 +66,76 @@ def get_across_down_indexes(divs):
     return across_index, down_index
 
 
-def extract_puzzle_name(source_url, soup):
-    puzzle_name = None
-    if "fifteensquared" in source_url:
-        puzzle_name = (
+def extract_puzzle_name(source_url: str, soup):
+    d = {
+        "bigdave44": lambda source_url, soup: (
+            re.search("^[A-Za-z ]*[-—––:\s]*[0-9,]+", soup.find("title").text)
+            .group()
+            .replace("DT", "Daily Telegraph")
+            .replace("ST", "Sunday Telegraph")
+        ),
+        "fifteensquared": lambda source_url, soup: (
             [s for s in source_url.split("/") if s][-1]
             .title()
             .replace("-", " ")
             .replace("By", "by")
-        )
-    elif "times-xwd-times" in source_url:
-        title = soup.find("title").text
-        puzzle_name = re.search("^[A-Za-z ]*[0-9,]+", title).group()
-    elif "bigdave44" in source_url:
-        title = soup.find("title").text
-        puzzle_name = re.search("^[A-Za-z ]*[-—––:\s]*[0-9,]+", title).group()
-        if "DT" in puzzle_name:
-            puzzle_name = puzzle_name.replace("DT", "Daily Telegraph")
-        elif "ST" in puzzle_name:
-            puzzle_name = puzzle_name.replace("ST", "Sunday Telegraph")
-    elif "thehinducrosswordcorner" in source_url:
-        title = soup.find("title").text
-        puzzle_name = title.replace("THE HINDU CROSSWORD CORNER: ", "")
-    elif "natpostcryptic" in source_url:
-        title = soup.find("title").text
-        puzzle_name = title.replace("National Post Cryptic Crossword Forum: ", "")
-    else:
-        raise ValueError(f"Unknown source: {source_url}")
-
-    return puzzle_name.strip()
+        ),
+        "natpostcryptic": lambda source_url, soup: (
+            soup.find("title").text.replace(
+                "National Post Cryptic Crossword Forum: ", ""
+            )
+        ),
+        "thehinducrosswordcorner": lambda source_url, soup: (
+            soup.find("title").text.replace("THE HINDU CROSSWORD CORNER: ", "")
+        ),
+        "times-xwd-times": lambda source_url, soup: (
+            re.search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text).group()
+        ),
+    }
+    for source_url_fragment, extract_puzzle_name_func in d.items():
+        if source_url_fragment in source_url:
+            return extract_puzzle_name_func(source_url, soup).strip()
 
 
-def extract_puzzle_date(source_url, soup):
-    puzzle_date = None
-    if "fifteensquared" in source_url or "bigdave44" in source_url:
-        puzzle_date = (
+def extract_puzzle_date(source_url: str, soup):
+    d = {
+        "bigdave44": lambda source_url, soup: (
             re.search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
-        )
-    elif "times-xwd-times" in source_url:
-        entry_date_div = soup.find_all(
-            "div", attrs={"class": "asset-meta asset-entry-date"}
-        )[0].text.strip()
-        puzzle_date = dateutil.parser.parse(entry_date_div).strftime("%Y-%m-%d")
-    elif "thehinducrosswordcorner" in source_url or "natpostcryptic" in source_url:
-        date_header_h2 = soup.find_all("h2", "date-header")[0].text.strip()
-        puzzle_date = dateutil.parser.parse(date_header_h2).strftime("%Y-%m-%d")
-    else:
-        raise ValueError(f"Unknown source: {source_url}")
-
-    return puzzle_date.strip()
+        ),
+        "fifteensquared": lambda source_url, soup: (
+            re.search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
+        ),
+        "natpostcryptic": lambda source_url, soup: (
+            dateutil.parser.parse(
+                soup.find_all("h2", "date-header")[0].text.strip()
+            ).strftime("%Y-%m-%d")
+        ),
+        "thehinducrosswordcorner": lambda source_url, soup: (
+            dateutil.parser.parse(
+                soup.find_all("h2", "date-header")[0].text.strip()
+            ).strftime("%Y-%m-%d")
+        ),
+        "times-xwd-times": lambda source_url, soup: (
+            dateutil.parser.parse(
+                soup.find_all("div", attrs={"class": "asset-meta asset-entry-date"})[
+                    0
+                ].text.strip()
+            ).strftime("%Y-%m-%d")
+        ),
+    }
+    for source_url_fragment, extract_puzzle_date_func in d.items():
+        if source_url_fragment in source_url:
+            return extract_puzzle_date_func(source_url, soup).strip()
 
 
 def extract_puzzle_url(soup):
+    puzzle_url_regexes = [
+        r"^https?://www.theguardian.com/crosswords/.+",
+        r"^https?://puzzles.independent.co.uk/games/cryptic-crossword-independent/.+",
+        r"^https?://www.ft.com/content/.+",
+        r"^https?://www.thetimes.co.uk/puzzles/.+",
+        r"^https?://puzzles.telegraph.co.uk/.+",
+    ]
     try:
         puzzle_urls = [
             link.get("href")
@@ -136,7 +145,7 @@ def extract_puzzle_url(soup):
                     "href": lambda s: any(
                         [
                             bool(re.findall(puzzle_url_regex, s))
-                            for puzzle_url_regex in PUZZLE_URL_REGEXES
+                            for puzzle_url_regex in puzzle_url_regexes
                         ]
                     )
                 },
