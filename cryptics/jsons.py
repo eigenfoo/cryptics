@@ -22,8 +22,8 @@ def parse_json(puzzle):
             placed_word["clue"]["refText"] for placed_word in puzzle["placedWords"]
         ]
     except KeyError:
-        annotations = ["nan" for _ in clues]
-    definitions = ["nan" for _ in clues]
+        annotations = [None for _ in clues]
+    definitions = [None for _ in clues]
     clue_numbers = [
         str(placed_word["clueNum"]) + ("a" if placed_word["acrossNotDown"] else "d")
         for placed_word in puzzle["placedWords"]

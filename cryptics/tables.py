@@ -103,9 +103,9 @@ def _parse_table_type_1(table, soup):
     for i, row in enumerate(raw_clue_numbers):
         if i == across_index or i == down_index:
             continue
-        elif row != "nan" and across_index < i < down_index:
+        elif row is None and across_index < i < down_index:
             clue_numbers.append(row + "a")
-        elif row != "nan":
+        elif row is None:
             clue_numbers.append(row + "d")
 
     # Answers
