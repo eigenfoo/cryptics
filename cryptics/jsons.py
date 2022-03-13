@@ -14,15 +14,20 @@ from cryptics.config import SQLITE_DATABASE
 
 def parse_json(puzzle):
     clues = [placed_word["clue"]["clue"] for placed_word in puzzle["placedWords"]]
-    clues = [BeautifulSoup(clue, "lxml").text for clue in clues]  
+    clues = [BeautifulSoup(clue, "lxml").text for clue in clues]
     answers = [placed_word["word"] for placed_word in puzzle["placedWords"]]
-    answers = [BeautifulSoup(answer, "lxml").text for answer in answers]  
+    answers = [BeautifulSoup(answer, "lxml").text for answer in answers]
     try:
-        annotations = [placed_word["clue"]["refText"] for placed_word in puzzle["placedWords"]]
+        annotations = [
+            placed_word["clue"]["refText"] for placed_word in puzzle["placedWords"]
+        ]
     except KeyError:
         annotations = ["nan" for _ in clues]
     definitions = ["nan" for _ in clues]
-    clue_numbers = [str(placed_word["clueNum"]) + ("a" if placed_word["acrossNotDown"] else "d") for placed_word in puzzle["placedWords"]]
+    clue_numbers = [
+        str(placed_word["clueNum"]) + ("a" if placed_word["acrossNotDown"] else "d")
+        for placed_word in puzzle["placedWords"]
+    ]
 
     data = pd.DataFrame(
         data=[clue_numbers, answers, clues, annotations, definitions],
@@ -33,7 +38,9 @@ def parse_json(puzzle):
     data["puzzle_url"] = url
     data["source_url"] = url
     data["puzzle_name"] = puzzle["title"]
-    data["puzzle_date"] = datetime.utcfromtimestamp(puzzle["publishTime"] / 1000).strftime("%Y-%m-%d")
+    data["puzzle_date"] = datetime.utcfromtimestamp(
+        puzzle["publishTime"] / 1000
+    ).strftime("%Y-%m-%d")
     return data
 
 

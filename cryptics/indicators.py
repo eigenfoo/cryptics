@@ -8,9 +8,7 @@ from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 
 
 INDICATOR_REGEXES = {
-    "anagram": [
-        r"anagram(?:med|ming|\sof)?\s*\(([A-Z]?[a-z ]+)\)"
-    ],
+    "anagram": [r"anagram(?:med|ming|\sof)?\s*\(([A-Z]?[a-z ]+)\)"],
     "container": [
         r"contain(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",
         r"hold(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",
@@ -25,16 +23,12 @@ INDICATOR_REGEXES = {
         r"remov(?:al|e|ed|ing)?\s*\(([A-Z]?[a-z ]+)\)",
         r"without\s*\(([A-Z]?[a-z ]+)\)",
     ],
-    "hidden": [
-        r"hidden(?:\sin|\sinside)?\s*\(([A-Z]?[a-z ]+)\)"
-    ],
+    "hidden": [r"hidden(?:\sin|\sinside)?\s*\(([A-Z]?[a-z ]+)\)"],
     "homophone": [
         r"homophone\s*\(([A-Z]?[a-z ]+)\)",
         r"sounds?\slike\s*\(([A-Z]?[a-z ]+)\)",
     ],
-    "reversal": [
-        r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)"
-    ],
+    "reversal": [r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)"],
 }
 
 CHARADE_REGEXES = [
@@ -82,7 +76,9 @@ def find_and_write_charades(
         charades = [
             (clue_row_id, charade.strip(), answer.strip())
             for (answer, charade) in re.findall(regex, annotation)
-            if charade.strip() and charade.strip().lower() in clue.lower() and answer.isupper()
+            if charade.strip()
+            and charade.strip().lower() in clue.lower()
+            and answer.isupper()
         ]
         if charades:
             sql = "INSERT INTO charades (clue_rowid, charade, answer) VALUES (?, ?, ?);"
