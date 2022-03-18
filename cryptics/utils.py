@@ -185,11 +185,11 @@ def extract_definitions(soup, clues, raw_definitions):
                         if is_first_definition:
                             # Edge case: if the first clue lacks a definition,
                             # but the second clue has a definition.
-                            definitions.append("nan")
+                            definitions.append(None)
                         definitions.append(definition)
                         i += 1
                     else:
-                        definitions.extend(j * ["nan"])
+                        definitions.extend(j * [None])
                         raw_definitions = [definition] + raw_definitions
                         i += j
                     is_first_definition = False
@@ -197,7 +197,7 @@ def extract_definitions(soup, clues, raw_definitions):
 
     if len(definitions) < len(clues):
         while len(definitions) < len(clues):
-            definitions.append("nan")
+            definitions.append(None)
     elif len(definitions) > len(clues):
         raise RuntimeError("More definitions than clues")
 
@@ -209,7 +209,7 @@ def extract_definitions(soup, clues, raw_definitions):
                     for s in definition.strip().split("/")
                 ]
             )
-            or definition == "nan"
+            or definition is None
             for (definition, clue) in zip(definitions, clues)
         ]
     ):
