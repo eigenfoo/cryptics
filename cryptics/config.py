@@ -4,7 +4,7 @@ import json
 from utils import (
     get_new_urls_from_sitemap,
     get_new_urls_from_nested_sitemaps,
-    filter_saturday_urls,
+    filter_urls,
 )
 
 
@@ -33,13 +33,14 @@ BLOG_SOURCES = {
         known_urls,
         HEADERS,
     ),
-    "natpostcryptic": lambda known_urls: filter_saturday_urls(
+    "natpostcryptic": lambda known_urls: filter_urls(
         get_new_urls_from_nested_sitemaps(
             "https://natpostcryptic.blogspot.com/sitemap.xml",
             r"https://natpostcryptic.blogspot.com/sitemap.xml\?page=[0-9]*",
             known_urls,
             HEADERS,
-        )
+        ),
+        ["saturday", "cox", "rathvon"]
     ),
     "thehinducrosswordcorner": lambda known_urls: get_new_urls_from_nested_sitemaps(
         "https://thehinducrosswordcorner.blogspot.com/sitemap.xml",
@@ -51,5 +52,14 @@ BLOG_SOURCES = {
         "https://times-xwd-times.livejournal.com/sitemap.xml",
         known_urls,
         HEADERS,
+    ),
+    "1across": lambda known_urls: filter_urls(
+        get_new_urls_from_nested_sitemaps(
+            "https://www.1across.org/sitemap.xml",
+            r"https://www.1across.org/sitemap-[0-9]*.xml",
+            known_urls,
+            HEADERS,
+        ),
+        ["solutions", "annotations"]
     ),
 }

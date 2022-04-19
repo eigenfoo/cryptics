@@ -38,7 +38,7 @@ def get_new_urls_from_nested_sitemaps(
     return new_urls
 
 
-def filter_saturday_urls(urls: List[str]):
+def filter_urls(urls: List[str], filter_words: List[str]):
     """
     Hex (a.k.a. Emily Cox & Henry Rathvon) only publish a cryptic in the
     National Post on Saturdays. On all other days, the blog reviews other
@@ -47,7 +47,7 @@ def filter_saturday_urls(urls: List[str]):
     return [
         url
         for url in urls
-        if any([s in url.lower() for s in ["saturday", "cox", "rathvon"]])
+        if any([s in url.lower() for s in filter_words])
     ]
 
 
