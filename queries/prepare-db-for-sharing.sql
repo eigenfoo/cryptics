@@ -25,7 +25,8 @@ WHERE source NOT IN (
     'out_of_left_field',
     'square_pursuit',
     'the_browser'
-);
+)
+ORDER BY puzzle_date DESC;
 DROP TABLE clues;
 ALTER TABLE new_clues RENAME TO clues;
 
