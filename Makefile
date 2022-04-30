@@ -42,20 +42,11 @@ venv:  # Set up a Python virtual environment for development.
 black:  # Format code in-place using black.
 	black cryptics/ *.py
 
-.PHONY: blackstyle
-blackstyle:
+.PHONY: lint
+lint:  # Lint code using black.
 	@printf "Checking code style with black...\n"
 	black --check --diff cryptics/
 	@printf "\033[1;34mBlack passes!\033[0m\n\n"
-
-.PHONY: mypytypes
-mypytypes:
-	@printf "Checking code type signatures with mypy...\n"
-	${PYTHON} -m mypy --ignore-missing-imports cryptics/
-	@printf "\033[1;34mMypy passes!\033[0m\n\n"
-
-.PHONY: lint
-lint: blackstyle mypytypes  # Lint code using black and mypy.
 
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
@@ -108,3 +99,7 @@ clean:  # Clean project directories.
 	find cryptics/ -type d -name "__pycache__" -exec rm -rf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
+
+.PHONY: quota
+quota:  # Show Heroku dynos and remaining free dyno hours.
+	heroku ps --app cryptic-crossword-clues
