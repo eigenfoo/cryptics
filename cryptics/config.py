@@ -40,7 +40,7 @@ BLOG_SOURCES = {
             known_urls,
             HEADERS,
         ),
-        ["saturday", "cox", "rathvon"]
+        ["saturday", "cox", "rathvon"],
     ),
     "thehinducrosswordcorner": lambda known_urls: get_new_urls_from_nested_sitemaps(
         "https://thehinducrosswordcorner.blogspot.com/sitemap.xml",
@@ -60,6 +60,6 @@ BLOG_SOURCES = {
             known_urls,
             HEADERS,
         ),
-        ["solutions", "annotations"]
+        ["solutions", "annotations"],
     ),
 }

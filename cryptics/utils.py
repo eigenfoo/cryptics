@@ -44,11 +44,7 @@ def filter_urls(urls: List[str], filter_words: List[str]):
     National Post on Saturdays. On all other days, the blog reviews other
     cryptics (usually The Daily Telegraph, for which we have bigdave44).
     """
-    return [
-        url
-        for url in urls
-        if any([s in url.lower() for s in filter_words])
-    ]
+    return [url for url in urls if any([s in url.lower() for s in filter_words])]
 
 
 def get_smallest_divs(soup):
