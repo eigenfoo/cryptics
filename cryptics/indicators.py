@@ -8,6 +8,12 @@ from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 
 
 INDICATOR_REGEXES = {
+    "alternation": [
+        r"alternat(?:e|ely|ing)\s*\(([A-Z]?[a-z ]+)\)",
+        r"even\sletters\s*\(([A-Z]?[a-z ]+)\)",
+        r"every\sother\sletter\s*\(([A-Z]?[a-z ]+)\)",
+        r"odd\sletters\s*\(([A-Z]?[a-z ]+)\)",
+    ],
     "anagram": [r"anagram(?:med|ming|\sof)?\s*\(([A-Z]?[a-z ]+)\)"],
     "container": [
         r"contain(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",

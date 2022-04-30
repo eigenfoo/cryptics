@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS clues (
 );
 CREATE TABLE IF NOT EXISTS indicators (
     clue_rowid INT PRIMARY KEY,
+    alternation TEXT DEFAULT '',
     anagram TEXT DEFAULT '',
     container TEXT DEFAULT '',
     deletion TEXT DEFAULT '',
