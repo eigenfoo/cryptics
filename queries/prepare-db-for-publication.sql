@@ -21,8 +21,7 @@ FROM clues
 WHERE source NOT IN (
     -- Sources to exclude
     'out_of_left_field',
-    'square_pursuit',
-    'the_browser'
+    'square_pursuit'
 );
 DROP TABLE clues;
 ALTER TABLE new_clues RENAME TO clues;
