@@ -14,7 +14,7 @@ parser.add_argument("--train", dest="train", action="store_true")
 parser.add_argument("--no-train", dest="train", action="store_false")
 parser.set_defaults(train=False)
 parser.add_argument(
-    "--where", type=str, default="definition != 'nan' AND NOT is_reviewed"
+    "--where", type=str, default="NOT is_reviewed"
 )
 args = parser.parse_args()
 
