@@ -35,6 +35,8 @@ INDICATOR_REGEXES = {
         r"sounds?\slike\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "reversal": [r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)"],
+    # "selection_first": [r"first\sletters?\s*\(([A-Z]?[a-z ]+)\)"],
+    # "selection_last": [r"last\sletters?\s*\(([A-Z]?[a-z ]+)\)"],
 }
 
 CHARADE_REGEXES = [

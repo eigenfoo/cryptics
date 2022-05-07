@@ -47,6 +47,8 @@ CREATE TABLE IF NOT EXISTS indicators (
     homophone TEXT DEFAULT '',
     insertion TEXT DEFAULT '',
     reversal TEXT DEFAULT '',
+    -- selection_first TEXT DEFAULT '',
+    -- selection_last TEXT DEFAULT '',
     FOREIGN KEY (clue_rowid) REFERENCES clues (rowid)
 );
 CREATE TABLE IF NOT EXISTS charades (
