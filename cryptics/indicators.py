@@ -40,7 +40,7 @@ INDICATOR_REGEXES = {
 }
 
 CHARADE_REGEXES = [
-    r"([A-Z][A-Z ]+)\s*\(=?([A-Z]?[a-z ]+)\)",  # THIS (=that)
+    r"([A-Z][A-Z ]+)\s+\(=?([A-Z]?[a-z ]+)\)",  # THIS (=that)
     r"([A-Z][A-Z ]+)\s*=\s*\"([A-Z]?[a-z ]+)\"",  # THIS="that"
 ]
 
@@ -82,7 +82,7 @@ def find_and_write_charades(
 ):
     for regex in charade_regexes:
         charades = [
-            (clue_row_id, charade.strip(), answer.strip())
+            (clue_row_id, charade.strip().lower(), answer.strip())
             for (answer, charade) in re.findall(regex, annotation)
             if charade.strip()
             and charade.strip().lower() in clue.lower()
