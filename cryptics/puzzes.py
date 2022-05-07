@@ -46,14 +46,14 @@ def parse_puz(puz_filename):
         )
         for clue in numbering.down
     ]
-    definitions = range(len(clues)) * [None]
-    annotations = range(len(clues)) * [None]
+    definitions = len(clues) * [None]
+    annotations = len(clues) * [None]
     clue_numbers = [str(clue["num"]) + "a" for clue in numbering.across] + [
         str(clue["num"]) + "d" for clue in numbering.down
     ]
-    puzzle_dates = range(len(clues)) * [None]
+    puzzle_dates = len(clues) * [None]
     puzzle_names = [puzzle.title for _ in range(len(clues))]
-    puzzle_urls = range(len(clues)) * [None]
+    puzzle_urls = len(clues) * [None]
     source_urls = [last_dirname_basename(puz_filename) for _ in range(len(clues))]
 
     return pd.DataFrame(
