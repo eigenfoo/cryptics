@@ -11,10 +11,10 @@ description-meta: A dataset of cryptic crossword clues, collected from various b
 This dataset is a significant work of crossword archivism and scholarship,
 as acquiring historical crosswords and structuring their contents require
 focused effort and tedious cleaning that few are willing to do for such trivial data -
-for example, according to [this selection guide](/static/documents/Selection_AppendixE_v2.pdf)[^2],
+for example, according to [this 2004 selection guide](/static/documents/Selection_AppendixE_v2.pdf)[^2],
 the Library of Congress explicitly does not collect crossword puzzles.
 
-[^2]: Heard through [Saul Pwanson](https://www.saul.pw/), sourced from the [Internet Archive](https://web.archive.org/web/20170222163604/https://www.loc.gov/library/reports/co_bpr/JIG-S/Selection_AppendixE_v2.pdf).
+[^2]: Heard through [Saul Pwanson](https://www.saul.pw/) and sourced from the [Internet Archive](https://web.archive.org/web/20170222163604/https://www.loc.gov/library/reports/co_bpr/JIG-S/Selection_AppendixE_v2.pdf).
 
 This project indexes various blogs and digital archives for cryptic crosswords.
 Several fields - such as
@@ -28,22 +28,25 @@ All told, the derived datasets contain **over twelve thousand wordplay indicator
 Currently the sources for clues are:
 
 - 🇬🇧 [Big Dave's Crossword Blog](http://bigdave44.com/) (_The Daily Telegraph_, _The Sunday Telegraph_)
+- 🇺🇸 [_The Browser_](https://thebrowser.com/crossword/)[^3]
 - 🇺🇸 [Cru Cryptic Archive](https://theworld.com/~wij/puzzles/cru/) (_The New York Times_ "Cru" Forums)
 - 🇬🇧 [Fifteensquared](https://www.fifteensquared.net/) (_Financial Times_, _The Guardian_, _The Independent_)
 - 🇮🇳 [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/) (_The Hindu_)
 - 🇨🇦 [National Post Cryptic Crossword Forum](https://natpostcryptic.blogspot.com/) (_National Post_)
-- 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^3]
+- 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^4]
 - 🇺🇸 [_The New Yorker_](https://www.newyorker.com/crossword-puzzles-and-games)
 - 🇬🇧 [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
-[^3]: `.puz` files were provided courtesy of [Michael F. Gill](https://bbtp.net/). As of August 2021, [_The New York Times_ no longer supports `.puz` files](https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html).
+[^3]: _The Browser_'s clues are sourced with the gracious permission of [Dan Feyer](https://twitter.com/danfeyer) and _The Browser_'s editors!
+
+[^4]: `.puz` files were provided courtesy of [Michael F. Gill](https://bbtp.net/). As of August 2021, [_The New York Times_ no longer supports `.puz` files](https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html).
 
 The data can be [viewed online](/data/clues) and downloaded for free
-([CSV](/data/clues.csv?_size=max), [JSON](/data/clues.json), [SQLite](/data.db), [advanced](/data/clues#export)[^4]).
+([CSV](/data/clues.csv?_size=max), [JSON](/data/clues.json), [SQLite](/data.db), [advanced](/data/clues#export)[^5]).
 Detailed documentation can be found on [the datasheet](/datasheet)
 and the source code for creating the dataset is [available on GitHub](https://github.com/eigenfoo/cryptics).
 
-[^4]: The CSV request will only return the first 1000 rows, [click here](/data/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
+[^5]: The CSV request will only return the first 1000 rows, [click here](/data/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
 
 Send all comments, suggestions and complaints to [hello[&#230;]georgeho.org](mailto:hello[&#230;]georgeho.org).
 
