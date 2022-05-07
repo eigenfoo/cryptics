@@ -53,14 +53,14 @@ update:  # Scrape and parse unprocessed blog posts.
 	bash scripts/scrape-new-yorker.sh
 	${PYTHON} cryptics/jsons.py
 	${PYTHON} cryptics/main.py --sleep-interval=1
-	${PYTHON} cryptics/indicators.py
 
 .PHONY: build
 build: clean build-dbs build-templates test-build  # Build database and documentation for publication.
 
-build-dbs: data.sqlite3 data-annotated.sqlite3
+build-dbs: data.sqlite3
 
 data.sqlite3: cryptics.sqlite3
+	${PYTHON} cryptics/indicators.py
 	bash scripts/build-dbs.sh
 
 build-templates: $(STATIC_TARGETS)
