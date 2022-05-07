@@ -1,4 +1,5 @@
 CREATE TABLE new_clues (
+    rowid INTEGER PRIMARY KEY,
     clue TEXT,
     answer TEXT,
     definition TEXT,
@@ -9,6 +10,7 @@ CREATE TABLE new_clues (
     source TEXT
 );
 INSERT INTO new_clues SELECT
+    rowid,
     clue,
     answer,
     definition,
@@ -31,6 +33,17 @@ ALTER TABLE indicators_unpivoted RENAME TO indicators;
 
 ALTER TABLE charades RENAME TO charades_by_clue;
 ALTER TABLE charades_unpivoted RENAME TO charades;
+
+-- pandas.DataFrame.to_sql does not set a primary key, so we do that manually here
+CREATE TABLE IF NOT EXISTS charades_new (rowid INTEGER PRIMARY KEY, charade TEXT, answer TEXT, clue_rowids TEXT);
+INSERT INTO charades_new SELECT rowid, * from charades;
+DROP TABLE charades;
+ALTER TABLE charades_new RENAME TO charades;
+
+CREATE TABLE IF NOT EXISTS indicators_new (rowid INTEGER PRIMARY KEY, wordplay TEXT, indicator TEXT, clue_rowids TEXT);
+INSERT INTO indicators_new SELECT rowid, * from indicators;
+DROP TABLE indicators;
+ALTER TABLE indicators_new RENAME TO indicators;
 
 -- To facilitate Datasette facets
 CREATE INDEX clues_source_index ON clues ("source");
