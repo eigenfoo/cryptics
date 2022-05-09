@@ -137,3 +137,6 @@ dmypy.json
 *.sqlite3
 cryptics/*.json
 cryptics/*.txt
+
+# Built documentation
+templates/*
