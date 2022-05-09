@@ -22,6 +22,7 @@ INDICATOR_REGEXES = {
     "insertion": [
         r"contained(?:\sin|\sby)?\s*\(([A-Z]?[a-z ]+)\)",
         r"inserted(?:\sin|\sinto)?\s*\(([A-Z]?[a-z ]+)\)",
+        r"inside\s*\(([A-Z]?[a-z ]+)\)",
         r"within\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "deletion": [
@@ -29,14 +30,12 @@ INDICATOR_REGEXES = {
         r"remov(?:al|e|ed|ing)?\s*\(([A-Z]?[a-z ]+)\)",
         r"without\s*\(([A-Z]?[a-z ]+)\)",
     ],
-    "hidden": [r"hidden(?:\sin|\sinside)?\s*\(([A-Z]?[a-z ]+)\)"],
+    "hidden": [r"hidden(?:\sin|\sinside|\swithin)?\s*\(([A-Z]?[a-z ]+)\)"],
     "homophone": [
         r"homophone\s*\(([A-Z]?[a-z ]+)\)",
         r"sounds?\slike\s*\(([A-Z]?[a-z ]+)\)",
     ],
     "reversal": [r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)"],
-    # "selection_first": [r"first\sletters?\s*\(([A-Z]?[a-z ]+)\)"],
-    # "selection_last": [r"last\sletters?\s*\(([A-Z]?[a-z ]+)\)"],
 }
 
 CHARADE_REGEXES = [

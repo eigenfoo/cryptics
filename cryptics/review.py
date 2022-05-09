@@ -79,9 +79,9 @@ while True:
     print(2 * "\n")
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         if not args.train and todo_rowids is not None:
-            sql = f"SELECT rowid, * FROM clues WHERE rowid = '{todo_rowids.pop(0)}';"
+            sql = f"SELECT * FROM clues WHERE rowid = '{todo_rowids.pop(0)}';"
         else:
-            sql = f"SELECT rowid, * FROM clues WHERE source = '{args.source}' AND {args.where} ORDER BY RANDOM() LIMIT 1;"
+            sql = f"SELECT * FROM clues WHERE source = '{args.source}' AND {args.where} ORDER BY RANDOM() LIMIT 1;"
 
         cursor = conn.cursor()
         cursor.execute(sql)
