@@ -35,7 +35,10 @@ INDICATOR_REGEXES = {
         r"homophone\s*\(([A-Z]?[a-z ]+)\)",
         r"sounds?\slike\s*\(([A-Z]?[a-z ]+)\)",
     ],
-    "reversal": [r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)"],
+    "reversal": [
+        r"revers(?:al|e|ed|ing)\s*\(([A-Z]?[a-z ]+)\)",
+        r"backwards?\s*\(([A-Z]?[a-z ]+)\)",
+    ],
 }
 
 CHARADE_REGEXES = [
@@ -124,6 +127,20 @@ def unpivot_charades_table():
         df.to_sql("charades_unpivoted", conn, if_exists="replace", index=False)
 
 
+def consolidate_indicators():
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
+        indicators = pd.read_sql("SELECT * FROM indicators;", conn)
+
+    indicators = indicators.drop(columns="clue_rowid")
+    d = {}
+    for col in indicators.columns:
+        d[col] = "\n".join(indicators[col][indicators[col].apply(bool)].sort_values().unique())
+
+    df = pd.DataFrame.from_dict(data=d, orient="index").T
+    with sqlite3.connect(SQLITE_DATABASE) as conn:
+        df.to_sql("indicators_consolidated", conn, if_exists="replace", index=False)
+
+
 if __name__ == "__main__":
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         read_cursor = conn.cursor()
@@ -152,3 +169,4 @@ if __name__ == "__main__":
 
     unpivot_indicators_table()
     unpivot_charades_table()
+    consolidate_indicators()

@@ -87,6 +87,7 @@ serve:  # Serve Datasette locally.
 		--metadata metadata.json \
 		--setting suggest_facets off \
 		--setting allow_download on \
+		--setting truncate_cells_html 0 \
 		--setting max_csv_mb 0
 
 .PHONY: deploy
