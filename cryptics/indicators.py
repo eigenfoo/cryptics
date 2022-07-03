@@ -134,7 +134,9 @@ def consolidate_indicators():
     indicators = indicators.drop(columns="clue_rowid")
     d = {}
     for col in indicators.columns:
-        d[col] = "\n".join(indicators[col][indicators[col].apply(bool)].sort_values().unique())
+        d[col] = "\n".join(
+            indicators[col][indicators[col].apply(bool)].sort_values().unique()
+        )
 
     df = pd.DataFrame.from_dict(data=d, orient="index").T
     with sqlite3.connect(SQLITE_DATABASE) as conn:
