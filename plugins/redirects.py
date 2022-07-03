@@ -24,4 +24,12 @@ def register_routes():
                 status=301,
             ),
         ),
+        (
+            # E.g. /crypticclueaday -> Google Sheet
+            r"^/crypticclueaday$",
+            lambda request: Response.redirect(
+                "https://docs.google.com/spreadsheets/d/1wltYlh7YLG8KxR5fOkLB8xCJzOmBP9N3vQN9bBLwuHk",
+                status=301
+            ),
+        ),
     ]
