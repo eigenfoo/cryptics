@@ -50,7 +50,7 @@ lint:  # Lint code using black.
 
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
-	bash scripts/scrape-new-yorker.sh
+	${PYTHON} cryptics/amuselabs.py
 	${PYTHON} cryptics/jsons.py
 	${PYTHON} cryptics/main.py --sleep-interval=1
 
