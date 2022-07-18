@@ -7,6 +7,7 @@ from tqdm import tqdm
 from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 
 
+# TODO: [] should be allowed as parentheses...
 INDICATOR_REGEXES = {
     "alternation": [
         r"alternat(?:e|ely|ing)\s*\(([A-Z]?[a-z ]+)\)",
@@ -16,6 +17,7 @@ INDICATOR_REGEXES = {
     ],
     "anagram": [r"anagram(?:med|ming|\sof)?\s*\(([A-Z]?[a-z ]+)\)"],
     "container": [
+        r"around\s*\(([A-Z]?[a-z ]+)\)",
         r"contain(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",
         r"hold(?:s|ing)?\s*\(([A-Z]?[a-z ]+)\)",
     ],
