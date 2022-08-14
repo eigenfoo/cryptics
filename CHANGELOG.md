@@ -1,3 +1,11 @@
+# v2022.08.14
+
+## Data
+
+- Added clues from puzzles published since previous release date.
+- Consolidated `html`, `json` and `puz` tables into a single `raw` table (with
+  a `content_type` column). This is in preparation for PDF ingestion.
+
 # v2022.02.06
 
 ## Data
