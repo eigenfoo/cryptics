@@ -1,24 +1,9 @@
-CREATE TABLE IF NOT EXISTS html (
+CREATE TABLE IF NOT EXISTS raw (
     source TEXT,
-    url PRIMARY KEY,
+    location PRIMARY KEY,
     datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    html TEXT,
-    is_parsed BOOLEAN DEFAULT FALSE,
-    datetime_parsed TIMESTAMP DEFAULT NULL
-);
-CREATE TABLE IF NOT EXISTS json (
-    source TEXT,
-    url PRIMARY KEY,
-    datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    json TEXT,
-    is_parsed BOOLEAN DEFAULT FALSE,
-    datetime_parsed TIMESTAMP DEFAULT NULL
-);
-CREATE TABLE IF NOT EXISTS puz (
-    source TEXT,
-    path PRIMARY KEY,
-    datetime_requested TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    puz BLOB,
+    content_type TEXT,
+    content BLOB,
     is_parsed BOOLEAN DEFAULT FALSE,
     datetime_parsed TIMESTAMP DEFAULT NULL
 );

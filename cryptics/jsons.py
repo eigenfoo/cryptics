@@ -47,7 +47,7 @@ def parse_json(puzzle):
 if __name__ == "__main__":
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT DISTINCT url FROM json WHERE NOT is_parsed;")
+        cursor.execute(f"SELECT DISTINCT location FROM raw WHERE content_type = 'json' AND NOT is_parsed;")
         urls_to_parse = cursor.fetchall()
         urls_to_parse = {url[0] for url in urls_to_parse}
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         print(f"Parsing {url}")
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT json FROM json WHERE url = '{url}';")
+            cursor.execute(f"SELECT content FROM raw WHERE location = '{url}';")
             puzzle_json = cursor.fetchone()[0]
 
         puzzle = json.loads(puzzle_json)
@@ -68,5 +68,5 @@ if __name__ == "__main__":
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             data.to_sql(f"clues", conn, if_exists="append", index=False)
             cursor = conn.cursor()
-            sql = f"UPDATE json SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE url = '{url}';"
+            sql = f"UPDATE raw SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE location = '{url}';"
             cursor.execute(sql)
