@@ -25,7 +25,7 @@ def insert_puz(source, path, puz_filename):
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO puz (source, path, puz, is_parsed, datetime_parsed) VALUES (?, ?, ?, 1, datetime('now'))",
+            "INSERT INTO raw (source, location, content_type, content) VALUES (?, ?, 'puz', ?)",
             (source, path, puz_blob),
         )
         conn.commit()

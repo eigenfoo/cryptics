@@ -76,7 +76,7 @@ if __name__ == "__main__":
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                f"SELECT EXISTS(SELECT 1 FROM json WHERE url = '{solver_url}')"
+                f"SELECT EXISTS(SELECT 1 FROM raw WHERE location = '{solver_url}')"
             )
             scraped = bool(cursor.fetchone()[0])
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO json (source, url, json) VALUES ('new_yorker', ?, ?)",
+                "INSERT INTO raw (source, location, content_type, content) VALUES ('new_yorker', ?, 'json', ?)",
                 (solver_url, json.dumps(puz_json)),
             )
             conn.commit()

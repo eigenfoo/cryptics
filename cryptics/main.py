@@ -15,14 +15,14 @@ def parse_unparsed_html(sources: List[str], datetime_requested: str):
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                f"SELECT url FROM html WHERE source = '{source}' AND NOT is_parsed AND datetime_requested >= '{datetime_requested}';"
+                f"SELECT location FROM raw WHERE content_type = 'html' AND source = '{source}' AND NOT is_parsed AND datetime_requested >= '{datetime_requested}';"
             )
             urls = [url for url, in cursor.fetchall()]
 
         for i, url in enumerate(urls):
             with sqlite3.connect(SQLITE_DATABASE) as conn:
                 cursor = conn.cursor()
-                cursor.execute(f"SELECT html FROM html WHERE url = '{url}';")
+                cursor.execute(f"SELECT content FROM raw WHERE location = '{url}';")
                 (html,) = cursor.fetchone()
 
             data = None
@@ -43,7 +43,7 @@ def parse_unparsed_html(sources: List[str], datetime_requested: str):
                 data.to_sql(f"clues", conn, if_exists="append", index=False)
 
                 cursor = conn.cursor()
-                sql = f"UPDATE html SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE url = '{url}';"
+                sql = f"UPDATE raw SET is_parsed = TRUE, datetime_parsed = datetime('now') WHERE location = '{url}';"
                 cursor.execute(sql)
 
 
