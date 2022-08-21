@@ -1,21 +1,21 @@
 import logging
-import os
 import sqlite3
 import json
 from datetime import datetime
 from bs4 import BeautifulSoup
-from glob import glob
 
-import numpy as np
 import pandas as pd
 
 from cryptics.config import SQLITE_DATABASE
 
 
-def parse_json(puzzle):
+def parse_json(puzzle, source):
     clues = [placed_word["clue"]["clue"] for placed_word in puzzle["placedWords"]]
     clues = [BeautifulSoup(clue, "lxml").text for clue in clues]
-    answers = [placed_word["word"] for placed_word in puzzle["placedWords"]]
+    try:
+        answers = [placed_word["word"] for placed_word in puzzle["placedWords"]]
+    except KeyError:
+        answers = [placed_word["originalTerm"] for placed_word in puzzle["placedWords"]]
     answers = [BeautifulSoup(answer, "lxml").text for answer in answers]
     try:
         annotations = [
@@ -34,7 +34,7 @@ def parse_json(puzzle):
         index=["clue_number", "answer", "clue", "annotation", "definition"],
     ).T
 
-    data["source"] = "newyorker"
+    data["source"] = source
     data["puzzle_url"] = url
     data["source_url"] = url
     data["puzzle_name"] = puzzle["title"]
@@ -47,7 +47,9 @@ def parse_json(puzzle):
 if __name__ == "__main__":
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT DISTINCT location FROM raw WHERE content_type = 'json' AND NOT is_parsed;")
+        cursor.execute(
+            f"SELECT DISTINCT location FROM raw WHERE content_type = 'json' AND NOT is_parsed;"
+        )
         urls_to_parse = cursor.fetchall()
         urls_to_parse = {url[0] for url in urls_to_parse}
 
@@ -55,14 +57,16 @@ if __name__ == "__main__":
         print(f"Parsing {url}")
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT content FROM raw WHERE location = '{url}';")
-            puzzle_json = cursor.fetchone()[0]
+            cursor.execute(f"SELECT content, source FROM raw WHERE location = '{url}';")
+            puzzle_json, source = cursor.fetchone()
 
         puzzle = json.loads(puzzle_json)
+
         try:
-            data = parse_json(puzzle)
+            data = parse_json(puzzle, source)
             print(f"\tSuccess!")
         except:
+            print(f"\tFailed.")
             continue
 
         with sqlite3.connect(SQLITE_DATABASE) as conn:

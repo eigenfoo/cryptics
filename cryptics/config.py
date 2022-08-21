@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 
 from utils import (
     get_new_urls_from_sitemap,
@@ -62,4 +63,40 @@ BLOG_SOURCES = {
         ),
         ["solutions", "annotations"],
     ),
+}
+
+
+def generate_newyorker_urls():
+    # The date The New Yorker published their first cryptic crossword.
+    start_date = datetime.date(2021, 6, 27)
+    sunday = start_date
+    today = datetime.date.today()
+    while sunday <= today:
+        yield f"https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/{sunday.strftime('%Y/%m/%d')}"
+        sunday = sunday + datetime.timedelta(days=7)
+
+
+def generate_leoedit_urls():
+    # LEO Edit seems to reject programmatic HTML requests, and I can't figure
+    # out how to circumvent. Instead, I've found the Amuselabs CDN URLs by
+    # hand.
+    yield from [
+        f"https://cdn2.amuselabs.com/pmm/crossword?id={id_}&set=leoedit"
+        for id_ in [
+            "d9f78a7a",
+            "074b8679",
+            "51173ffb",
+            "b6edbf48",
+            "1bd35ce3",
+            "64486a16",
+            "7656be6a",
+        ]
+    ]
+
+
+AMUSELABS_SOURCES = {
+    # Leo Edit has discontinued their cryptic, which I've already indexed. No
+    # point doing it again.
+    # "leoedit": generate_leoedit_urls,
+    "newyorker": generate_newyorker_urls,
 }

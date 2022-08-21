@@ -32,21 +32,24 @@ Currently the sources for clues are:
 - 🇺🇸 [Cru Cryptic Archive](https://theworld.com/~wij/puzzles/cru/) (_The New York Times_ "Cru" Forums)
 - 🇬🇧 [Fifteensquared](https://www.fifteensquared.net/) (_Financial Times_, _The Guardian_, _The Independent_)
 - 🇮🇳 [The Hindu Crossword Corner](https://thehinducrosswordcorner.blogspot.com/) (_The Hindu_)
+- 🇺🇸 [_Leo Edit_](https://www.leoedit.com/?s=Cryptic)[^4]
 - 🇨🇦 [National Post Cryptic Crossword Forum](https://natpostcryptic.blogspot.com/) (_National Post_)
-- 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^4]
+- 🇺🇸 [_The New York Times_](https://www.nytimes.com/crosswords) `.puz` archive[^5]
 - 🇺🇸 [_The New Yorker_](https://www.newyorker.com/crossword-puzzles-and-games)
 - 🇬🇧 [Times for the Times](https://times-xwd-times.livejournal.com/) (_The Times_ of London)
 
 [^3]: _The Browser_'s clues are sourced with the gracious permission of [Dan Feyer](https://twitter.com/danfeyer) and _The Browser_'s editors!
 
-[^4]: `.puz` files were provided courtesy of [Michael F. Gill](https://bbtp.net/). As of August 2021, [_The New York Times_ no longer supports `.puz` files](https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html).
+[^4]: As of August 2022, _Leo Edit_ has sadly [discontinued their cryptic crosswords](https://twitter.com/PuzzleTrip/status/1561064129422626822).
+
+[^5]: `.puz` files were provided courtesy of [Michael F. Gill](https://bbtp.net/). As of August 2021, [_The New York Times_ no longer supports `.puz` files](https://www.nytimes.com/2021/08/02/crosswords/nyt-games-no-longer-available-on-across-lite-as-of-aug-9.html).
 
 The data can be [viewed online](/data/clues) and downloaded for free
-([CSV](/data/clues.csv?_size=max), [JSON](/data/clues.json), [SQLite](/data.db), [advanced](/data/clues#export)[^5]).
+([CSV](/data/clues.csv?_size=max), [JSON](/data/clues.json), [SQLite](/data.db), [advanced](/data/clues#export)[^6]).
 Detailed documentation can be found on [the datasheet](/datasheet)
 and the source code for creating the dataset is [available on GitHub](https://github.com/eigenfoo/cryptics).
 
-[^5]: The CSV request will only return the first 1000 rows, [click here](/data/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
+[^6]: The CSV request will only return the first 1000 rows, [click here](/data/clues.csv?_stream=on&_size=max) to stream all rows (this will take a while). The JSON request is paginated with 100 rows per page.
 
 Send all comments, suggestions and complaints to [hello[&#230;]georgeho.org](mailto:hello[&#230;]georgeho.org).
 

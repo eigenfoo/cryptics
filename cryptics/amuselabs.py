@@ -1,12 +1,10 @@
 import base64
-import datetime
 import json
 import re
 import requests
 import sqlite3
-import sys
 
-from cryptics.config import SQLITE_DATABASE
+from cryptics.config import SQLITE_DATABASE, AMUSELABS_SOURCES
 
 
 # Taken from https://github.com/thisisparker/xword-dl/commit/3927a378e35666f09fff96f091d2f97584b9256e
@@ -66,58 +64,53 @@ def load_rawc(rawc, amuseKey=None):
 
 
 if __name__ == "__main__":
-    # The date The New Yorker published their first cryptic crossword.
-    start_date = datetime.date(2021, 6, 27)
-    sunday = start_date
-    today = datetime.date.today()
+    for source, url_generator in AMUSELABS_SOURCES.items():
+        for url in url_generator():
+            # Skip URL if already scraped
+            with sqlite3.connect(SQLITE_DATABASE) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    f"SELECT EXISTS(SELECT 1 FROM raw WHERE location = '{url}')"
+                )
+                if bool(cursor.fetchone()[0]):
+                    continue
 
-    while sunday <= today:
-        solver_url = f"https://www.newyorker.com/puzzles-and-games-dept/cryptic-crossword/{sunday.strftime('%Y/%m/%d')}"
-        with sqlite3.connect(SQLITE_DATABASE) as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                f"SELECT EXISTS(SELECT 1 FROM raw WHERE location = '{solver_url}')"
+            print(f"Requesting {url}")
+
+            # Get rawc
+            solver_response = requests.get(url)
+            try:
+                cdn_url = re.search(
+                    f"https?://\w*\.amuselabs\.com/[^ ]+embed=1", solver_response.text
+                ).group()
+            except AttributeError:
+                cdn_url = url
+            cdn_response = requests.get(cdn_url)
+            rawc = re.search(f"rawc\s*=\s*'([^']+)'", cdn_response.text).group(1)
+
+            # Get the "key" from the JavaScript
+            js_url = re.search(
+                r'"([^"]+c-min.js[^"]+)"', cdn_response.content.decode("utf-8")
+            ).groups()[0]
+            base_url = "/".join(cdn_url.split("/")[:-1])
+            js_url = base_url + "/" + js_url
+            js_response = requests.get(js_url)
+            matches = re.search(
+                r'var e=function\(e\)\{var t="(.*?)"',
+                js_response.content.decode("utf-8"),
             )
-            scraped = bool(cursor.fetchone()[0])
+            amuseKey = None
+            if matches is not None:
+                amuseKey = matches.groups()[0]
+                if amuseKey == "1":
+                    amuseKey = None
 
-        if scraped:
-            sunday = sunday + datetime.timedelta(days=7)
-            continue
+            puz_json = load_rawc(rawc, amuseKey=amuseKey)
 
-        print(f"Requesting {solver_url}")
-
-        # Get rawc
-        solver_response = requests.get(solver_url)
-        cdn_url = re.search(
-            f"https?://\w*\.amuselabs\.com/[^ ]+embed=1", solver_response.text
-        ).group()
-        cdn_response = requests.get(cdn_url)
-        rawc = re.search(f"rawc\s*=\s*'([^']+)'", cdn_response.text).group(1)
-
-        # Get the "key" from the JavaScript
-        js_url = re.search(
-            r'"([^"]+c-min.js[^"]+)"', cdn_response.content.decode("utf-8")
-        ).groups()[0]
-        base_url = "/".join(cdn_url.split("/")[:-1])
-        js_url = base_url + "/" + js_url
-        js_response = requests.get(js_url)
-        matches = re.search(
-            r'var e=function\(e\)\{var t="(.*?)"', js_response.content.decode("utf-8")
-        )
-        amuseKey = None
-        if matches is not None:
-            amuseKey = matches.groups()[0]
-            if amuseKey == "1":
-                amuseKey = None
-
-        puz_json = load_rawc(rawc, amuseKey=amuseKey)
-
-        with sqlite3.connect(SQLITE_DATABASE) as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO raw (source, location, content_type, content) VALUES ('new_yorker', ?, 'json', ?)",
-                (solver_url, json.dumps(puz_json)),
-            )
-            conn.commit()
-
-        sunday = sunday + datetime.timedelta(days=7)
+            with sqlite3.connect(SQLITE_DATABASE) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT INTO raw (source, location, content_type, content) VALUES (?, ?, 'json', ?)",
+                    (source, url, json.dumps(puz_json)),
+                )
+                conn.commit()

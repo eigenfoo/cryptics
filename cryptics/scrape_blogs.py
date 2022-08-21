@@ -17,7 +17,9 @@ def scrape_blogs(sources, sleep_interval=1):
         logging.info(f"Populating from {source}...")
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT location FROM raw WHERE content_type = 'html' AND source = '{source}';")
+            cursor.execute(
+                f"SELECT location FROM raw WHERE content_type = 'html' AND source = '{source}';"
+            )
             known_urls = {url[0] for url in cursor.fetchall()}
         new_urls = get_new_urls_func(known_urls)
         logging.info(f"Found {len(new_urls)} new urls.")
