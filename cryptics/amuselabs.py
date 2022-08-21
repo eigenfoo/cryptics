@@ -1,10 +1,12 @@
 import base64
 import json
+import logging
 import re
 import requests
 import sqlite3
 
 from cryptics.config import SQLITE_DATABASE, AMUSELABS_SOURCES
+from cryptics.utils import get_logger
 
 
 # Taken from https://github.com/thisisparker/xword-dl/commit/3927a378e35666f09fff96f091d2f97584b9256e
@@ -64,6 +66,8 @@ def load_rawc(rawc, amuseKey=None):
 
 
 if __name__ == "__main__":
+    logger = get_logger()
+
     for source, url_generator in AMUSELABS_SOURCES.items():
         for url in url_generator():
             # Skip URL if already scraped
@@ -75,7 +79,7 @@ if __name__ == "__main__":
                 if bool(cursor.fetchone()[0]):
                     continue
 
-            print(f"Requesting {url}")
+            logger.info(f"Requesting: {url}")
 
             # Get rawc
             solver_response = requests.get(url)
@@ -84,6 +88,9 @@ if __name__ == "__main__":
                     f"https?://\w*\.amuselabs\.com/[^ ]+embed=1", solver_response.text
                 ).group()
             except AttributeError:
+                logger.warning(
+                    f"This URL appears to be AmuseLabs CDN URL, not a webpage with an AmuseLabs embed: {url}"
+                )
                 cdn_url = url
             cdn_response = requests.get(cdn_url)
             rawc = re.search(f"rawc\s*=\s*'([^']+)'", cdn_response.text).group(1)

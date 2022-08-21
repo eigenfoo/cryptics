@@ -37,17 +37,21 @@ from cryptics.utils import (
     extract_puzzle_name,
     extract_puzzle_date,
     extract_puzzle_url,
+    get_logger,
 )
 
 
-def try_to_parse_as(html, is_parsable_func, parse_func):
+def try_to_parse_as(source_url, html, is_parsable_func, parse_func, logger=None):
+    if logger is None:
+        logger = get_logger()
+
     try:
         is_parseable = is_parsable_func(html)
     except:
         return None
 
     if is_parseable:
-        logging.info(f"Parsing using {parse_func.__name__}")
+        logger.info(f"Parsing using {parse_func.__name__}: {source_url}")
         return parse_func(html)
 
 
@@ -92,7 +96,7 @@ def try_parse(html, source_url):
     ]
 
     for is_parsable_func, parse_func in parsers:
-        data = try_to_parse_as(html, is_parsable_func, parse_func)
+        data = try_to_parse_as(source_url, html, is_parsable_func, parse_func)
         if data is not None:
             return postprocess_data(data, html, source_url)
 

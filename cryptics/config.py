@@ -1,6 +1,6 @@
-import os
-import json
 import datetime
+import json
+import os
 
 from utils import (
     get_new_urls_from_sitemap,

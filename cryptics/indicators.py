@@ -1,8 +1,8 @@
 import re
 import sqlite3
-from typing import Dict, List
 import pandas as pd
 from tqdm import tqdm
+from typing import Dict, List
 
 from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
 

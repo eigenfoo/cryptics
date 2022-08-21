@@ -1,8 +1,8 @@
-import re
-
 import bs4
+import re
 import numpy as np
 import pandas as pd
+
 from cryptics.utils import extract_definitions
 
 

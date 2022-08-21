@@ -1,12 +1,13 @@
+import json
 import logging
 import sqlite3
-import json
 from datetime import datetime
 from bs4 import BeautifulSoup
 
 import pandas as pd
 
 from cryptics.config import SQLITE_DATABASE
+from cryptics.utils import get_logger
 
 
 def parse_json(puzzle, source):
@@ -45,6 +46,8 @@ def parse_json(puzzle, source):
 
 
 if __name__ == "__main__":
+    logger = get_logger()
+
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -54,7 +57,7 @@ if __name__ == "__main__":
         urls_to_parse = {url[0] for url in urls_to_parse}
 
     for url in urls_to_parse:
-        print(f"Parsing {url}")
+        logger.info(f"Parsing: {url}")
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             cursor.execute(f"SELECT content, source FROM raw WHERE location = '{url}';")
@@ -64,9 +67,9 @@ if __name__ == "__main__":
 
         try:
             data = parse_json(puzzle, source)
-            print(f"\tSuccess!")
+            logger.info(f"Successfully parsed: {url}")
         except:
-            print(f"\tFailed.")
+            logger.error(f"Failed to parse: {url}", exc_info=True)
             continue
 
         with sqlite3.connect(SQLITE_DATABASE) as conn:

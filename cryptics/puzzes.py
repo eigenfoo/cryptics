@@ -9,6 +9,7 @@ import pandas as pd
 import puz
 
 from cryptics.config import SQLITE_DATABASE
+from cryptics.utils import get_logger
 
 
 def last_dirname_basename(path):
@@ -85,6 +86,8 @@ def parse_puz(puz_filename):
 
 
 if __name__ == "__main__":
+    logger = get_logger()
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--puz-glob", type=str, required=True)
     parser.add_argument("--source", type=str, required=True)
@@ -103,7 +106,7 @@ if __name__ == "__main__":
     }
 
     for puz_filename in new_puz_filenames:
-        logging.info(f"Parsing and writing {puz_filename}...")
+        logger.info(f"Parsing: {puz_filename}")
         data = parse_puz(puz_filename)
         data["source"] = args.source
         with sqlite3.connect(SQLITE_DATABASE) as conn:

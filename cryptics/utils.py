@@ -1,10 +1,23 @@
+import bs4
 import dateutil
+import logging
 import re
+import requests
+import sys
+import numpy as np
 from typing import List
 
-import bs4
-import numpy as np
-import requests
+
+def get_logger():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler("cryptics.log"),
+            logging.StreamHandler(sys.stderr),
+        ],
+    )
+    return logging.getLogger(__name__)
 
 
 def get_new_urls_from_sitemap(sitemap_url: str, known_urls: List[str], headers):

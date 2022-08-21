@@ -1,9 +1,9 @@
+import bs4
 import re
 import string
-
-import bs4
 import numpy as np
 import pandas as pd
+
 from cryptics.utils import extract_definitions
 
 

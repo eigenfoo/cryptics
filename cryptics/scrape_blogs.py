@@ -1,20 +1,20 @@
 import json
 import logging
+import requests
 import sqlite3
 import time
 
-import requests
-
 from cryptics.config import BLOG_SOURCES, HEADERS, SQLITE_DATABASE
+from cryptics.utils import get_logger
 
 
-logging.basicConfig(level=logging.INFO)
+def scrape_blogs(sources, sleep_interval=20, logger=None):
+    if logger is None:
+        logger = get_logger()
 
-
-def scrape_blogs(sources, sleep_interval=1):
     for source, get_new_urls_func in sources.items():
         # Get new URLs from the blog
-        logging.info(f"Populating from {source}...")
+        logger.info(f"Scraping {source}")
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
             cursor.execute(
@@ -22,15 +22,15 @@ def scrape_blogs(sources, sleep_interval=1):
             )
             known_urls = {url[0] for url in cursor.fetchall()}
         new_urls = get_new_urls_func(known_urls)
-        logging.info(f"Found {len(new_urls)} new urls.")
+        logger.info(f"Found {len(new_urls)} new urls from {source}")
 
-        # Scrape new URLs
+        # Request new URLs
         for i, url in enumerate(new_urls):
-            logging.info(f"{i} / {len(new_urls)}:\t{url}")
+            logger.info(f"Requesting {i}/{len(new_urls)}: {url}")
             response = requests.get(url, headers=HEADERS)
             try:
                 if not response.ok:
-                    logging.error(f"Response not OK for {url}")
+                    logger.error(f"Response not OK: {url}")
                     continue
 
                 with sqlite3.connect(SQLITE_DATABASE) as conn:
@@ -39,10 +39,11 @@ def scrape_blogs(sources, sleep_interval=1):
                     cursor.execute(sql, (source, url, response.text))
                     conn.commit()
             except:
-                logging.error(f"Error inserting {url}")
+                logger.error(f"Error inserting into database: {url}")
 
             time.sleep(sleep_interval)
 
 
 if __name__ == "__main__":
-    scrape_blogs(sources=BLOG_SOURCES)
+    logger = logging.getLogger(__name__)
+    scrape_blogs(sources=BLOG_SOURCES, sleep_interval=1, logger=logger)

@@ -11,7 +11,7 @@ from cryptics.config import SQLITE_DATABASE
 parser = argparse.ArgumentParser()
 parser.add_argument("--rowid", type=str, nargs="?", default=None)
 parser.add_argument("--source", type=str, nargs="?", default="times_xwd_times")
-parser.add_argument("--where", type=str, default="NOT is_reviewed")
+parser.add_argument("--where", type=str, default="NOT coalesce(is_reviewed, 0)")
 args = parser.parse_args()
 
 

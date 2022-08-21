@@ -5,12 +5,16 @@ import sqlite3
 from datetime import datetime
 from typing import List
 
+from cryptics.config import BLOG_SOURCES, SQLITE_DATABASE
 from cryptics.parse import try_parse
 from cryptics.scrape_blogs import scrape_blogs
-from cryptics.config import BLOG_SOURCES, SQLITE_DATABASE
+from cryptics.utils import get_logger
 
 
-def parse_unparsed_html(sources: List[str], datetime_requested: str):
+def parse_unparsed_html(sources: List[str], datetime_requested: str, logger=None):
+    if logger is None:
+        logger = get_logger()
+
     for source in sources:
         with sqlite3.connect(SQLITE_DATABASE) as conn:
             cursor = conn.cursor()
@@ -27,16 +31,14 @@ def parse_unparsed_html(sources: List[str], datetime_requested: str):
 
             data = None
             try:
-                logging.info(f"{i} / {len(urls)}\t" + url)
+                logger.info(f"Parsing {i}/{len(urls)}: {url}")
                 data = try_parse(html, url)
             except:
-                pass
+                logger.error(f"Failed to parse: {url}", exc_info=True)
 
             if data is None:
-                logging.warning("Failed.")
+                logger.error(f"Parse returned None: {url}")
                 continue
-
-            logging.info("Success!")
 
             data["source"] = source
             with sqlite3.connect(SQLITE_DATABASE) as conn:
@@ -48,6 +50,8 @@ def parse_unparsed_html(sources: List[str], datetime_requested: str):
 
 
 if __name__ == "__main__":
+    logger = logging.getLogger(__name__)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--scrape", dest="scrape", action="store_true")
     parser.add_argument("--no-scrape", dest="scrape", action="store_false")
@@ -62,5 +66,5 @@ if __name__ == "__main__":
         scrape_blogs(sources=BLOG_SOURCES, sleep_interval=args.sleep_interval)
 
     parse_unparsed_html(
-        sources=BLOG_SOURCES, datetime_requested=args.datetime_requested
+        sources=BLOG_SOURCES, datetime_requested=args.datetime_requested, logger=logger
     )
