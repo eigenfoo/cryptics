@@ -1,6 +1,7 @@
 beautifulsoup4
 datasette
 datasette-render-markdown
+datasette-publish-fly
 html5lib
 ipdb
 jupyter

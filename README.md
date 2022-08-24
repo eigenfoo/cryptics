@@ -34,9 +34,9 @@ The remainder of the code is licensed under the [MIT License](https://mit-licens
 `cryptics.georgeho.org` is written in a mix of Python, Bash and SQL
 and is run on my personal laptop.
 
-The data is published using [Datasette](https://datasette.io/)
-and deployed on a [Heroku Free Web Dyno](https://dashboard.heroku.com/apps).
-Datasette has been remarkably easy to work with and a pleasure to use.
+The data is published using [Datasette](https://datasette.io/) and deployed on
+a [Fly Trial Plan](https://fly.io/). Datasette has been remarkably easy to work
+with and a pleasure to use.
 
 The documentation is a static site adapted from
 [`pandoc-markdown-css-theme`](https://github.com/jez/pandoc-markdown-css-theme).

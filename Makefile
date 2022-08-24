@@ -91,7 +91,7 @@ serve:  # Serve Datasette locally.
 		--setting max_csv_mb 0
 
 .PHONY: deploy
-deploy:  clean build  # Deploy Datasette project to Heroku.
+deploy:  clean build  # Deploy Datasette project to Fly.
 	bash scripts/deploy.sh
 
 .PHONY: clean
@@ -100,7 +100,3 @@ clean:  # Clean project directories.
 	find cryptics/ -type d -name "__pycache__" -exec rm -rf {} +
 	find cryptics/ -type d -name "__pycache__" -delete
 	find cryptics/ -type f -name "*.pyc" -delete
-
-.PHONY: quota
-quota:  # Show Heroku dynos and remaining free dyno hours.
-	heroku ps --app cryptic-crossword-clues
