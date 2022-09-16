@@ -1,16 +1,20 @@
+-e .
 beautifulsoup4
 datasette
-datasette-render-markdown
 datasette-publish-fly
+datasette-render-markdown
 html5lib
 ipdb
+isort
 jupyter
 lxml
+mypy
 nb_black
 numpy
 pandas
+pre-commit
 puzpy
+pytest
 requests
 sqlite-utils
 tqdm
--e .

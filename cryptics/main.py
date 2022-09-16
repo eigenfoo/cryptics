@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import argparse
 import json
 import logging
 import sqlite3
 from datetime import datetime
-from typing import List
+from typing import Any, Callable, List
 
 from cryptics.config import BLOG_SOURCES, SQLITE_DATABASE
 from cryptics.parse import try_parse
@@ -11,7 +13,9 @@ from cryptics.scrape_blogs import scrape_blogs
 from cryptics.utils import get_logger
 
 
-def parse_unparsed_html(sources: List[str], datetime_requested: str, logger=None):
+def parse_unparsed_html(
+    sources: dict[str, Callable[[Any], Any]], datetime_requested: str, logger=None
+):
     if logger is None:
         logger = get_logger()
 

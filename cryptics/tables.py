@@ -1,5 +1,6 @@
-import bs4
 import re
+
+import bs4
 import numpy as np
 import pandas as pd
 
@@ -45,7 +46,7 @@ def _is_parsable_table_type_1(table):
             (table.astype(str).applymap(str.lower) == "across").all(axis=1).any(),
             # There is a row that says DOWN in all cells
             (table.astype(str).applymap(str.lower) == "down").all(axis=1).any(),
-            # Asides from the ACROSS and DOWN rows, the first two colums are exactly half NaN
+            # Asides from the ACROSS and DOWN rows, the first two columns are exactly half NaN
             2 * table[[0, 1]].isna().all(axis=1).sum() == table.shape[0] - 2,
             # The first column (except for the ACROSS and DOWN rows) is all numeric
             # This is what we expect to be the clue numbers

@@ -2,9 +2,9 @@ import json
 import logging
 import sqlite3
 from datetime import datetime
-from bs4 import BeautifulSoup
 
 import pandas as pd
+from bs4 import BeautifulSoup
 
 from cryptics.config import SQLITE_DATABASE
 from cryptics.utils import get_logger
@@ -53,8 +53,7 @@ if __name__ == "__main__":
         cursor.execute(
             f"SELECT DISTINCT location FROM raw WHERE content_type = 'json' AND NOT is_parsed;"
         )
-        urls_to_parse = cursor.fetchall()
-        urls_to_parse = {url[0] for url in urls_to_parse}
+        urls_to_parse = {url for url, in cursor.fetchall()}
 
     for url in urls_to_parse:
         logger.info(f"Parsing: {url}")

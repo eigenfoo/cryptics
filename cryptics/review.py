@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -6,7 +8,6 @@ import readline
 import sqlite3
 
 from cryptics.config import SQLITE_DATABASE
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--rowid", type=str, nargs="?", default=None)
@@ -41,7 +42,7 @@ def maybe_edit(field, current_value):
 
 if os.path.exists("todo.txt"):
     with open("todo.txt", "r") as f:
-        todo_rowids = f.read().split()
+        todo_rowids: list[str] | None = f.read().split()
 elif args.rowid:
     todo_rowids = [args.rowid]
 else:

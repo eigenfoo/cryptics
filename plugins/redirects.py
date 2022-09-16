@@ -16,7 +16,7 @@ def register_routes():
             ),
         ),
         (
-            # E.g. /clues/clues?x=foo&y=bar -> /data/clues?x=foo&y=bar 
+            # E.g. /clues/clues?x=foo&y=bar -> /data/clues?x=foo&y=bar
             r"^/clues/clues$",
             lambda request: Response.redirect(
                 "/data/clues"
@@ -29,7 +29,7 @@ def register_routes():
             r"^/crypticclueaday$",
             lambda request: Response.redirect(
                 "https://docs.google.com/spreadsheets/d/1wltYlh7YLG8KxR5fOkLB8xCJzOmBP9N3vQN9bBLwuHk",
-                status=301
+                status=301,
             ),
         ),
     ]

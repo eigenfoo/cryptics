@@ -96,8 +96,7 @@ if __name__ == "__main__":
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT DISTINCT source_url FROM clues;")
-        known_urls = cursor.fetchall()
-        known_urls = {url[0] for url in known_urls}
+        known_urls = {url for url, in cursor.fetchall()}
 
     new_puz_filenames = {
         puz_filename

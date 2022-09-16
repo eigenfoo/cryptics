@@ -1,11 +1,11 @@
 import re
 import sqlite3
-import pandas as pd
-from tqdm import tqdm
 from typing import Dict, List
 
-from cryptics.config import SQLITE_DATABASE, INITIALIZE_DB_SQL
+import pandas as pd
+from tqdm import tqdm
 
+from cryptics.config import INITIALIZE_DB_SQL, SQLITE_DATABASE
 
 # TODO: [] should be allowed as parentheses...
 INDICATOR_REGEXES = {
@@ -58,12 +58,13 @@ def find_and_write_indicators(
 ):
     for wordplay, regexes in indicator_regexes.items():
         for regex in regexes:
-            indicators = [
-                s.strip().lower()
-                for s in re.findall(regex, annotation)
-                if s.strip().lower() in clue.lower()
-            ]
-            indicators = "/".join(indicators)
+            indicators = "/".join(
+                [
+                    s.strip().lower()
+                    for s in re.findall(regex, annotation)
+                    if s.strip().lower() in clue.lower()
+                ]
+            )
             if indicators:
                 try:
                     write_cursor.execute(

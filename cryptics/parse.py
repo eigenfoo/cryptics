@@ -1,41 +1,39 @@
-import bs4
 import logging
 
-from cryptics.text import (
-    is_parsable_text_type_1,
-    parse_text_type_1,
-    is_parsable_text_type_2,
-    parse_text_type_2,
-)
-from cryptics.tables import (
-    is_parsable_table_type_1,
-    parse_table_type_1,
-    is_parsable_table_type_2,
-    parse_table_type_2,
-    is_parsable_table_type_3,
-    parse_table_type_3,
-    is_parsable_table_type_4,
-    parse_table_type_4,
-    is_parsable_table_type_5,
-    parse_table_type_5,
-)
+import bs4
+
 from cryptics.lists import (
     is_parsable_list_type_1,
-    parse_list_type_1,
     is_parsable_list_type_2,
-    parse_list_type_2,
     is_parsable_list_type_3,
-    parse_list_type_3,
     is_parsable_list_type_4,
+    parse_list_type_1,
+    parse_list_type_2,
+    parse_list_type_3,
     parse_list_type_4,
 )
-from cryptics.specials import (
-    is_parsable_special_type_1,
-    parse_special_type_1,
+from cryptics.specials import is_parsable_special_type_1, parse_special_type_1
+from cryptics.tables import (
+    is_parsable_table_type_1,
+    is_parsable_table_type_2,
+    is_parsable_table_type_3,
+    is_parsable_table_type_4,
+    is_parsable_table_type_5,
+    parse_table_type_1,
+    parse_table_type_2,
+    parse_table_type_3,
+    parse_table_type_4,
+    parse_table_type_5,
+)
+from cryptics.text import (
+    is_parsable_text_type_1,
+    is_parsable_text_type_2,
+    parse_text_type_1,
+    parse_text_type_2,
 )
 from cryptics.utils import (
-    extract_puzzle_name,
     extract_puzzle_date,
+    extract_puzzle_name,
     extract_puzzle_url,
     get_logger,
 )

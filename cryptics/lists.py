@@ -1,13 +1,14 @@
 import re
+from collections import defaultdict
+
 import bs4
 import numpy as np
 import pandas as pd
-from collections import defaultdict
 
 from cryptics.utils import (
+    extract_definitions,
     get_across_down_indexes,
     get_smallest_divs,
-    extract_definitions,
 )
 
 

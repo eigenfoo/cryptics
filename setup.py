@@ -1,5 +1,4 @@
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 DESCRIPTION = (
     "A Python library to scrape various cryptic crossword blogs and parse the "

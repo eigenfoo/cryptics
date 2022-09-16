@@ -12,7 +12,7 @@ This repository contains:
   [`static`](https://github.com/eigenfoo/cryptics/tree/main/static) files and
   [`templates`](https://github.com/eigenfoo/cryptics/tree/main/templates)
   needed to generate the static site for documentation.
-- Miscellanous
+- Miscellaneous
   [`scripts`](https://github.com/eigenfoo/cryptics/tree/main/scripts) and
   [`queries`](https://github.com/eigenfoo/cryptics/tree/main/queries) to
   publish and deploy the Datasette instance.

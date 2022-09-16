@@ -28,7 +28,9 @@
   },
   "plugins": {
     "datasette-render-markdown": {
-      "columns": ["clue_rowids"]
+      "columns": [
+        "clue_rowids"
+      ]
     }
   }
 }

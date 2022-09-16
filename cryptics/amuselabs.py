@@ -2,11 +2,12 @@ import base64
 import json
 import logging
 import re
-import requests
 import sqlite3
 
-from cryptics.config import SQLITE_DATABASE, AMUSELABS_SOURCES
-from cryptics.utils import get_logger
+import requests
+
+from cryptics.config import AMUSELABS_SOURCES, SQLITE_DATABASE
+from cryptics.utils import get_logger, search
 
 
 # Taken from https://github.com/thisisparker/xword-dl/commit/3927a378e35666f09fff96f091d2f97584b9256e
@@ -84,21 +85,21 @@ if __name__ == "__main__":
             # Get rawc
             solver_response = requests.get(url)
             try:
-                cdn_url = re.search(
+                cdn_url = search(
                     f"https?://\w*\.amuselabs\.com/[^ ]+embed=1", solver_response.text
-                ).group()
-            except AttributeError:
+                )
+            except RuntimeError:
                 logger.warning(
                     f"This URL appears to be AmuseLabs CDN URL, not a webpage with an AmuseLabs embed: {url}"
                 )
                 cdn_url = url
             cdn_response = requests.get(cdn_url)
-            rawc = re.search(f"rawc\s*=\s*'([^']+)'", cdn_response.text).group(1)
+            rawc = search(f"rawc\s*=\s*'([^']+)'", cdn_response.text, group=1)
 
             # Get the "key" from the JavaScript
-            js_url = re.search(
+            js_url = search(
                 r'"([^"]+c-min.js[^"]+)"', cdn_response.content.decode("utf-8")
-            ).groups()[0]
+            )
             base_url = "/".join(cdn_url.split("/")[:-1])
             js_url = base_url + "/" + js_url
             js_response = requests.get(js_url)

@@ -1,7 +1,6 @@
 from datasette import hookimpl
 from datasette.utils.asgi import Response
 
-
 ROBOTS_TXT = """
 Sitemap: https://cryptics.georgeho.org/sitemap.xml
 """.strip()

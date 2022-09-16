@@ -1,8 +1,9 @@
 import json
 import logging
-import requests
 import sqlite3
 import time
+
+import requests
 
 from cryptics.config import BLOG_SOURCES, HEADERS, SQLITE_DATABASE
 from cryptics.utils import get_logger

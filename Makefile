@@ -2,13 +2,6 @@
 
 PYTHON := python3
 PIP := pip
-CONDA := conda
-SHELL := bash
-
-.ONESHELL:
-.SHELLFLAGS := -eu -o pipefail -c
-.DELETE_ON_ERROR:
-MAKEFLAGS += --no-builtin-rules
 
 STATIC_TARGETS := templates/index.html templates/pages/datasheet.html
 
@@ -16,16 +9,6 @@ STATIC_TARGETS := templates/index.html templates/pages/datasheet.html
 help:
 	@printf "Usage:\n"
 	@grep -E '^[a-zA-Z_-]+:.*?# .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?# "}; {printf "\033[1;34mmake %-10s\033[0m%s\n", $$1, $$2}'
-
-.PHONY: conda
-conda:  # Set up a conda environment for development.
-	@printf "Creating conda environment...\n"
-	${CONDA} create --yes --name env-cryptic-info python=3.6
-	${CONDA} activate env-cryptic-info
-	${PIP} install -U pip
-	${PIP} install -r requirements.txt
-	${CONDA} deactivate
-	@printf "\n\nConda environment created! \033[1;34mRun \`conda activate env-cryptic-info\` to activate it.\033[0m\n\n\n"
 
 .PHONY: venv
 venv:  # Set up a Python virtual environment for development.
@@ -35,18 +18,15 @@ venv:  # Set up a Python virtual environment for development.
 	source venv/bin/activate
 	${PIP} install -U pip
 	${PIP} install -r requirements.txt
+	pre-commit install
+	mypy --install-types
 	deactivate
 	@printf "\n\nVirtual environment created! \033[1;34mRun \`source venv/bin/activate\` to activate it.\033[0m\n\n\n"
 
-.PHONY: black
-black:  # Format code in-place using black.
-	black cryptics/ *.py
-
-.PHONY: lint
-lint:  # Lint code using black.
-	@printf "Checking code style with black...\n"
-	black --check --diff cryptics/
-	@printf "\033[1;34mBlack passes!\033[0m\n\n"
+.PHONY: test
+test:  # Run checks using pre-commit.
+	mypy --package cryptics --ignore-missing-imports
+	pytest cryptics/
 
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.

@@ -1,11 +1,14 @@
-import bs4
-import dateutil
+from __future__ import annotations
+
 import logging
 import re
-import requests
 import sys
-import numpy as np
 from typing import List
+
+import bs4
+import numpy as np
+import requests
+from dateutil import parser
 
 
 def get_logger():
@@ -20,7 +23,22 @@ def get_logger():
     return logging.getLogger(__name__)
 
 
-def get_new_urls_from_sitemap(sitemap_url: str, known_urls: List[str], headers):
+def search(pattern: str, string: str, group: int = 0, **kwargs) -> str:
+    """Scan through string looking for a match to the pattern.
+
+    pattern: pattern to search for.
+    string: string to search through.
+    group: integer representing the capturing group to return (0 represents the
+        entire match).
+    """
+    match = re.search(pattern, string, **kwargs)
+    if match:
+        return match.group(group)
+    else:
+        raise RuntimeError(f"No match for {pattern}")
+
+
+def get_new_urls_from_sitemap(sitemap_url: str, known_urls: set[str], headers):
     response = requests.get(sitemap_url, headers=headers)
     soup = bs4.BeautifulSoup(response.text, "lxml")
     urls = {url.text for url in soup.find_all("loc")}
@@ -29,7 +47,7 @@ def get_new_urls_from_sitemap(sitemap_url: str, known_urls: List[str], headers):
 
 
 def get_new_urls_from_nested_sitemaps(
-    sitemap_url: str, nested_sitemap_regex: str, known_urls: List[str], headers
+    sitemap_url: str, nested_sitemap_regex: str, known_urls: set[str], headers
 ):
     response = requests.get(sitemap_url, headers=headers)
     soup = bs4.BeautifulSoup(response.text, "lxml")
@@ -78,8 +96,7 @@ def get_across_down_indexes(divs):
 def extract_puzzle_name(source_url: str, soup):
     d = {
         "bigdave44": lambda source_url, soup: (
-            re.search("^[A-Za-z ]*[-—––:\s]*[0-9,]+", soup.find("title").text)
-            .group()
+            search("^[A-Za-z ]*[-—––:\s]*[0-9,]+", soup.find("title").text)
             .replace("DT", "Daily Telegraph")
             .replace("ST", "Sunday Telegraph")
         ),
@@ -98,7 +115,7 @@ def extract_puzzle_name(source_url: str, soup):
             soup.find("title").text.replace("THE HINDU CROSSWORD CORNER: ", "")
         ),
         "times-xwd-times": lambda source_url, soup: (
-            re.search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text).group()
+            search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text)
         ),
     }
     for source_url_fragment, extract_puzzle_name_func in d.items():
@@ -109,23 +126,23 @@ def extract_puzzle_name(source_url: str, soup):
 def extract_puzzle_date(source_url: str, soup):
     d = {
         "bigdave44": lambda source_url, soup: (
-            re.search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
+            search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
         ),
         "fifteensquared": lambda source_url, soup: (
-            re.search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
+            search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
         ),
         "natpostcryptic": lambda source_url, soup: (
-            dateutil.parser.parse(
-                soup.find_all("h2", "date-header")[0].text.strip()
-            ).strftime("%Y-%m-%d")
+            parser.parse(soup.find_all("h2", "date-header")[0].text.strip()).strftime(
+                "%Y-%m-%d"
+            )
         ),
         "thehinducrosswordcorner": lambda source_url, soup: (
-            dateutil.parser.parse(
-                soup.find_all("h2", "date-header")[0].text.strip()
-            ).strftime("%Y-%m-%d")
+            parser.parse(soup.find_all("h2", "date-header")[0].text.strip()).strftime(
+                "%Y-%m-%d"
+            )
         ),
         "times-xwd-times": lambda source_url, soup: (
-            dateutil.parser.parse(
+            parser.parse(
                 soup.find_all("div", attrs={"class": "asset-meta asset-entry-date"})[
                     0
                 ].text.strip()

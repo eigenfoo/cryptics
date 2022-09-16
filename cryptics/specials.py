@@ -1,7 +1,8 @@
-import bs4
-import pandas as pd
 import re
 import string
+
+import bs4
+import pandas as pd
 
 from cryptics.utils import extract_definitions
 

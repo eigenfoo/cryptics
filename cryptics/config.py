@@ -3,11 +3,10 @@ import json
 import os
 
 from utils import (
-    get_new_urls_from_sitemap,
-    get_new_urls_from_nested_sitemaps,
     filter_urls,
+    get_new_urls_from_nested_sitemaps,
+    get_new_urls_from_sitemap,
 )
-
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
