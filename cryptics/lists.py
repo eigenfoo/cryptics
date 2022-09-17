@@ -5,11 +5,22 @@ import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import (
-    extract_definitions,
-    get_across_down_indexes,
-    get_smallest_divs,
-)
+from cryptics.utils import extract_definitions
+
+
+def get_smallest_divs(soup):
+    """Return the smallest (i.e. innermost, un-nested) `div` HTML tags."""
+    return [
+        div for div in soup.find_all("div") if not div.find("div") and div.text.strip()
+    ]
+
+
+def get_across_down_indexes(divs):
+    (across_index,) = np.where([div.text.strip().lower() == "across" for div in divs])[
+        0
+    ]
+    (down_index,) = np.where([div.text.strip().lower() == "down" for div in divs])[0]
+    return across_index, down_index
 
 
 def is_parsable_list_type_1(html):
