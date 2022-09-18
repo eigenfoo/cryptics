@@ -1,0 +1,15 @@
+{
+  "bigdave44": [
+    "http://puzzles.telegraph.co.uk/123",
+    "https://puzzles.telegraph.co.uk/foo",
+    "https://www.telegraph.co.uk/puzzles/bar"
+  ],
+  "fifteensquared": [
+    "https://www.theguardian.com/crosswords/foo",
+    "https://puzzles.independent.co.uk/games/cryptic-crossword-independent/foo",
+    "https://www.ft.com/content/foo"
+  ],
+  "times-xwd-times": [
+    "https://www.thetimes.co.uk/puzzles/foo"
+  ]
+}

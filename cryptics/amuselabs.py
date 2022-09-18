@@ -69,8 +69,8 @@ def load_rawc(rawc, amuseKey=None):
 if __name__ == "__main__":
     logger = get_logger()
 
-    for source, url_generator in AMUSELABS_SOURCES.items():
-        for url in url_generator():
+    for source, urls in AMUSELABS_SOURCES.items():
+        for url in urls:
             # Skip URL if already scraped
             with sqlite3.connect(SQLITE_DATABASE) as conn:
                 cursor = conn.cursor()

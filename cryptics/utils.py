@@ -3,11 +3,12 @@ from __future__ import annotations
 import logging
 import re
 import sys
-from typing import List
+from typing import Callable, Iterable, List
 
 import bs4
 import numpy as np
 import requests
+from bs4 import BeautifulSoup
 from dateutil import parser
 
 
@@ -38,151 +39,110 @@ def search(pattern: str, string: str, group: int = 0, **kwargs) -> str:
         raise RuntimeError(f"No match for {pattern}")
 
 
-def get_new_urls_from_sitemap(sitemap_url: str, known_urls: set[str], headers):
-    response = requests.get(sitemap_url, headers=headers)
-    soup = bs4.BeautifulSoup(response.text, "lxml")
-    urls = {url.text for url in soup.find_all("loc")}
-    new_urls = list(urls - known_urls)
-    return new_urls
+def filter_strings_by_keyword(strings: Iterable[str], keywords: Iterable[str]):
+    """Filter a list of strings to only those containing at least one keyword.
 
-
-def get_new_urls_from_nested_sitemaps(
-    sitemap_url: str, nested_sitemap_regex: str, known_urls: set[str], headers
-):
-    response = requests.get(sitemap_url, headers=headers)
-    soup = bs4.BeautifulSoup(response.text, "lxml")
-    nested_sitemaps = list(
-        reversed(
-            [
-                sitemap.text
-                for sitemap in soup.find_all("loc")
-                if re.search(nested_sitemap_regex, sitemap.text)
-            ]
-        )
-    )
-
-    new_urls = []
-    for nested_sitemap_url in nested_sitemaps:
-        new_urls_ = get_new_urls_from_sitemap(nested_sitemap_url, known_urls, headers)
-        new_urls.extend(new_urls_)
-
-    return new_urls
-
-
-def filter_urls(urls: List[str], filter_words: List[str]):
+    strings: strings to filter
+    keywords: keywords to filter strings by. Case insensitive.
     """
-    Hex (a.k.a. Emily Cox & Henry Rathvon) only publish a cryptic in the
-    National Post on Saturdays. On all other days, the blog reviews other
-    cryptics (usually The Daily Telegraph, for which we have bigdave44).
-    """
-    return [url for url in urls if any([s in url.lower() for s in filter_words])]
-
-
-def get_smallest_divs(soup):
-    """Return the smallest (i.e. innermost, un-nested) `div` HTML tags."""
     return [
-        div for div in soup.find_all("div") if not div.find("div") and div.text.strip()
+        string
+        for string in strings
+        if any([keyword.lower() in string.lower() for keyword in keywords])
     ]
 
 
-def get_across_down_indexes(divs):
-    (across_index,) = np.where([div.text.strip().lower() == "across" for div in divs])[
-        0
+PUZZLE_NAME_EXTRACTORS = {
+    "bigdave44": lambda _, soup: (
+        search(r"^[A-Za-z ]*[-—––:\s]*[0-9,]+", soup.find("title").text)
+        .replace("DT", "Daily Telegraph")
+        .replace("ST", "Sunday Telegraph")
+    ),
+    "fifteensquared": lambda source_url, _: (
+        [s for s in source_url.split("/") if s][-1]
+        .title()
+        .replace("-", " ")
+        .replace("By", "by")
+    ),
+    "natpostcryptic": lambda _, soup: (
+        soup.find("title").text.replace("National Post Cryptic Crossword Forum: ", "")
+    ),
+    "thehinducrosswordcorner": lambda _, soup: (
+        soup.find("title").text.replace("THE HINDU CROSSWORD CORNER: ", "")
+    ),
+    "times-xwd-times": lambda _, soup: (
+        search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text)
+    ),
+}
+
+PUZZLE_DATE_EXTRACTORS = {
+    "bigdave44": lambda source_url, _: (
+        search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
+    ),
+    "fifteensquared": lambda source_url, _: (
+        search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
+    ),
+    "natpostcryptic": lambda _, soup: (
+        parser.parse(soup.find("h2", "date-header").text.strip()).strftime("%Y-%m-%d")
+    ),
+    "thehinducrosswordcorner": lambda _, soup: (
+        parser.parse(soup.find("h2", "date-header").text.strip()).strftime("%Y-%m-%d")
+    ),
+    "times-xwd-times": lambda _, soup: (
+        parser.parse(
+            soup.find("div", "asset-meta asset-entry-date").text.strip()
+        ).strftime("%Y-%m-%d")
+    ),
+}
+
+
+def _soup_to_puzzle_url(puzzle_url_regex: str) -> Callable[[None, BeautifulSoup], str]:
+    # FIXME: why do I need to pull this out into a separate function? Is it
+    # because of the nested lambdas?
+    return lambda _, soup: soup.find(
+        "a", attrs={"href": lambda s: bool(re.findall(puzzle_url_regex, s))}
+    ).get("href")
+
+
+PUZZLE_URL_EXTRACTORS = {
+    source_url_fragment: _soup_to_puzzle_url(puzzle_url_regex)
+    for source_url_fragment, puzzle_url_regex in [
+        (
+            "bigdave44",
+            r"|".join(
+                [
+                    r"^https?://puzzles.telegraph.co.uk/.+",
+                    r"^https?://www.telegraph.co.uk/puzzles/.+",
+                ]
+            ),
+        ),
+        (
+            "fifteensquared",
+            r"|".join(
+                [
+                    r"^https?://www.theguardian.com/crosswords/.+",
+                    r"^https?://puzzles.independent.co.uk/games/cryptic-crossword-independent/.+",
+                    r"^https?://www.ft.com/content/.+",
+                ]
+            ),
+        ),
+        ("times-xwd-times", r"^https?://www.thetimes.co.uk/puzzles/.+"),
     ]
-    (down_index,) = np.where([div.text.strip().lower() == "down" for div in divs])[0]
-    return across_index, down_index
+}
 
 
-def extract_puzzle_name(source_url: str, soup):
-    d = {
-        "bigdave44": lambda source_url, soup: (
-            search("^[A-Za-z ]*[-—––:\s]*[0-9,]+", soup.find("title").text)
-            .replace("DT", "Daily Telegraph")
-            .replace("ST", "Sunday Telegraph")
-        ),
-        "fifteensquared": lambda source_url, soup: (
-            [s for s in source_url.split("/") if s][-1]
-            .title()
-            .replace("-", " ")
-            .replace("By", "by")
-        ),
-        "natpostcryptic": lambda source_url, soup: (
-            soup.find("title").text.replace(
-                "National Post Cryptic Crossword Forum: ", ""
-            )
-        ),
-        "thehinducrosswordcorner": lambda source_url, soup: (
-            soup.find("title").text.replace("THE HINDU CROSSWORD CORNER: ", "")
-        ),
-        "times-xwd-times": lambda source_url, soup: (
-            search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text)
-        ),
-    }
-    for source_url_fragment, extract_puzzle_name_func in d.items():
-        if source_url_fragment in source_url:
-            return extract_puzzle_name_func(source_url, soup).strip()
-
-
-def extract_puzzle_date(source_url: str, soup):
-    d = {
-        "bigdave44": lambda source_url, soup: (
-            search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
-        ),
-        "fifteensquared": lambda source_url, soup: (
-            search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
-        ),
-        "natpostcryptic": lambda source_url, soup: (
-            parser.parse(soup.find_all("h2", "date-header")[0].text.strip()).strftime(
-                "%Y-%m-%d"
-            )
-        ),
-        "thehinducrosswordcorner": lambda source_url, soup: (
-            parser.parse(soup.find_all("h2", "date-header")[0].text.strip()).strftime(
-                "%Y-%m-%d"
-            )
-        ),
-        "times-xwd-times": lambda source_url, soup: (
-            parser.parse(
-                soup.find_all("div", attrs={"class": "asset-meta asset-entry-date"})[
-                    0
-                ].text.strip()
-            ).strftime("%Y-%m-%d")
-        ),
-    }
-    for source_url_fragment, extract_puzzle_date_func in d.items():
-        if source_url_fragment in source_url:
-            return extract_puzzle_date_func(source_url, soup).strip()
-
-
-def extract_puzzle_url(soup):
-    puzzle_url_regexes = [
-        r"^https?://www.theguardian.com/crosswords/.+",
-        r"^https?://puzzles.independent.co.uk/games/cryptic-crossword-independent/.+",
-        r"^https?://www.ft.com/content/.+",
-        r"^https?://www.thetimes.co.uk/puzzles/.+",
-        r"^https?://puzzles.telegraph.co.uk/.+",
-    ]
-    try:
-        puzzle_urls = [
-            link.get("href")
-            for link in soup.find_all(
-                "a",
-                attrs={
-                    "href": lambda s: any(
-                        [
-                            bool(re.findall(puzzle_url_regex, s))
-                            for puzzle_url_regex in puzzle_url_regexes
-                        ]
-                    )
-                },
-            )
-        ]
-    except:
-        return None
-
-    if len(puzzle_urls) == 1:
-        return puzzle_urls[0].strip()
-
+def extract_string_from_url_and_soup(
+    url: str,
+    soup: BeautifulSoup,
+    extractors: dict[str, Callable[[str, BeautifulSoup], str]],
+) -> str | None:
+    """TODO: document me!"""
+    for source_url_fragment, extract_puzzle_name_func in extractors.items():
+        if source_url_fragment in url:
+            try:
+                return extract_puzzle_name_func(url, soup).strip()
+            except AttributeError:
+                pass
     return None
 
 

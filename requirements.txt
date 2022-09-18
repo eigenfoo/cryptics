@@ -15,6 +15,7 @@ pandas
 pre-commit
 puzpy
 pytest
+pytest-mock
 requests
 sqlite-utils
 tqdm

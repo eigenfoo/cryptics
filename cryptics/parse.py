@@ -32,9 +32,10 @@ from cryptics.text import (
     parse_text_type_2,
 )
 from cryptics.utils import (
-    extract_puzzle_date,
-    extract_puzzle_name,
-    extract_puzzle_url,
+    PUZZLE_DATE_EXTRACTORS,
+    PUZZLE_NAME_EXTRACTORS,
+    PUZZLE_URL_EXTRACTORS,
+    extract_string_from_url_and_soup,
     get_logger,
 )
 
@@ -64,13 +65,15 @@ def postprocess_data(data, html, source_url):
     # them here - it's simpler.
     data["clue_number"] = data["clue_number"].str.strip().replace(".", "")
 
-    data["puzzle_name"] = extract_puzzle_name(source_url, soup)
-    # Occasionally the puzzle date fails. Simply ignore it and move on.
-    try:
-        data["puzzle_date"] = extract_puzzle_date(source_url, soup)
-    except:
-        pass
-    data["puzzle_url"] = extract_puzzle_url(soup)
+    data["puzzle_name"] = extract_string_from_url_and_soup(
+        source_url, soup, PUZZLE_NAME_EXTRACTORS
+    )
+    data["puzzle_date"] = extract_string_from_url_and_soup(
+        source_url, soup, PUZZLE_DATE_EXTRACTORS
+    )
+    data["puzzle_url"] = extract_string_from_url_and_soup(
+        source_url, soup, PUZZLE_URL_EXTRACTORS
+    )
     data["source_url"] = source_url
     return data
 
@@ -96,6 +99,7 @@ def try_parse(html, source_url):
     for is_parsable_func, parse_func in parsers:
         data = try_to_parse_as(source_url, html, is_parsable_func, parse_func)
         if data is not None:
+            logger.info(f"Successfully parsed: {source_url}")
             return postprocess_data(data, html, source_url)
 
     return None
