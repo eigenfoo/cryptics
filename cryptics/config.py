@@ -50,10 +50,13 @@ BLOG_SOURCES: dict[str, Callable[[set[str]], set[str]]] = {
         r"https://thehinducrosswordcorner.blogspot.com/sitemap.xml\?page=[0-9]*",
         known_urls,
     ),
-    "times_xwd_times": lambda known_urls: get_new_urls_from_sitemap(
-        "https://times-xwd-times.livejournal.com/sitemap.xml",
-        known_urls,
-    ),
+    # As of May 15, 2022, Times for the Times has migrated from
+    # times-xwd-times.livejournal.com to timesforthetimes.co.uk See
+    # https://times-xwd-times.livejournal.com/2740044.html for more.
+    # "times_xwd_times": lambda known_urls: get_new_urls_from_sitemap(
+    #     "https://times-xwd-times.livejournal.com/sitemap.xml",
+    #     known_urls,
+    # ),
     "1across": lambda known_urls: filter_strings_by_keyword(
         get_new_urls_from_nested_sitemaps(
             "https://www.1across.org/sitemap.xml",
