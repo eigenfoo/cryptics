@@ -1,0 +1,194 @@
+[
+  [
+    [
+      "T-bar path (5)"
+    ],
+    [
+      "T"
+    ],
+    [
+      "T"
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Groups of trees contain round channels (7)",
+      "Little pain learning petition (7)"
+    ],
+    [
+      "T",
+      "Groups of trees",
+      "petition"
+    ],
+    [
+      "T",
+      "Groups of trees",
+      "petition"
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Groups of trees contain round channels (7)",
+      "Little pain learning petition (7)"
+    ],
+    [
+      "T",
+      "extraneous definition",
+      "Groups of trees",
+      "another extraneous definition",
+      "petition"
+    ],
+    [
+      "T",
+      "Groups of trees",
+      "petition"
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Groups of trees contain round channels (7)",
+      "Little pain learning petition (7)"
+    ],
+    [
+      "T"
+    ],
+    [
+      "T",
+      null,
+      null
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Groups of trees contain round channels (7)",
+      "Little pain learning petition (7)"
+    ],
+    [
+      "extraneous definition",
+      "another extraneous definition",
+      "Groups of trees",
+      "yet another extraneous definition",
+      "petition"
+    ],
+    [
+      null,
+      "Groups of trees",
+      "petition"
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Groups of trees contain round channels (7)",
+      "Little pain learning petition (7)"
+    ],
+    [
+      "T",
+      "extraneous definition",
+      "another extraneous definition",
+      "yet another extraneous definition",
+      "petition"
+    ],
+    [
+      "T",
+      null,
+      "petition"
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Groups of trees contain round channels (7)",
+      "Little pain learning petition (7)"
+    ],
+    [
+      "petition"
+    ],
+    [
+      null,
+      null,
+      "petition"
+    ]
+  ],
+  [
+    [
+      "T-bar path (5)",
+      "Dirty earth (4)",
+      "Fixed horse's home (6)"
+    ],
+    [
+      "T",
+      "Dirty",
+      "earth",
+      "horse's home"
+    ],
+    [
+      "T",
+      "Dirty/earth",
+      "horse's home"
+    ]
+  ],
+  [
+    [
+      "Dirty earth (4)",
+      "T-bar path (5)",
+      "Fixed horse's home (6)"
+    ],
+    [
+      "Dirty",
+      "extraneous definition",
+      "earth",
+      "T",
+      "another extraneous definition",
+      "Fixed",
+      "horse's home"
+    ],
+    [
+      "Dirty/earth",
+      "T",
+      "Fixed/horse's home"
+    ]
+  ],
+  [
+    [
+      "Dirty earth (4)",
+      "T-bar path (5)",
+      "Fixed horse's home (6)"
+    ],
+    [
+      "Dirty",
+      "earth",
+      "Fixed",
+      "horse's home"
+    ],
+    [
+      "Dirty/earth",
+      null,
+      "Fixed/horse's home"
+    ]
+  ],
+  [
+    [
+      "Dirty earth (4)",
+      "T-bar path (5)",
+      "Fixed horse's home (6)"
+    ],
+    [
+      "Dirty",
+      "earth",
+      "T",
+      "extraneous definition",
+      "another extraneous definition",
+      "yet another extraneous definition"
+    ],
+    [
+      "Dirty/earth",
+      "T",
+      null
+    ]
+  ]
+]

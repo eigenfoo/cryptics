@@ -4,7 +4,7 @@ import string
 import bs4
 import pandas as pd
 
-from cryptics.utils import extract_definitions
+from cryptics.utils import align_suspected_definitions_with_clues
 
 DASHES = ["-", "—", "–", "–", "—"]
 PUNCTUATION_IN_CLUE = list("/\\")
@@ -155,7 +155,7 @@ def parse_special_type_1(html):
         answers.append(delete_chars(answer, PUNCTUATION_IN_ANSWERS))
         annotations.append(annotation.strip("".join(PUNCTUATION_IN_ANNOTATION + [" "])))
 
-    definitions = extract_definitions(soup, clues, raw_definitions)
+    definitions = align_suspected_definitions_with_clues(clues, raw_definitions)
 
     out = pd.DataFrame(
         data=[clue_numbers, answers, clues, annotations, definitions],

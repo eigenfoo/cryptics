@@ -5,7 +5,7 @@ import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import extract_definitions
+from cryptics.utils import align_suspected_definitions_with_clues
 
 
 def is_parsable_text_type_1(html):
@@ -130,8 +130,7 @@ def parse_text_type_1(html):
                 else:
                     break
 
-    definitions = extract_definitions(
-        asset_body,
+    definitions = align_suspected_definitions_with_clues(
         clues,
         [
             tag.text
@@ -236,8 +235,8 @@ def parse_text_type_2(html):
         answers.append(answer.group().strip())
         annotations.append(annotation)
 
-    definitions = extract_definitions(
-        entry_content, clues, [tag.text for tag in entry_content.find_all("b")]
+    definitions = align_suspected_definitions_with_clues(
+        clues, [tag.text for tag in entry_content.find_all("b")]
     )
 
     return pd.DataFrame(

@@ -87,3 +87,16 @@ class TestExtractStringFromUrlAndSoup:
                 )
                 == puzzle_url
             )
+
+
+@pytest.mark.parametrize(
+    "clues, suspected_definitions, expected_definitions",
+    json.load(open("tests/test_align_suspected_definitions_with_clues.json", "r")),
+)
+def test_align_suspected_definitions_with_clues(
+    clues, suspected_definitions, expected_definitions
+):
+    assert (
+        utils.align_suspected_definitions_with_clues(clues, suspected_definitions)
+        == expected_definitions
+    )

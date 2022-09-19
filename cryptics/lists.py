@@ -5,7 +5,7 @@ import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import extract_definitions
+from cryptics.utils import align_suspected_definitions_with_clues
 
 
 def get_smallest_divs(soup):
@@ -388,8 +388,8 @@ def parse_list_type_4(html):
         answers.append(answer.group().strip())
         annotations.append(annotation)
 
-    definitions = extract_definitions(
-        entry_content, clues, [tag.text for tag in entry_content.find_all("i")]
+    definitions = align_suspected_definitions_with_clues(
+        clues, [tag.text for tag in entry_content.find_all("i")]
     )
 
     out = pd.DataFrame(

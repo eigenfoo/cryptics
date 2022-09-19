@@ -97,8 +97,9 @@ PUZZLE_DATE_EXTRACTORS = {
 
 
 def _soup_to_puzzle_url(puzzle_url_regex: str) -> Callable[[None, BeautifulSoup], str]:
-    # FIXME: why do I need to pull this out into a separate function? Is it
-    # because of the nested lambdas?
+    # TODO: If I move this inside PUZZLE_URL_EXTRACTORS, the unit tests will fail.
+    # Why do I need to pull this out into a separate function? Is it because of
+    # the nested lambdas?
     return lambda _, soup: soup.find(
         "a", attrs={"href": lambda s: bool(re.findall(puzzle_url_regex, s))}
     ).get("href")
@@ -146,59 +147,81 @@ def extract_string_from_url_and_soup(
     return None
 
 
-def extract_definitions(soup, clues, raw_definitions):
-    definitions = []
-    i = 0
+def align_suspected_definitions_with_clues(
+    clues: list[str], suspected_definitions: list[str]
+):
+    """Given a list of clues and a list of strings that may or may not be
+    definitions, produce a list of definitions.
 
-    is_first_definition = True
-    while raw_definitions:
-        definition = raw_definitions.pop(0)
+    This function should be used when clues can be reliably extracted from a
+    web page's HTML, but definitions within clues are not reliably indicated
+    with HTML tags: simply pass the clues and best "suspected definitions", and
+    this function will "align" them correctly. See the unit tests for examples.
+    Note that this function is case sensitive.
 
-        # If definition is in clue, add to `definitions` at appropriate place.
-        if definition.strip() in clues[i]:
-            if len(definitions) > 0:
-                definitions[-1] = "/".join([definitions[-1], definition])
+    clues: list of clues.
+    suspected_definitions: a list of suspected definitions. Definitions may be
+        missing and (in the case of double definition clues) spread out over
+        multiple suspected definitions.
+    """
+    # This code is a lot more readable if we use empty strings (instead of
+    # Nones) when we lack a definition. We will convert them back to Nones later.
+    definitions: list[str] = []
+    clue_index: int = 0
+
+    for suspected_definition in suspected_definitions:
+        # If suspected_definition is in clue...
+        if suspected_definition.strip() in clues[clue_index]:
+            # add it to the latest definition...
+            if definitions:
+                definitions[-1] = "/".join([definitions[-1], suspected_definition])
+            # ... unless we have no definitions yet, in which case let this be
+            # our first definition.
             else:
-                definitions.append(definition)
-            is_first_definition = False
+                definitions = [suspected_definition]
 
+        # Otherwise, if suspected_definition is not in clue...
         else:
-            # Search for the next clue that contains this definition. Upon
-            # finding one, handle it appropriately and stop looking.
-            for j, clue in enumerate(clues[i + 1 :]):
-                if definition in clue:
-                    if j == 0:
-                        if is_first_definition:
-                            # Edge case: if the first clue lacks a definition,
-                            # but the second clue has a definition.
-                            definitions.append(None)
-                        definitions.append(definition)
-                        i += 1
-                    else:
-                        definitions.extend(j * [None])
-                        raw_definitions = [definition] + raw_definitions
-                        i += j
-                    is_first_definition = False
+            # search for the next clue that contains suspected_definition...
+            for lookahead_index, clue in enumerate(clues[clue_index + 1 :]):
+                # and upon finding it:
+                # (a) add it to definitions, but only after adding empty
+                #     strings for each clue we find that does not contain the
+                #     suspected definition, as we must lack definitions for
+                #     these clues.
+                # (b) increment the clue_index. TODO: why max(1,
+                #     lookahead_index + 1)?
+                # (c) stop searching for clues containing suspected_definition.
+                if suspected_definition.strip() in clue:
+                    # In the edge case where we have no definitions yet, pad
+                    # them with empty strings. TODO: why max(1, lookahead_index)?
+                    if not definitions:
+                        definitions = (clue_index + max(1, lookahead_index)) * [""]
+
+                    definitions.extend(lookahead_index * [""] + [suspected_definition])
+                    clue_index += max(1, lookahead_index + 1)
                     break
 
+    # Top up definitions to be of equal length to clues.
     if len(definitions) < len(clues):
-        while len(definitions) < len(clues):
-            definitions.append(None)
+        definitions.extend((len(clues) - len(definitions)) * [""])
+    # Fail if we've somehow produced more definitions than clues.
     elif len(definitions) > len(clues):
-        raise RuntimeError("More definitions than clues")
+        raise RuntimeError(f"Produced more definitions than clues: {definitions}")
 
-    if all(
+    if not all(
         [
+            # Note all([]) evaluates to True, in the case of definition == "".
             all(
                 [
                     s.strip().lower() in clue.lower()
                     for s in definition.strip().split("/")
                 ]
             )
-            or definition is None
             for (definition, clue) in zip(definitions, clues)
         ]
     ):
-        return definitions
-    else:
-        raise RuntimeError("Produced mismatched definitions and clues")
+        raise RuntimeError("Produced mismatched definitions and clues.")
+
+    # Immediately before returning, replace empty strings with Nones.
+    return [definition if definition else None for definition in definitions]

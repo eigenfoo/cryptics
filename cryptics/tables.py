@@ -4,7 +4,7 @@ import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import extract_definitions
+from cryptics.utils import align_suspected_definitions_with_clues
 
 
 def is_parsable_table_type_1(html):
@@ -131,7 +131,7 @@ def _parse_table_type_1(table, soup):
             },
         )
     ]
-    definitions = extract_definitions(soup, clues, raw_definitions)
+    definitions = align_suspected_definitions_with_clues(clues, raw_definitions)
 
     out = pd.DataFrame(
         data=np.transpose(np.array([clue_numbers, answers, clues, annotations])),
@@ -241,8 +241,8 @@ def _parse_table_type_2(table, soup):
     table = table.drop(columns=["ClueAndAnnotation"])
 
     # Add definitions
-    definitions = extract_definitions(
-        soup, table["clue"], [tag.text for tag in soup.find_all("u")]
+    definitions = align_suspected_definitions_with_clues(
+        table["clue"], [tag.text for tag in soup.find_all("u")]
     )
     if definitions is not None:
         table["definition"] = definitions
@@ -448,8 +448,8 @@ def _parse_table_type_4(table, soup):
     table["annotation"] = table["annotation"] + " " + table["explanation"]
     table = table.drop(columns=["answer_with_explanation", "explanation"])
 
-    definitions = extract_definitions(
-        soup, table["clue"], [tag.text for tag in soup.find_all("u")]
+    definitions = align_suspected_definitions_with_clues(
+        table["clue"], [tag.text for tag in soup.find_all("u")]
     )
     if definitions is not None:
         table["definition"] = definitions
@@ -533,8 +533,7 @@ def _parse_table_type_5(table, table_html):
         for clue_number in table.iloc[:, 0].dropna().tolist()
     ]
     clues = table.iloc[::2, 1].tolist()
-    definitions = extract_definitions(
-        table_html,
+    definitions = align_suspected_definitions_with_clues(
         clues,
         [
             tag.text
