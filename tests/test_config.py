@@ -12,7 +12,8 @@ from cryptics import config
 def test_valid_global_variables():
     assert os.path.exists(config.PROJECT_DIR)
     assert os.path.exists(config.INITIALIZE_DB_SQL)
-    assert os.path.exists(config.SQLITE_DATABASE)
+    # This only exists on my local machine.
+    # assert os.path.exists(config.SQLITE_DATABASE)
     assert set(["User-Agent", "Accept-Encoding"]).issubset(config.HEADERS)
 
 
