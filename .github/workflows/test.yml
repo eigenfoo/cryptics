@@ -1,0 +1,27 @@
+name: Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.9"
+    - name: Install dependencies
+      run: |-
+        pip install -U pip
+        pip install -r requirements.txt
+        pre-commit install
+        mypy --install-types --non-interactive --ignore-missing-imports cryptics/
+    - name: Format
+      run: make format
+    - name: Test
+      run: make test

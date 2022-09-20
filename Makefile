@@ -25,6 +25,7 @@ venv:  # Set up a Python virtual environment for development.
 	${PIP} install -r requirements.txt
 	mypy --install-types --non-interactive --ignore-missing-imports cryptics/
 	pre-commit install
+	mypy --install-types --non-interactive --ignore-missing-imports cryptics/
 	deactivate
 	@printf "\n\nVirtual environment created! \033[1;34mRun \`source venv/bin/activate\` to activate it.\033[0m\n\n\n"
 
