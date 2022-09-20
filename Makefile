@@ -5,6 +5,11 @@ PIP := pip
 
 STATIC_TARGETS := templates/index.html templates/pages/datasheet.html
 
+.ONESHELL:
+.SHELLFLAGS := -e -c
+.DELETE_ON_ERROR:
+.MAKEFLAGS += --no-builtin-rules
+
 .PHONY: help
 help:
 	@printf "Usage:\n"
@@ -15,9 +20,10 @@ venv:  # Set up a Python virtual environment for development.
 	@printf "Creating Python virtual environment...\n"
 	rm -rf venv/
 	${PYTHON} -m venv venv/
-	source venv/bin/activate
+	. venv/bin/activate
 	${PIP} install -U pip
 	${PIP} install -r requirements.txt
+	mypy --install-types --non-interactive --ignore-missing-imports cryptics/
 	pre-commit install
 	mypy --install-types --non-interactive --ignore-missing-imports cryptics/
 	deactivate
@@ -28,14 +34,14 @@ format: # Format code in-place using pre-commit.
 	pre-commit run --all-files
 
 .PHONY: test
-test:  # Run checks using pre-commit.
+test:  # Run mypy and pytest tests.
 	mypy --ignore-missing-imports --package cryptics
 	mypy --ignore-missing-imports tests/
 	pytest tests/
 
 .PHONY: update
 update:  # Scrape and parse unprocessed blog posts.
-	# ${PYTHON} cryptics/amuselabs.py
+	${PYTHON} cryptics/amuselabs.py
 	${PYTHON} cryptics/jsons.py
 	${PYTHON} cryptics/main.py --sleep-interval=1
 
