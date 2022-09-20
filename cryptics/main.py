@@ -14,7 +14,9 @@ from cryptics.utils import get_logger
 
 
 def parse_unparsed_html(
-    sources: dict[str, Callable[[Any], Any]], datetime_requested: str, logger=None
+    sources: dict[str, Callable[[Any], Any]],
+    datetime_requested: str,
+    logger: logging.Logger | None = None,
 ):
     if logger is None:
         logger = get_logger()

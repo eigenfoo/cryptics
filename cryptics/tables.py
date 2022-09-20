@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import re
+from typing import Iterable
 
 import bs4
 import numpy as np
@@ -7,7 +10,7 @@ import pandas as pd
 from cryptics.utils import align_suspected_definitions_with_clues
 
 
-def is_parsable_table_type_1(html):
+def is_parsable_table_type_1(html: str):
     tables = pd.read_html(html)
     for table in tables:
         try:
@@ -18,7 +21,7 @@ def is_parsable_table_type_1(html):
     return False
 
 
-def _is_parsable_table_type_1(table):
+def _is_parsable_table_type_1(table: pd.DataFrame):
     """
     Identifies if a table looks like this:
 
@@ -85,7 +88,7 @@ def _is_parsable_table_type_1(table):
     )
 
 
-def parse_table_type_1(html):
+def parse_table_type_1(html: str):
     tables = pd.read_html(html)
     soup = bs4.BeautifulSoup(html, "html.parser")
     for table in tables:
@@ -93,20 +96,18 @@ def parse_table_type_1(html):
             return _parse_table_type_1(table, soup)
 
 
-def _parse_table_type_1(table, soup):
+def _parse_table_type_1(table: pd.DataFrame, soup: bs4.BeautifulSoup):
     (across_index,) = np.where(table[0].str.lower() == "across")[0]
     (down_index,) = np.where(table[0].str.lower() == "down")[0]
 
     # Clue numbers
-    raw_clue_numbers = table[0].astype(str)
+    raw_clue_numbers: Iterable[str | None] = table[0].astype(str)
 
-    clue_numbers = []
+    clue_numbers: list[str] = []
     for i, row in enumerate(raw_clue_numbers):
-        if i == across_index or i == down_index:
-            continue
-        elif row is None and across_index < i < down_index:
+        if row is not None and across_index < i < down_index:
             clue_numbers.append(row + "a")
-        elif row is None:
+        elif row is not None and down_index < i:
             clue_numbers.append(row + "d")
 
     # Answers
@@ -143,7 +144,7 @@ def _parse_table_type_1(table, soup):
     return out
 
 
-def is_parsable_table_type_2(html):
+def is_parsable_table_type_2(html: str):
     tables = pd.read_html(html)
     for table in tables:
         try:
@@ -154,7 +155,7 @@ def is_parsable_table_type_2(html):
     return False
 
 
-def _is_parsable_table_type_2(table):
+def _is_parsable_table_type_2(table: pd.DataFrame):
     """
     Identifies if a table looks like this (possibly with extra columns filled
     with NaNs):
@@ -201,7 +202,7 @@ def _is_parsable_table_type_2(table):
     )
 
 
-def parse_table_type_2(html):
+def parse_table_type_2(html: str):
     tables = pd.read_html(html)
     soup = bs4.BeautifulSoup(html, "html.parser")
     for table in tables:
@@ -209,7 +210,7 @@ def parse_table_type_2(html):
             return _parse_table_type_2(table, soup)
 
 
-def _parse_table_type_2(table, soup):
+def _parse_table_type_2(table: pd.DataFrame, soup: bs4.BeautifulSoup):
     # Cut out any extraneous columns
     table = table.iloc[:, :3]
 
@@ -250,7 +251,7 @@ def _parse_table_type_2(table, soup):
     return table
 
 
-def is_parsable_table_type_3(html):
+def is_parsable_table_type_3(html: str):
     tables = pd.read_html(html)
     for table in tables:
         try:
@@ -261,7 +262,7 @@ def is_parsable_table_type_3(html):
     return False
 
 
-def _is_parsable_table_type_3(table):
+def _is_parsable_table_type_3(table: pd.DataFrame):
     """
     Identifies if a table looks like this:
 
@@ -318,14 +319,14 @@ def _is_parsable_table_type_3(table):
     )
 
 
-def parse_table_type_3(html):
+def parse_table_type_3(html: str):
     tables = pd.read_html(html)
     for table in tables:
         if _is_parsable_table_type_3(table):
             return _parse_table_type_3(table)
 
 
-def _parse_table_type_3(table):
+def _parse_table_type_3(table: pd.DataFrame):
     # The column names are ['Across', 'Across.1', 'Across.2', ...]
     # Make them just another row, for simplicity
     table = table.T.reset_index().T.reset_index(drop=True)
@@ -349,7 +350,7 @@ def _parse_table_type_3(table):
     return table
 
 
-def is_parsable_table_type_4(html):
+def is_parsable_table_type_4(html: str):
     tables = pd.read_html(html)
     for table in tables:
         try:
@@ -360,7 +361,7 @@ def is_parsable_table_type_4(html):
     return False
 
 
-def _is_parsable_table_type_4(table):
+def _is_parsable_table_type_4(table: pd.DataFrame):
     """
     Examples:
 
@@ -400,7 +401,7 @@ def _is_parsable_table_type_4(table):
     )
 
 
-def parse_table_type_4(html):
+def parse_table_type_4(html: str):
     tables = pd.read_html(html)
     soup = bs4.BeautifulSoup(html, "lxml")
     for table in tables:
@@ -408,7 +409,7 @@ def parse_table_type_4(html):
             return _parse_table_type_4(table, soup)
 
 
-def _parse_table_type_4(table, soup):
+def _parse_table_type_4(table: pd.DataFrame, soup: bs4.BeautifulSoup):
     """
     Identifies if a table looks like this:
 
@@ -457,7 +458,7 @@ def _parse_table_type_4(table, soup):
     return table
 
 
-def is_parsable_table_type_5(html):
+def is_parsable_table_type_5(html: str):
     tables = pd.read_html(html)
     num_parsable = 0
     for table in tables:
@@ -471,7 +472,7 @@ def is_parsable_table_type_5(html):
     return False
 
 
-def _is_parsable_table_type_5(table):
+def _is_parsable_table_type_5(table: pd.DataFrame):
     """
     Identifies if a table looks like this:
 
@@ -509,7 +510,7 @@ def _is_parsable_table_type_5(table):
     )
 
 
-def parse_table_type_5(html):
+def parse_table_type_5(html: str):
     tables = pd.read_html(html)
     soup = bs4.BeautifulSoup(html, "lxml")
     table_htmls = soup.find_all("table")
@@ -524,7 +525,7 @@ def parse_table_type_5(html):
     return pd.concat(parsed_tables).reset_index(drop=True)
 
 
-def _parse_table_type_5(table, table_html):
+def _parse_table_type_5(table: pd.DataFrame, table_html: bs4.BeautifulSoup):
     clue_direction = "a" if table.iloc[0, 0].lower() == "across" else "d"
     table = table.iloc[1:]  # Delete row with just "Across" or "Down"
 

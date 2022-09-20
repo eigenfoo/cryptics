@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 import logging
+from typing import Callable
 
 import bs4
+import pandas as pd
 
 from cryptics.lists import (
     is_parsable_list_type_1,
@@ -40,7 +44,13 @@ from cryptics.utils import (
 )
 
 
-def try_to_parse_as(source_url, html, is_parsable_func, parse_func, logger=None):
+def try_to_parse_as(
+    source_url: str,
+    html: str,
+    is_parsable_func: Callable[[str], bool],
+    parse_func: Callable[[str], pd.DataFrame],
+    logger: logging.Logger | None = None,
+):
     if logger is None:
         logger = get_logger()
 
@@ -54,7 +64,7 @@ def try_to_parse_as(source_url, html, is_parsable_func, parse_func, logger=None)
         return parse_func(html)
 
 
-def postprocess_data(data, html, source_url):
+def postprocess_data(data: pd.DataFrame, html: str, source_url: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
 
     data["clue"] = data["clue"].str.strip()
@@ -78,7 +88,10 @@ def postprocess_data(data, html, source_url):
     return data
 
 
-def try_parse(html, source_url):
+def try_parse(html: str, source_url: str, logger: logging.Logger | None = None):
+    if logger is None:
+        logger = get_logger()
+
     data = None
 
     parsers = [
@@ -97,7 +110,9 @@ def try_parse(html, source_url):
     ]
 
     for is_parsable_func, parse_func in parsers:
-        data = try_to_parse_as(source_url, html, is_parsable_func, parse_func)
+        data = try_to_parse_as(
+            source_url, html, is_parsable_func, parse_func, logger=logger
+        )
         if data is not None:
             logger.info(f"Successfully parsed: {source_url}")
             return postprocess_data(data, html, source_url)

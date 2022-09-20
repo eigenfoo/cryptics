@@ -10,7 +10,7 @@ from cryptics.config import SQLITE_DATABASE
 from cryptics.utils import get_logger
 
 
-def parse_json(puzzle, source):
+def parse_json(puzzle: dict, source: str) -> pd.DataFrame:
     clues = [placed_word["clue"]["clue"] for placed_word in puzzle["placedWords"]]
     clues = [BeautifulSoup(clue, "lxml").text for clue in clues]
     try:

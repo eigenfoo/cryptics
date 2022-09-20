@@ -55,7 +55,7 @@ def find_and_write_indicators(
     annotation: str,
     indicator_regexes: Dict[str, List[str]],
     write_cursor: sqlite3.Cursor,
-):
+) -> None:
     for wordplay, regexes in indicator_regexes.items():
         for regex in regexes:
             indicators = "/".join(
@@ -84,7 +84,7 @@ def find_and_write_charades(
     annotation: str,
     charade_regexes: List[str],
     write_cursor: sqlite3.Cursor,
-):
+) -> None:
     for regex in charade_regexes:
         charades = [
             (clue_row_id, charade.strip().lower(), answer.strip())
@@ -98,7 +98,7 @@ def find_and_write_charades(
             write_cursor.executemany(sql, charades)
 
 
-def unpivot_indicators_table():
+def unpivot_indicators_table() -> None:
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         df = pd.read_sql("SELECT * FROM indicators;", conn)
     df = df.melt(id_vars=["clue_rowid"], var_name="wordplay", value_name="indicator")
@@ -116,7 +116,7 @@ def unpivot_indicators_table():
         df.to_sql("indicators_unpivoted", conn, if_exists="replace", index=False)
 
 
-def unpivot_charades_table():
+def unpivot_charades_table() -> None:
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         df = pd.read_sql("SELECT * FROM charades;", conn)
     df = (
@@ -130,7 +130,7 @@ def unpivot_charades_table():
         df.to_sql("charades_unpivoted", conn, if_exists="replace", index=False)
 
 
-def consolidate_indicators():
+def consolidate_indicators() -> None:
     with sqlite3.connect(SQLITE_DATABASE) as conn:
         indicators = pd.read_sql("SELECT * FROM indicators;", conn)
 

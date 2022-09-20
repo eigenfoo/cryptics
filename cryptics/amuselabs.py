@@ -11,7 +11,7 @@ from cryptics.utils import get_logger, search
 
 
 # Taken from https://github.com/thisisparker/xword-dl/commit/3927a378e35666f09fff96f091d2f97584b9256e
-def load_rawc(rawc, amuseKey=None):
+def load_rawc(rawc: str, amuseKey=None):
     try:
         # the original case is just base64'd JSON
         return json.loads(base64.b64decode(rawc).decode("utf-8"))
@@ -87,19 +87,19 @@ if __name__ == "__main__":
             try:
                 cdn_url = search(
                     f"https?://\w*\.amuselabs\.com/[^ ]+embed=1", solver_response.text
-                )
+                ).group()
             except RuntimeError:
                 logger.warning(
                     f"This URL appears to be AmuseLabs CDN URL, not a webpage with an AmuseLabs embed: {url}"
                 )
                 cdn_url = url
             cdn_response = requests.get(cdn_url)
-            rawc = search(f"rawc\s*=\s*'([^']+)'", cdn_response.text, group=1)
+            rawc = search(f"rawc\s*=\s*'([^']+)'", cdn_response.text).group(1)
 
             # Get the "key" from the JavaScript
             js_url = search(
                 r'"([^"]+c-min.js[^"]+)"', cdn_response.content.decode("utf-8")
-            )
+            ).group()
             base_url = "/".join(cdn_url.split("/")[:-1])
             js_url = base_url + "/" + js_url
             js_response = requests.get(js_url)

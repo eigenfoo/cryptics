@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 import string
 
@@ -12,13 +14,13 @@ PUNCTUATION_IN_ANNOTATION = DASHES + list("{}~*/\\")
 PUNCTUATION_IN_ANSWERS = DASHES + list("(){}|~*/\\_<'")
 
 
-def delete_chars(s, chars):
+def delete_chars(string: str, chars: list[str]):
     for char in chars:
-        s = s.replace(char, "")
-    return s
+        string = string.replace(char, "")
+    return string
 
 
-def is_parsable_special_type_1(html):
+def is_parsable_special_type_1(html: str):
     """
     Identifies if the web page looks like this:
 
@@ -67,7 +69,7 @@ def is_parsable_special_type_1(html):
     )
 
 
-def parse_special_type_1(html):
+def parse_special_type_1(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
 

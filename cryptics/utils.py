@@ -3,7 +3,8 @@ from __future__ import annotations
 import logging
 import re
 import sys
-from typing import Callable, Iterable, List
+from re import Match
+from typing import Any, Callable, Iterable, List
 
 import bs4
 import numpy as np
@@ -24,17 +25,28 @@ def get_logger():
     return logging.getLogger(__name__)
 
 
-def search(pattern: str, string: str, group: int = 0, **kwargs) -> str:
-    """Scan through string looking for a match to the pattern.
+def match(pattern: str, string: str, **kwargs) -> Match[str]:
+    """Call re.match and raise an error if no match is found.
 
     pattern: pattern to search for.
     string: string to search through.
-    group: integer representing the capturing group to return (0 represents the
-        entire match).
+    """
+    match = re.match(pattern, string, **kwargs)
+    if match:
+        return match
+    else:
+        raise RuntimeError(f"No match for {pattern}")
+
+
+def search(pattern: str, string: str, **kwargs) -> Match[str]:
+    """Call re.search and raise an error if no match is found.
+
+    pattern: pattern to search for.
+    string: string to search through.
     """
     match = re.search(pattern, string, **kwargs)
     if match:
-        return match.group(group)
+        return match
     else:
         raise RuntimeError(f"No match for {pattern}")
 
@@ -55,6 +67,7 @@ def filter_strings_by_keyword(strings: Iterable[str], keywords: Iterable[str]):
 PUZZLE_NAME_EXTRACTORS = {
     "bigdave44": lambda _, soup: (
         search(r"^[A-Za-z ]*[-—––:\s]*[0-9,]+", soup.find("title").text)
+        .group()
         .replace("DT", "Daily Telegraph")
         .replace("ST", "Sunday Telegraph")
     ),
@@ -71,16 +84,16 @@ PUZZLE_NAME_EXTRACTORS = {
         soup.find("title").text.replace("THE HINDU CROSSWORD CORNER: ", "")
     ),
     "times-xwd-times": lambda _, soup: (
-        search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text)
+        search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text).group()
     ),
 }
 
 PUZZLE_DATE_EXTRACTORS = {
     "bigdave44": lambda source_url, _: (
-        search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
+        search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
     ),
     "fifteensquared": lambda source_url, _: (
-        search(r"\d{4}/\d{2}/\d{2}", source_url).replace("/", "-")
+        search(r"\d{4}/\d{2}/\d{2}", source_url).group().replace("/", "-")
     ),
     "natpostcryptic": lambda _, soup: (
         parser.parse(soup.find("h2", "date-header").text.strip()).strftime("%Y-%m-%d")
@@ -96,7 +109,7 @@ PUZZLE_DATE_EXTRACTORS = {
 }
 
 
-def _soup_to_puzzle_url(puzzle_url_regex: str) -> Callable[[None, BeautifulSoup], str]:
+def _soup_to_puzzle_url(puzzle_url_regex: str) -> Callable[[Any, BeautifulSoup], str]:
     # TODO: If I move this inside PUZZLE_URL_EXTRACTORS, the unit tests will fail.
     # Why do I need to pull this out into a separate function? Is it because of
     # the nested lambdas?

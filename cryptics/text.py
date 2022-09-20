@@ -5,10 +5,10 @@ import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import align_suspected_definitions_with_clues
+from cryptics.utils import align_suspected_definitions_with_clues, search
 
 
-def is_parsable_text_type_1(html):
+def is_parsable_text_type_1(html: str):
     """
     Identifies if the text looks something like this:
 
@@ -60,7 +60,7 @@ def is_parsable_text_type_1(html):
     )
 
 
-def parse_text_type_1(html):
+def parse_text_type_1(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     asset_body = soup.find(
         "div", attrs={"class": lambda s: s in ["asset-body", "entry-content"]}
@@ -105,12 +105,14 @@ def parse_text_type_1(html):
                     clue_number, clue = line_1.split(maxsplit=1)
                 have_clue_number_from_previous_line = False
 
-                if not re.search(r"[0-9]+[a|d]?", clue_number.strip()):
-                    raise ValueError("Clue number does not seem correct.")
+                try:
+                    re.search(r"[0-9]+[a|d]?", clue_number.strip())
+                except RuntimeError as err:
+                    raise RuntimeError("Clue number does not seem correct.") from err
                 # FIXME: this regex needs some fixing... see notebook
                 # It splits multi-word answers into the answer and annotation
                 # column... it needs to be greedier!
-                match = re.search("^\{?\s?[A-Z ]+\s?\}?(\s[-|—|–|–|:]\s)?", line_2)
+                match = search("^\{?\s?[A-Z ]+\s?\}?(\s[-|—|–|–|:]\s)?", line_2)
                 answer = line_2[: match.end()].strip(string.whitespace + "-—–:{}")
                 annotation = line_2[match.end() :].strip(
                     string.whitespace + string.punctuation + "—"
@@ -150,7 +152,7 @@ def parse_text_type_1(html):
     return table
 
 
-def is_parsable_text_type_2(html):
+def is_parsable_text_type_2(html: str):
     """
     Identifies if the text looks something like this:
 
@@ -186,7 +188,7 @@ def is_parsable_text_type_2(html):
     )
 
 
-def parse_text_type_2(html):
+def parse_text_type_2(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
 
@@ -212,21 +214,22 @@ def parse_text_type_2(html):
             clue_direction = "d"
             continue
 
-        clue_number = re.search(r"^[0-9]+[a|d]?", line)
-        if clue_number is None:
+        try:
+            clue_number_match = search(r"^[0-9]+[a|d]?", line)
+        except RuntimeError:
             continue
 
         try:
-            enumeration = re.search(r"\([0-9,\- ]*\)", line)
-            clue = line[clue_number.end() : enumeration.end()].strip()
-            answer = re.search(r"^[A-Z\s\-]+\b", line[enumeration.end() :])
+            enumeration = search(r"\([0-9,\- ]*\)", line)
+            clue = line[clue_number_match.end() : enumeration.end()].strip()
+            answer = search(r"^[A-Z\s\-]+\b", line[enumeration.end() :])
             annotation = line[enumeration.end() + answer.end() :].strip()
         except AttributeError:
             # One or more of the fields is missing. This could be due to a line
             # like e.g. "21 See 14 (7)". Just skip it.
             continue
 
-        clue_number = clue_number.group()
+        clue_number = clue_number_match.group()
         if not ("a" in clue_number or "d" in clue_number):
             clue_number += clue_direction
 

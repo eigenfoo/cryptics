@@ -1,21 +1,24 @@
+from __future__ import annotations
+
 import re
 from collections import defaultdict
+from typing import Iterable
 
 import bs4
 import numpy as np
 import pandas as pd
 
-from cryptics.utils import align_suspected_definitions_with_clues
+from cryptics.utils import align_suspected_definitions_with_clues, match, search
 
 
-def get_smallest_divs(soup):
+def get_smallest_divs(soup: bs4.BeautifulSoup):
     """Return the smallest (i.e. innermost, un-nested) `div` HTML tags."""
     return [
         div for div in soup.find_all("div") if not div.find("div") and div.text.strip()
     ]
 
 
-def get_across_down_indexes(divs):
+def get_across_down_indexes(divs: Iterable[bs4.Tag]):
     (across_index,) = np.where([div.text.strip().lower() == "across" for div in divs])[
         0
     ]
@@ -23,7 +26,7 @@ def get_across_down_indexes(divs):
     return across_index, down_index
 
 
-def is_parsable_list_type_1(html):
+def is_parsable_list_type_1(html: str):
     """
     Checks that the HTML primarily consists of paragraphs like this:
 
@@ -65,7 +68,7 @@ def is_parsable_list_type_1(html):
     )
 
 
-def parse_list_type_1(html):
+def parse_list_type_1(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     paragraphs = entry_content.find_all("p")
@@ -82,31 +85,29 @@ def parse_list_type_1(html):
         if set(["br", "span", "strong"]).issubset(
             set([tag.name for tag in paragraph.find_all()])
         ):  # TODO: should we make the subset more restrictive? Which tags?
-            clue_number = None
-
             # Break down <br/> tags - they'll just get in the way
             for tag in paragraph.select("br"):
                 tag.extract()
+            # [clue_number (optional), clue, first_definition, ..., last_definition, answer, annotations_in_pieces]
             tag_text = [tag.text for tag in paragraph.find_all()]
 
-            # [clue_number (optional), clue, first_definition, ..., last_definition, answer, annotations_in_pieces]
+            clue = tag_text.pop(0)
             if re.search(r"^[0-9]+(a|d)?$", tag_text[0].strip()):
                 clue_number = tag_text.pop(0)
-
-            clue = tag_text.pop(0)
-            (answer_index,) = np.where([text.strip().isupper() for text in tag_text])
-            answer_index = answer_index[0]
+            else:
+                match = re.search(re.escape(clue), paragraph.text)
+                clue_number = (
+                    paragraph.text[: match.start()] if match is not None else ""
+                )
+            (answer_indexes,) = np.where([text.strip().isupper() for text in tag_text])
+            answer_index: int = answer_indexes[0]
             answer = tag_text[answer_index]
             definition = "/".join(tag_text[:answer_index])
 
-            if clue_number is None:
-                clue_number = paragraph.text[
-                    : re.search(re.escape(clue), paragraph.text).start()
-                ]
-
-            annotation = paragraph.text[
-                re.search(re.escape(answer), paragraph.text).end() :
-            ].strip()
+            match = re.search(re.escape(answer), paragraph.text)
+            annotation = (
+                paragraph.text[match.end() :].strip() if match is not None else ""
+            )
 
             data["clue_number"].append(
                 clue_number.strip()
@@ -119,7 +120,7 @@ def parse_list_type_1(html):
     return pd.DataFrame(data)
 
 
-def is_parsable_list_type_2(html):
+def is_parsable_list_type_2(html: str):
     """
     Checks that the HTML primarily consists of divs like this:
 
@@ -156,7 +157,7 @@ def is_parsable_list_type_2(html):
     return 32 * 3 - 20 <= len(smallest_divs) <= 32 * 3 + 20
 
 
-def parse_list_type_2(html):
+def parse_list_type_2(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     smallest_divs = [
@@ -196,7 +197,7 @@ def parse_list_type_2(html):
                 for tag in div_1.find_all("span")
                 if bool(re.match("^[0-9]+$", tag.text.strip(". ")))
             ][0]
-            match = re.match(clue_number, div_1.text)
+            match = match(clue_number, div_1.text)
             clue = div_1.text[match.end() :]
             definition = "/".join(
                 [
@@ -225,7 +226,7 @@ def parse_list_type_2(html):
     return pd.DataFrame(data)
 
 
-def is_parsable_list_type_3(html):
+def is_parsable_list_type_3(html: str):
     """
     Checks that the HTML primarily consists of paragraphs like this (note that
     this test is fairly crude: it merely counts the number of `p` tags that
@@ -263,7 +264,7 @@ def is_parsable_list_type_3(html):
     )
 
 
-def parse_list_type_3(html):
+def parse_list_type_3(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", "entry-content")
     paragraphs = entry_content.find_all("p")
@@ -293,9 +294,11 @@ def parse_list_type_3(html):
         p_2 = paragraphs[i + 1]
 
         try:
-            clue_number = re.match(r"^[0-9]+\.?\s*", p_1.text.strip()).group()
-            match = re.match(clue_number, p_1.text)
-            clue = p_1.text[match.end() :].strip()
+            clue_number_match = match(r"^[0-9]+\.?\s*", p_1.text.strip())
+            clue_number = clue_number_match.group()
+
+            clue_match = match(clue_number, p_1.text)
+            clue = p_1.text[clue_match.end() :].strip()
             definition = "/".join(
                 [
                     tag.text
@@ -326,7 +329,7 @@ def parse_list_type_3(html):
     return pd.DataFrame(data)
 
 
-def is_parsable_list_type_4(html):
+def is_parsable_list_type_4(html: str):
     """
     Checks that the HTML primarily consists of divs like this:
 
@@ -351,7 +354,7 @@ def is_parsable_list_type_4(html):
     return out
 
 
-def parse_list_type_4(html):
+def parse_list_type_4(html: str):
     soup = bs4.BeautifulSoup(html, "html.parser")
     entry_content = soup.find("div", attrs={"class": lambda s: s in ["entry-content"]})
     smallest_divs = get_smallest_divs(entry_content)
@@ -367,19 +370,23 @@ def parse_list_type_4(html):
             continue
 
         try:
-            clue_number = re.search(r"^[0-9]*[a|d]?", smallest_divs[i].text)
-            enumeration = re.search(r"\([0-9,\- ]*\)", smallest_divs[i].text)
-            clue = smallest_divs[i].text[clue_number.end() : enumeration.end()].strip()
-            answer = re.search(
-                r"^[A-Z\s\-]+\b", smallest_divs[i].text[enumeration.end() :]
+            clue_number_match = search(r"^[0-9]*[a|d]?", smallest_divs[i].text)
+            enumeration_match = search(r"\([0-9,\- ]*\)", smallest_divs[i].text)
+            clue = (
+                smallest_divs[i]
+                .text[clue_number_match.end() : enumeration_match.end()]
+                .strip()
+            )
+            answer = search(
+                r"^[A-Z\s\-]+\b", smallest_divs[i].text[enumeration_match.end() :]
             )
             annotation = (
-                smallest_divs[i].text[enumeration.end() + answer.end() :].strip()
+                smallest_divs[i].text[enumeration_match.end() + answer.end() :].strip()
             )
         except AttributeError:
             continue
 
-        clue_number = clue_number.group()
+        clue_number = clue_number_match.group()
         if not ("a" in clue_number or "d" in clue_number):
             clue_number += "a" if across_index < i and i < down_index else "d"
 

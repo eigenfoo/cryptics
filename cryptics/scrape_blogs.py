@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import json
 import logging
 import sqlite3
 import time
+from typing import Callable
 
 import requests
 
@@ -9,7 +12,11 @@ from cryptics.config import BLOG_SOURCES, HEADERS, SQLITE_DATABASE
 from cryptics.utils import get_logger
 
 
-def scrape_blogs(sources, sleep_interval=20, logger=None):
+def scrape_blogs(
+    sources: dict[str, Callable[[set[str]], set[str]]],
+    sleep_interval: int = 20,
+    logger: logging.Logger | None = None,
+):
     if logger is None:
         logger = get_logger()
 

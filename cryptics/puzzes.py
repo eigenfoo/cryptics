@@ -12,14 +12,14 @@ from cryptics.config import SQLITE_DATABASE
 from cryptics.utils import get_logger
 
 
-def last_dirname_basename(path):
+def last_dirname_basename(path: str):
     return os.path.join(
         os.path.basename(os.path.dirname(path)),
         os.path.basename(path),
     )
 
 
-def insert_puz(source, path, puz_filename):
+def insert_puz(source: str, path: str, puz_filename: str):
     with open(puz_filename, "rb") as f:
         puz_blob = f.read()
 
@@ -32,7 +32,7 @@ def insert_puz(source, path, puz_filename):
         conn.commit()
 
 
-def parse_puz(puz_filename):
+def parse_puz(puz_filename: str):
     puzzle = puz.read(puz_filename)
     numbering = puzzle.clue_numbering()
 

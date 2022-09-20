@@ -15,16 +15,28 @@ def test_get_logger():
     assert isinstance(logger, logging.Logger)
 
 
-def test_search():
-    assert utils.search(r"def", "def") == "def"
-    assert utils.search(r"def", "abcdefghi") == "def"
-    assert utils.search(r"def", "abcdefghidefghi") == "def"
-    assert utils.search(r"def(.{3})", "abcdefghi") == "defghi"
-    assert utils.search(r"def(.{3})", "abcdefghi", group=1) == "ghi"
-    with pytest.raises(IndexError):
-        utils.search(r"def", "abcdefghi", group=1)
+def test_match(mocker):
+    pattern = r"abc"
+    string = "abcdefghi"
+
     with pytest.raises(RuntimeError):
-        utils.search(r"jkl", "abcdefghi")
+        utils.match(r"jkl", string)
+
+    patched_search = mocker.patch("re.match")
+    utils.match(pattern, string)
+    patched_search.assert_called_once_with(pattern, string)
+
+
+def test_search(mocker):
+    pattern = r"abc"
+    string = "abcdefghi"
+
+    with pytest.raises(RuntimeError):
+        utils.search(r"jkl", string)
+
+    patched_search = mocker.patch("re.search")
+    utils.search(pattern, string)
+    patched_search.assert_called_once_with(pattern, string)
 
 
 def test_filter_strings_by_keyword():
