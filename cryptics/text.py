@@ -78,6 +78,7 @@ def parse_text_type_1(html: str):
     clues = []
     clue_numbers = []
     have_clue_number_from_previous_line = False
+    clue_direction = None
 
     while lines:
         line_1 = None
@@ -121,7 +122,11 @@ def parse_text_type_1(html: str):
                 clue_number = clue_number.strip(string.whitespace + string.punctuation)
                 clue_numbers.append(
                     clue_number
-                    + (clue_direction if clue_number[-1] not in ["a", "d"] else "")
+                    + (
+                        clue_direction
+                        if clue_direction and clue_number[-1] not in ["a", "d"]
+                        else ""
+                    )
                 )
                 clues.append(clue)
                 answers.append(answer)
