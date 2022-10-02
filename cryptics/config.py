@@ -65,6 +65,16 @@ BLOG_SOURCES: dict[str, Callable[[set[str]], set[str]]] = {
         ),
         ["solutions", "annotations"],
     ),
+    # thenationcryptic only publishes solutions on blog posts titled "Solution"
+    # (mainly for The Nation puzzles).
+    "thenationcryptic": lambda known_urls: filter_strings_by_keyword(
+        get_new_urls_from_nested_sitemaps(
+            "https://thenationcryptic.blogspot.com/sitemap.xml",
+            r"https://thenationcryptic.blogspot.com/sitemap.xml\?page=[0-9]*",
+            known_urls,
+        ),
+        ["solution", "solutions"],
+    ),
 }
 
 

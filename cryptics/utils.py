@@ -86,6 +86,9 @@ PUZZLE_NAME_EXTRACTORS = {
     "times-xwd-times": lambda _, soup: (
         search(r"^[A-Za-z ]*[0-9,]+", soup.find("title").text).group()
     ),
+    "thenationcryptic": lambda source_url, _: (
+        search(r"no-[0-9]*", source_url).group().title().replace("-", " ")
+    ),
 }
 
 PUZZLE_DATE_EXTRACTORS = {
@@ -105,6 +108,9 @@ PUZZLE_DATE_EXTRACTORS = {
         parser.parse(
             soup.find("div", "asset-meta asset-entry-date").text.strip()
         ).strftime("%Y-%m-%d")
+    ),
+    "thenationcryptic": lambda _, soup: (
+        parser.parse(soup.find("h2", "date-header").text.strip()).strftime("%Y-%m-%d")
     ),
 }
 
@@ -141,6 +147,7 @@ PUZZLE_URL_EXTRACTORS = {
             ),
         ),
         ("times-xwd-times", r"^https?://www.thetimes.co.uk/puzzles/.+"),
+        ("thenationcryptic", r"https?://www.thenation.com/article/.+"),
     ]
 }
 
