@@ -12,6 +12,7 @@ mypy
 nb_black
 numpy
 pandas
+pdfplumber
 pre-commit
 puzpy
 pytest

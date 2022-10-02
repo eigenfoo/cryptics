@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import re
 import sys
 from re import Match
@@ -23,6 +24,13 @@ def get_logger():
         ],
     )
     return logging.getLogger(__name__)
+
+
+def last_dirname_basename(path: str) -> str:
+    return os.path.join(
+        os.path.basename(os.path.dirname(path)),
+        os.path.basename(path),
+    )
 
 
 def match(pattern: str, string: str, **kwargs) -> Match[str]:

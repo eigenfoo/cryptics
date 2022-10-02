@@ -9,14 +9,7 @@ import pandas as pd
 import puz
 
 from cryptics.config import SQLITE_DATABASE
-from cryptics.utils import get_logger
-
-
-def last_dirname_basename(path: str):
-    return os.path.join(
-        os.path.basename(os.path.dirname(path)),
-        os.path.basename(path),
-    )
+from cryptics.utils import get_logger, last_dirname_basename
 
 
 def insert_puz(source: str, path: str, puz_filename: str):
