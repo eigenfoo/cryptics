@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import datetime
 import json
-import os
 import re
+from os.path import abspath, dirname, join
 from typing import Callable, Generator
 
 import bs4
@@ -11,10 +11,12 @@ import requests
 
 from cryptics.utils import filter_strings_by_keyword
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = dirname(dirname(abspath(__file__)))
 
-INITIALIZE_DB_SQL = os.path.join(PROJECT_DIR, "queries", "initialize-db.sql")
-SQLITE_DATABASE = os.path.join(PROJECT_DIR, "cryptics.sqlite3")
+TESTS_DIR = join(PROJECT_DIR, "tests")
+TESTS_DATA_DIR = join(PROJECT_DIR, "tests/data")
+INITIALIZE_DB_SQL = join(PROJECT_DIR, "queries", "initialize-db.sql")
+SQLITE_DATABASE = join(PROJECT_DIR, "cryptics.sqlite3")
 
 # HTTP headers to use when scraping websites.
 HEADERS = {

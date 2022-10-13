@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import logging
+from os.path import join
 from typing import Callable
 
 import pytest
 from bs4 import BeautifulSoup
 
 from cryptics import utils
+from cryptics.config import TESTS_DATA_DIR
 
 
 def test_get_logger():
@@ -69,7 +71,9 @@ class TestExtractStringFromUrlAndSoup:
 
     @pytest.mark.parametrize(
         "source_url_fragment, urls_soups_titles",
-        json.load(open("tests/test_extract_puzzle_names.json", "r")).items(),
+        json.load(
+            open(join(TESTS_DATA_DIR, "test_extract_puzzle_names.json"), "r")
+        ).items(),
     )
     def test_extract_puzzle_name(
         self, source_url_fragment: str, urls_soups_titles: list[list[str | None]]
@@ -80,7 +84,9 @@ class TestExtractStringFromUrlAndSoup:
 
     @pytest.mark.parametrize(
         "source_url_fragment, urls_soups_dates",
-        json.load(open("tests/test_extract_puzzle_dates.json", "r")).items(),
+        json.load(
+            open(join(TESTS_DATA_DIR, "test_extract_puzzle_dates.json"), "r")
+        ).items(),
     )
     def test_extract_puzzle_date(self, source_url_fragment, urls_soups_dates):
         for url, soup, date in urls_soups_dates:
@@ -89,7 +95,9 @@ class TestExtractStringFromUrlAndSoup:
 
     @pytest.mark.parametrize(
         "source_url_fragment, puzzle_urls",
-        json.load(open("tests/test_extract_puzzle_urls.json", "r")).items(),
+        json.load(
+            open(join(TESTS_DATA_DIR, "test_extract_puzzle_urls.json"), "r")
+        ).items(),
     )
     def test_extract_puzzle_url(self, source_url_fragment: str, puzzle_urls: list[str]):
         for puzzle_url in puzzle_urls:
@@ -103,7 +111,12 @@ class TestExtractStringFromUrlAndSoup:
 
 @pytest.mark.parametrize(
     "clues, suspected_definitions, expected_definitions",
-    json.load(open("tests/test_align_suspected_definitions_with_clues.json", "r")),
+    json.load(
+        open(
+            join(TESTS_DATA_DIR, "test_align_suspected_definitions_with_clues.json"),
+            "r",
+        )
+    ),
 )
 def test_align_suspected_definitions_with_clues(
     clues, suspected_definitions, expected_definitions
