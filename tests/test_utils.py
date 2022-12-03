@@ -71,9 +71,7 @@ class TestExtractStringFromUrlAndSoup:
 
     @pytest.mark.parametrize(
         "source_url_fragment, urls_soups_titles",
-        json.load(
-            open(join(TESTS_DATA_DIR, "test_extract_puzzle_names.json"), "r")
-        ).items(),
+        json.load(open(join(TESTS_DATA_DIR, "extract_puzzle_names.json"), "r")).items(),
     )
     def test_extract_puzzle_name(
         self, source_url_fragment: str, urls_soups_titles: list[list[str | None]]
@@ -84,9 +82,7 @@ class TestExtractStringFromUrlAndSoup:
 
     @pytest.mark.parametrize(
         "source_url_fragment, urls_soups_dates",
-        json.load(
-            open(join(TESTS_DATA_DIR, "test_extract_puzzle_dates.json"), "r")
-        ).items(),
+        json.load(open(join(TESTS_DATA_DIR, "extract_puzzle_dates.json"), "r")).items(),
     )
     def test_extract_puzzle_date(self, source_url_fragment, urls_soups_dates):
         for url, soup, date in urls_soups_dates:
@@ -95,9 +91,7 @@ class TestExtractStringFromUrlAndSoup:
 
     @pytest.mark.parametrize(
         "source_url_fragment, puzzle_urls",
-        json.load(
-            open(join(TESTS_DATA_DIR, "test_extract_puzzle_urls.json"), "r")
-        ).items(),
+        json.load(open(join(TESTS_DATA_DIR, "extract_puzzle_urls.json"), "r")).items(),
     )
     def test_extract_puzzle_url(self, source_url_fragment: str, puzzle_urls: list[str]):
         for puzzle_url in puzzle_urls:
@@ -113,7 +107,7 @@ class TestExtractStringFromUrlAndSoup:
     "clues, suspected_definitions, expected_definitions",
     json.load(
         open(
-            join(TESTS_DATA_DIR, "test_align_suspected_definitions_with_clues.json"),
+            join(TESTS_DATA_DIR, "align_suspected_definitions_with_clues.json"),
             "r",
         )
     ),
