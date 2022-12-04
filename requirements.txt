@@ -19,3 +19,4 @@ pytest-mock
 requests
 sqlite-utils
 tqdm
+xword-dl

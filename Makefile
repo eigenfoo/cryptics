@@ -43,6 +43,7 @@ test:  # Run mypy and pytest tests.
 update:  # Scrape and parse unprocessed blog posts.
 	${PYTHON} cryptics/amuselabs.py
 	${PYTHON} cryptics/jsons.py
+	scripts/download-and-parse-nytimes.sh
 	${PYTHON} cryptics/main.py --sleep-interval=1
 
 .PHONY: build
